@@ -41,9 +41,9 @@
     {
       "group": "Get Started",
       "pages": [
-        "introduction",
-        "quickstart",
-        "development"
+        "landing/introduction",
+        "landing/quickstart",
+        "landing/development"
       ]
     },
     {
@@ -62,6 +62,8 @@
     }
   ],
   "footerSocials": {
-    "linkedin": "https://www.linkedin.com/company/vatis-tech"
+    "linkedin": "https://www.linkedin.com/company/vatis-tech",
+    "facebook": "https://www.facebook.com/VatisTech",
+    "instagram": "https://www.instagram.com/vatis.tech"
   }
 }
