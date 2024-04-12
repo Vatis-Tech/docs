@@ -319,5 +319,10 @@
         "bearerFormat": "JWT"
       }
     }
+  },
+  "info": {
+    "title": "Vatis HTTP Gateway",
+    "description": "Vatis HTTP Gateway API",
+    "version": "1.0"
   }
 }

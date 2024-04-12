@@ -26,5 +26,10 @@
         "bearerFormat": "JWT"
       }
     }
+  },
+  "info": {
+    "title": "Vatis Stream Service",
+    "description": "Vatis Stream Service API",
+    "version": "1.0"
   }
 }

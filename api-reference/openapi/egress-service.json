@@ -163,5 +163,10 @@
         "bearerFormat": "JWT"
       }
     }
+  },
+  "info": {
+    "title": "Vatis Egress Service",
+    "description": "Vatis Egress Service API",
+    "version": "1.0"
   }
 }

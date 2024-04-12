@@ -692,5 +692,10 @@
         "bearerFormat": "JWT"
       }
     }
+  },
+  "info": {
+    "title": "Vatis Stream Configuration Service",
+    "description": "Vatis Stream Configuration Service API",
+    "version": "1.0"
   }
 }
