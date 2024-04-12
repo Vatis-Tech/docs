@@ -51,19 +51,17 @@
       "pages": [
         "api-reference/introduction"
       ]
-    },
-    {
-      "group": "Endpoint Examples",
-      "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
-      ]
     }
   ],
   "footerSocials": {
     "linkedin": "https://www.linkedin.com/company/vatis-tech",
     "facebook": "https://www.facebook.com/VatisTech",
     "instagram": "https://www.instagram.com/vatis.tech"
-  }
+  },
+  "openapi": [
+    "https://stream-configuration-service.vatis.tech/api-docs",
+    "https://stream-service.vatis.tech/api-docs",
+    "https://http-gateway.vatis.tech/api-docs",
+    "https://egress-service.vatis.tech/api-docs"
+  ]
 }
