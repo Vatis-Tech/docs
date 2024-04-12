@@ -1,0 +1,167 @@
+{
+  "openapi": "3.0.1",
+  "servers": [
+    {
+      "url": "https://egress-service.vatis.tech",
+      "description": "Default server"
+    }
+  ],
+  "paths": {
+    "/egress-service/api/v1/egress/live": {
+      "get": {
+        "summary": "Egresses a live stream of data",
+        "operationId": "live-egress",
+        "parameters": [
+          {
+            "name": "streamIds",
+            "in": "query",
+            "description": "List of stream ids for watching",
+            "required": true,
+            "schema": {
+              "type": "array"
+            }
+          },
+          {
+            "name": "sinks",
+            "in": "query",
+            "description": "Sinks selector",
+            "schema": {
+              "type": "array"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Output format of the events",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "EVENTS",
+                "RAW"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stream egressed",
+            "content": {
+              "application/x-ndjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamSinkDataDto"
+                }
+              },
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "StreamSinkDataDto": {
+        "type": "object",
+        "properties": {
+          "streamId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "groupId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sinkDataLabelValue": {
+            "type": "string"
+          },
+          "sourceTopicName": {
+            "type": "string"
+          },
+          "publishTimestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "frameType": {
+            "type": "string"
+          },
+          "payloadSchema": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "object"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "internalErrorName": {
+            "type": "string",
+            "enum": [
+              "GENERAL_INTERNAL_ERROR",
+              "GENERAL_VALIDATION_ERROR",
+              "GENERAL_AUTHENTICATION_ERROR",
+              "GENERAL_AUTHORIZATION_ERROR",
+              "GENERAL_NOT_FOUND_ERROR",
+              "GENERAL_BAD_REQUEST_ERROR",
+              "GENERAL_TIME_OUT_ERROR",
+              "GENERAL_CONFLICT_ERROR",
+              "STREAM_CONFIGURATION_BAD_TEMPLATE",
+              "PROCESSOR_FAILED_RESERVATION_ERROR",
+              "PROCESSOR_FAILED_CONFIRMATION_ERROR",
+              "PROCESSOR_PROPERTIES_VALIDATION_ERROR",
+              "PROCESSOR_TRANSCODING_ERROR",
+              "PROCESSOR_TRANSCRIPTION_ERROR",
+              "PROCESSOR_SPEAKER_DIARIZATION_ERROR",
+              "PROCESSOR_GENERAL_ERROR",
+              "PROCESSOR_CORDONED_ERROR",
+              "PULSAR_ERROR"
+            ]
+          },
+          "nestedErrors": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

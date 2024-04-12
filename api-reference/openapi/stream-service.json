@@ -1,0 +1,30 @@
+{
+  "openapi": "3.0.1",
+  "servers": [
+    {
+      "url": "https://stream-service.vatis.tech",
+      "description": "Default server"
+    }
+  ],
+  "paths": {},
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "properties": {
+          "nestedErrors": {
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

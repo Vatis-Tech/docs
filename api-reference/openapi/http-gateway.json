@@ -1,0 +1,323 @@
+{
+  "openapi": "3.0.1",
+  "servers": [
+    {
+      "url": "https://http-gateway.vatis.tech",
+      "description": "Default server"
+    }
+  ],
+  "paths": {
+    "/http-gateway/api/v1/upload": {
+      "post": {
+        "summary": "Uploads a stream of bytes",
+        "operationId": "upload",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Stream id. The stream created on this upload will bear this id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Stream name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "groupId",
+            "in": "query",
+            "description": "Stream group id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "streamConfigurationTemplateId",
+            "in": "query",
+            "description": "Stream configuration template id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "labels",
+            "in": "query",
+            "description": "Stream labels. A map of key-value pairs where all keys start with 'labels.'",
+            "explode": true,
+            "schema": {
+              "type": "object"
+            },
+            "example": "labels.key1=value1,labels.key2=value2"
+          },
+          {
+            "name": "patches",
+            "in": "query",
+            "description": "Stream patches. A map of key-value pairs where all keys start with 'patches.'",
+            "explode": true,
+            "schema": {
+              "type": "object"
+            },
+            "example": "patches.key1=value1,patches.key2=value2"
+          }
+        ],
+        "requestBody": {
+          "description": "The stream of bytes to upload",
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamDto"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error while uploading the stream",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProcessorConfigurationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/SubscriptionDto"
+          },
+          "destination": {
+            "$ref": "#/components/schemas/TopicDto"
+          },
+          "clusterDomainName": {
+            "type": "string"
+          },
+          "podsDiscoveryClusterDomainName": {
+            "type": "string"
+          },
+          "propertiesSchema": {
+            "type": "string"
+          },
+          "properties": {
+            "type": "object"
+          }
+        }
+      },
+      "StreamConfigurationDto": {
+        "type": "object",
+        "properties": {
+          "streamConfigurationTemplateId": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/TopicDto"
+          },
+          "dataSinks": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/TopicDto"
+            }
+          },
+          "processors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProcessorConfigurationDto"
+            }
+          }
+        }
+      },
+      "StreamDto": {
+        "type": "object",
+        "properties": {
+          "streamId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "groupId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "configuration": {
+            "$ref": "#/components/schemas/StreamConfigurationDto"
+          },
+          "createdTimestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "creatorId": {
+            "type": "string"
+          },
+          "groupCreatorId": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "COMPLETED",
+              "FAILED"
+            ]
+          },
+          "stateDescription": {
+            "type": "string"
+          },
+          "labels": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SubscriptionDto": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "string"
+          },
+          "topic": {
+            "type": "string"
+          },
+          "messageSchema": {
+            "type": "string"
+          },
+          "connectionOptions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "headers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "TopicDto": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string"
+          },
+          "messageSchema": {
+            "type": "string"
+          },
+          "connectionOptions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "headers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "messageHeaders": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "subscriptions": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SubscriptionDto"
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "internalErrorName": {
+            "type": "string",
+            "enum": [
+              "GENERAL_INTERNAL_ERROR",
+              "GENERAL_VALIDATION_ERROR",
+              "GENERAL_AUTHENTICATION_ERROR",
+              "GENERAL_AUTHORIZATION_ERROR",
+              "GENERAL_NOT_FOUND_ERROR",
+              "GENERAL_BAD_REQUEST_ERROR",
+              "GENERAL_TIME_OUT_ERROR",
+              "GENERAL_CONFLICT_ERROR",
+              "STREAM_CONFIGURATION_BAD_TEMPLATE",
+              "PROCESSOR_FAILED_RESERVATION_ERROR",
+              "PROCESSOR_FAILED_CONFIRMATION_ERROR",
+              "PROCESSOR_PROPERTIES_VALIDATION_ERROR",
+              "PROCESSOR_TRANSCODING_ERROR",
+              "PROCESSOR_TRANSCRIPTION_ERROR",
+              "PROCESSOR_SPEAKER_DIARIZATION_ERROR",
+              "PROCESSOR_GENERAL_ERROR",
+              "PROCESSOR_CORDONED_ERROR",
+              "PULSAR_ERROR"
+            ]
+          },
+          "nestedErrors": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

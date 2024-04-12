@@ -56,7 +56,8 @@
     {
       "group": "Transcribe file",
       "pages": [
-        "api-reference/commons/authenticate"
+        "api-reference/commons/authenticate",
+        "api-reference/transcribe-file/upload"
       ]
     }
   ],
@@ -66,10 +67,10 @@
     "instagram": "https://www.instagram.com/vatis.tech"
   },
   "openapi": [
-    "https://stream-configuration-service.vatis.tech/api-docs",
-    "https://stream-service.vatis.tech/api-docs",
-    "https://http-gateway.vatis.tech/api-docs",
-    "https://egress-service.vatis.tech/api-docs",
-    "api-reference/commons/authenticate-openapi.json"
+    "api-reference/openapi/authenticate.json",
+    "api-reference/openapi/http-gateway.json",
+    "api-reference/openapi/stream-configuration-service.json",
+    "api-reference/openapi/stream-service.json",
+    "api-reference/openapi/egress-service.json"
   ]
 }
