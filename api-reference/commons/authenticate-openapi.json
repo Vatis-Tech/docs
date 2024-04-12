@@ -1,0 +1,87 @@
+{
+  "openapi": "3.0.1",
+  "servers": [
+    {
+      "url": "https://auth.vatis.tech",
+      "description": "Authentication server"
+    }
+  ],
+  "paths": {
+    "/realms/vatistech/protocol/openid-connect/token": {
+      "post": {
+        "summary": "Get access token",
+        "requestBody": {
+          "required": true,
+          "description": "Client credentials",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "client_id": {
+                    "type": "string"
+                  },
+                  "client_secret": {
+                    "type": "string"
+                  },
+                  "grant_type": {
+                    "type": "string",
+                    "enum": [
+                      "client_credentials"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authorization response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string"
+                    },
+                    "expires_in": {
+                      "type": "integer"
+                    },
+                    "token_type": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "error_description": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "info": {
+    "title": "Vatis Auth API",
+    "description": "API for authentication",
+    "version": "1.0.0"
+  }
+}
