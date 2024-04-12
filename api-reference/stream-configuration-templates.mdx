@@ -15,6 +15,15 @@ description: 'Stream configuration template ids'
 
 <AccordionGroup>
     <Accordion title="Transcribe">
-        Stream Configuration Template Id: `65f169a51351291e67a7a7fa`
+        Stream Configuration Template Id: `65f169a51351291e67a7a7fa`<br/>
+        Input data: `wav` `mp3` `mp4` `m4a` `webm` etc.<br/>
+        Output data: `partial and final transcription packets`<br/>
+
+        <Tip>
+            Due to file structures limitations, some multi-media files will work in semi-real-time (file is uploaded at once, then the results are delivered in real-time).<br/>
+            Most notables examples are `mp4` and `mov` files.<br/>
+            The majority of files formats will work in complete real-time (the transcription results are delivered while the file is being uploaded)
+        </Tip>
+
     </Accordion>
 </AccordionGroup>
