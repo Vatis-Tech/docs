@@ -1,0 +1,35 @@
+---
+title: 'Authentication'
+description: 'Obtain API access token'
+---
+
+<Steps>
+    <Step title='Get client credentials'>
+        Get the `Client Id` and `Client Secret` from your Vatis Tech Platform account
+    </Step>
+     <Step title='Exchange for access token'>
+        Send a `POST` request with the following parameters:
+
+         ```json
+         {
+            "grant_type": "client_credentials",
+            "client_id": "YOUR_CLIENT_ID",
+            "client_secret": "YOUR_CLIENT_SECRET"
+         }
+         ```
+        <Note>The actual request will be shown in the workflows</Note>
+    </Step>
+    <Step title='Extract the access token'>
+        In the response, you will get an `access_token` which you can use to authenticate your requests.
+
+        ```json
+        {
+            "access_token": "eyJhb...",
+            "expires_in": 600,
+            "token_type": "Bearer",
+            ...
+        }
+        ```
+        <Warning>It's recommended to obtain a new access token before each workflow execution</Warning>
+    </Step>
+</Steps>
