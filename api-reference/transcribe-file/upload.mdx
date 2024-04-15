@@ -1,16 +1,104 @@
 ---
 title: 'Upload file'
-openapi: 'POST /http-gateway/api/v1/upload'
+api: 'POST https://http-gateway.vatis.tech/http-gateway/api/v1/upload'
+authMethod: 'bearer'
 ---
 
+<Warning>
+    Due to Interactive Playground limitations, the file upload is not possible.
+    Please use the [Swagger UI](https://http-gateway.vatis.tech/swagger-ui/webjars/swagger-ui/index.html#/default/upload) to complete this request or use the provided cURL command.
+</Warning>
 <Check>
     Select the Stream Configuration Template Id from this [page](/api-reference/stream-configuration-templates)
 </Check>
 <Check>
     Copy the `streamId` value from the response
 </Check>
-<Warning>
-    Due to Interactive Playground limitations, the file upload is not possible.
-    Please use the [Swagger UI](https://http-gateway.vatis.tech/swagger-ui/webjars/swagger-ui/index.html#/default/upload) to complete this request.
-</Warning>
 
+### Request body
+
+<ParamField body="inputFile" type="file" required="true">
+    Multi-media file to be transcribed
+</ParamField>
+
+### Query parameters
+
+<ParamField query="streamConfigurationTemplateId" type="string" required>
+    The id of the Stream Configuration Template to be used for the stream.
+</ParamField>
+<ParamField query="id" type="uuid">
+    Stream id. If not provided, a random id will be generated.
+    Specify this id to retrieve the results before finishing the upload.
+</ParamField>
+<ParamField query="name" type="string">
+    Arbitrary stream name. If not provided, a random name will be used.
+</ParamField>
+<ParamField query="groupId" type="uuid">
+    Group id to add the stream to. If not provided, a new group with the stream id will be created.
+</ParamField>
+<ParamField query="labels" type="object">
+    Labels of the stream. Each label name must start with `labels.`
+</ParamField>
+<ParamField query="patches" type="object">
+    Patches of the stream configuration template. Each patch name must start with `patches.`
+</ParamField>
+
+### Response
+
+<ResponseField name="stream" type="Stream object">
+    <Expandable title="properties">
+        <ResponseField name="streamId" type="uuid">
+            The stream id.
+        </ResponseField>
+        <ResponseField name="name" type="string">
+            The stream name.
+        </ResponseField>
+        <ResponseField name="groupId" type="uuid">
+            The group id.
+        </ResponseField>
+    </Expandable>
+</ResponseField>
+
+<ResponseField name="error" type="Error object">
+    <Expandable title="properties">
+        <ResponseField name="message" type="string">
+            Error message.
+        </ResponseField>
+        <ResponseField name="code" type="integer">
+            Error code.
+        </ResponseField>
+    </Expandable>
+</ResponseField>
+
+<RequestExample>
+    ```bash cURL
+        curl --request 'POST' \
+          --url https://http-gateway.vatis.tech/http-gateway/api/v1/upload?streamConfigurationTemplateId={templateId} \
+          --header 'accept: application/json' \
+          --header 'Authorization: Bearer {token}' \
+          --header 'Content-Type: application/octet-stream' \
+          --data-binary '@path/to/file'
+    ```
+</RequestExample>
+
+<ResponseExample>
+    ```json 200
+    {
+        "streamId": "eb4e926b-75b5-405c-a379-63ac092d2bc9",
+        "name": "Stream H1OOES",
+        "groupId": "eb4e926b-75b5-405c-a379-63ac092d2bc9"
+    }
+    ```
+
+    ```json 4xx/5xx
+    {
+        "statusCode": 400,
+        "title": "string",
+        "message": "string",
+        "internalErrorName": "GENERAL_INTERNAL_ERROR",
+        "nestedErrors": [
+            "string"
+        ]
+    }
+    ```
+</ResponseExample>
