@@ -36,16 +36,20 @@ Features:
                     --header 'Content-Type: application/octet-stream' \
                     --data-binary "@${FILE_PATH}"
                 ```
+
+                <Info>Please check [this OpenAPI page](https://http-gateway.vatis.tech/swagger-ui/index.html#/default/upload) for complete endpoint documentation</Info>
             </Step>
             <Step>
                 Retrieve transcription results
                 ```bash
                 curl --request GET \
-                    --url "https://egress-service.vatis.tech/egress-service/api/v1/egress/live?streamIds=${STREAM_ID}" \
+                    --url "https://egress-service.vatis.tech/egress-service/api/v1/egress/live?streamIds=${STREAM_ID}&format=EVENTS" \
                     --header 'accept: application/x-ndjson' \
                     --header "X-Client-Id: ${CLIENT_ID}" \
                     --header "X-Client-Secret: ${CLIENT_SECRET}" \
                 ```
+
+                <Info>Please check [this OpenAPI page](https://egress-service.vatis.tech/swagger-ui/index.html#/default/live-egress) for complete endpoint documentation</Info>
             </Step>
         </Steps>
     </Tab>
