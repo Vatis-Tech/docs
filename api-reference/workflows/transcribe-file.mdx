@@ -1,0 +1,52 @@
+---
+title: 'Transcribe file'
+description: 'Transcribe a file using the Vatis Streams Engine'
+---
+
+Features:
+* real-time transcription
+* real-time transcoding (process any multi-media file)
+* language auto-detection
+* dynamic language code switch
+
+
+<Tabs>
+    <Tab title="cURL (Linux/macOS)">
+        <Steps>
+            <Step title="Open terminal">
+                Open a terminal window and export the following environment variables
+                ```bash
+                export CLIENT_ID="your-client-id"
+                export CLIENT_SECRET="your-client-secret"
+                export CONFIGURATION_ID=65f169a51351291e67a7a7fa
+                export STREAM_ID=$(uuidgen)
+                export FILE_PATH="path/to/your/file"
+                ```
+
+                <Info>More details about the `Configuration Id` can be found on the [stream configuration templates page](/api-reference/stream-configuration-templates)</Info>
+            </Step>
+            <Step>
+                Upload the file
+                ```bash
+                curl --request POST \
+                    --url "https://http-gateway.vatis.tech/http-gateway/api/v1/upload?streamConfigurationTemplateId=${CONFIGURATION_ID}&id=${STREAM_ID}" \
+                    --header 'accept: application/json' \
+                    --header "X-Client-Id: ${CLIENT_ID}" \
+                    --header "X-Client-Secret: ${CLIENT_SECRET}" \
+                    --header 'Content-Type: application/octet-stream' \
+                    --data-binary "@${FILE_PATH}"
+                ```
+            </Step>
+            <Step>
+                Retrieve transcription results
+                ```bash
+                curl --request GET \
+                    --url "https://egress-service.vatis.tech/egress-service/api/v1/egress/live?streamIds=${STREAM_ID}" \
+                    --header 'accept: application/x-ndjson' \
+                    --header "X-Client-Id: ${CLIENT_ID}" \
+                    --header "X-Client-Secret: ${CLIENT_SECRET}" \
+                ```
+            </Step>
+        </Steps>
+    </Tab>
+</Tabs>

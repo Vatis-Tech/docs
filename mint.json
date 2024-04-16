@@ -53,11 +53,15 @@
       ]
     },
     {
-      "group": "Transcribe file",
+      "group": "Workflows",
       "pages": [
-        "api-reference/commons/authenticate",
-        "api-reference/transcribe-file/upload",
-        "api-reference/transcribe-file/receive"
+        "api-reference/workflows/transcribe-file"
+      ]
+    },
+    {
+      "group": "Authentication",
+      "pages": [
+        "api-reference/commons/authenticate"
       ]
     }
   ],
