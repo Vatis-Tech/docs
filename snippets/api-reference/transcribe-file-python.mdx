@@ -32,7 +32,9 @@ def transcribe(file_path: str, client_id: str, client_secret: str, stream_config
     with open(file_path, 'rb') as payload:
         upload_response = requests.post(upload_url, headers=upload_headers, data=payload)
 
-    upload_response.raise_for_status()
+    if not upload_response.ok:
+        print(f'Error on file upload: {upload_response.json()}')
+        return
 
     # Retrieve the results
     retrieve_url: str = ("https://egress-service.vatis.tech/egress-service/api/v1/egress/live?"
