@@ -1,0 +1,89 @@
+```python transcribe.py
+import uuid
+
+import requests
+import os
+import sys
+from pathlib import Path
+import json
+
+
+def transcribe(file_path: str, client_id: str, client_secret: str, stream_configuration_template_id: str):
+    file_path = Path(file_path).resolve()
+
+    assert file_path.exists() and file_path.is_file(), f'File {file_path} does not exist or is not a file'
+    assert client_id, 'Client ID is required'
+    assert client_secret, 'Client secret is required'
+
+    stream_id: str = str(uuid.uuid4())
+
+    # Upload the file
+    upload_url: str = ("https://http-gateway.vatis.tech/http-gateway/api/v1/upload?"
+                       f"streamConfigurationTemplateId={stream_configuration_template_id}&"
+                       f"id={stream_id}")
+
+    upload_headers: dict = {
+        'Accept': 'application/json',
+        'X-Client-Id': client_id,
+        'X-Client-Secret': client_secret,
+        'Content-Type': 'application/octet-stream'
+    }
+
+    with open(file_path, 'rb') as payload:
+        upload_response = requests.post(upload_url, headers=upload_headers, data=payload)
+
+    upload_response.raise_for_status()
+
+    # Retrieve the results
+    retrieve_url: str = ("https://egress-service.vatis.tech/egress-service/api/v1/egress/live?"
+                         f"streamIds={stream_id}&"
+                         f"format=EVENTS")
+
+    retrieve_headers: dict = {
+        'X-Client-Id': client_id,
+        'X-Client-Secret': client_secret,
+        'Accept': 'application/x+ndjson'
+    }
+
+    with requests.get(retrieve_url, headers=retrieve_headers, stream=True) as response:
+        response.raise_for_status()
+        # Stream the results
+        print_transcription(response.iter_lines())
+
+
+def print_transcription(events_generator):
+    final_transcript: str = ''
+
+    for event_json in events_generator:
+        if not event_json:
+            continue
+
+        event: dict = json.loads(event_json)
+
+        assert event['payloadSchema'] == 'tech.vatis.schema.stream.processor.messages.transcription.TranscriptionResponseDto', f'Not a transcription event: {event}'
+
+        transcript: str = event['payload']['transcription']
+        start_time: int = event['payload']['start'] / 1000
+        end_time: int = event['payload']['end'] / 1000
+
+        if event['frameType'] == 'final':
+            final_transcript += transcript
+            formatted_start: str = f'{start_time:.2f}'
+            formatted_end: str = f'{end_time:.2f}'
+            print(f'{formatted_start:>6} - {formatted_end:<6}: {transcript}')
+
+    print('\n\nFinal transcription:\n')
+    print(final_transcript)
+
+
+if __name__ == '__main__':
+    file_path: str = sys.argv[1]
+    client_id: str = os.environ.get('CLIENT_ID')
+    client_secret: str = os.environ.get('CLIENT_SECRET')
+    stream_configuration_template_id: str = os.environ.get('CONFIGURATION_ID')
+
+    transcribe(file_path=file_path,
+               client_id=client_id,
+               client_secret=client_secret,
+               stream_configuration_template_id=stream_configuration_template_id)
+```

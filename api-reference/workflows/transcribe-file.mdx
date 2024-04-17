@@ -3,6 +3,8 @@ title: 'Transcribe file'
 description: 'Transcribe a file using the Vatis Streams Engine'
 ---
 
+import TranscribeFilePython from '/snippets/api-reference/transcribe-file-python.mdx'
+
 Features:
 * real-time transcription
 * real-time transcoding (process any multi-media file)
@@ -50,6 +52,38 @@ Features:
                 ```
 
                 <Info>Please check [this OpenAPI page](https://egress-service.vatis.tech/swagger-ui/index.html#/default/live-egress) for complete endpoint documentation</Info>
+            </Step>
+        </Steps>
+    </Tab>
+    <Tab title="Python">
+        <Steps>
+            <Step title="Open terminal">
+                Open a terminal window and export the following environment variables
+                ```bash
+                export CLIENT_ID="your-client-id"
+                export CLIENT_SECRET="your-client-secret"
+                export CONFIGURATION_ID=65f169a51351291e67a7a7fa
+                export FILE_PATH="path/to/your/file"
+                ```
+
+                <Info>More details about the `Configuration Id` can be found on the [stream configuration templates page](/api-reference/stream-configuration-templates)</Info>
+            </Step>
+            <Step title='Install requirements'>
+                ```bash
+                pip install requests
+                ```
+            </Step>
+            <Step title="Write the script">
+                Write the following script to a file
+                <CodeGroup>
+                    <TranscribeFilePython/>
+                </CodeGroup>
+            </Step>
+            <Step title="Start the transcription">
+                Execute the python script with the file path as an argument
+                ```bash
+                python transcribe.py "$FILE_PATH"
+                ```
             </Step>
         </Steps>
     </Tab>
