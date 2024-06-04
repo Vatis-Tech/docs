@@ -45,6 +45,12 @@
       ]
     },
     {
+      "group": "Integration",
+      "pages": [
+        "integration/webhooks"
+      ]
+    },
+    {
       "group": "API Documentation",
       "pages": [
         "api-reference/introduction",

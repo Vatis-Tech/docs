@@ -1,0 +1,212 @@
+---
+title: 'Webhooks'
+description: 'Listen to events on your resources with webhooks.'
+---
+
+## Overview
+When integrating the Vatis Streams API you may need to listen to events on your resources, so your application can react accordingly.
+To do this, you can register a webhook endpoint containing the URL where you want to receive the events and the type of events the endpoint is listening to.
+When an event is triggered, a `POST` request will be sent to all the registered endpoints with the event data.
+
+## Webhook structure
+
+```json
+{
+  "id": "<string>",
+  "url": "<string>",
+  "events": [
+    "<string>"
+  ],
+  "enabled": true,
+  "description": "<string>"
+}
+```
+
+| Property      | Description                                                                                                            |
+|---------------|------------------------------------------------------------------------------------------------------------------------|
+| `id`          | The webhook endpoint identifier                                                                                        |
+| `url`         | The URL where the events will be sent. Accepted protocols: `HTTP`, `HTTPS`                                             |
+| `events`      | The list of event types the endpoint is listening to. Check the avaiable event types [here](#event-types)                                                                   |
+| `enabled`     | Indicates if the webhook is enabled. You can disable an endpoint to temporarily stop receiving requests to the endpoint |
+| `description` | An optional description of the webhook                                                                                 |
+
+<Warning>Local IP addresses and loopback interfaces are not allowed in the `url`</Warning>
+
+## Event structure
+
+```json
+{
+  "id": "<string>",
+  "type": "<string>",
+  "webhookEndpointId": "<string>",
+  "timestamp": "<long>",
+  "payloadSchema": "<string>",
+  "payload": "<object>"
+}
+```
+
+| Property            | Description                                                                         |
+|---------------------|-------------------------------------------------------------------------------------|
+| `id`                | The event identifier                                                                |
+| `type`              | The event type. Check the avaiable event types [here](#event-types)                 |
+| `webhookEndpointId` | The webhook endpoint identifier                                                     |
+| `timestamp`         | The event timestamp in milliseconds since epoch. Use this to prevent replay attacks |
+| `payloadSchema`     | The fully qualified name of the payload schema                                      |
+| `payload`           | The event payload                                                                   |
+
+## Event types
+
+| Event type                    | Description                                                                                                                                      |
+|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| `stream.ready`                | The stream has just been cerated and is ready to receive data                                                                                    |
+| `stream.completed`            | The stream completed successfully                                                                                                                |
+| `stream.failed`               | The stream failed                                                                                                                                |
+| `group.created`               | A new group has been created                                                                                                                     |
+| `group.completed`             | All the streams in the group completed successfully. This event will be emitted again if a new stream joins the group and completes              |
+| `group.failed`                | All the streams in the group finished and at least one stream failed. This event will be emitted again if a new stream joins the group and fails |
+| `group.stream-joined`         | A new stream has joined the group                                                                                                                |
+| `stream.gateway.connected`    | A client connected to the stream gateway                                                                                                         |
+| `stream.gateway.disconnected` | The client disconnected from the stream gateway                                                                                                  |
+| `stream.gateway.closed`       | The gateway of the stream is permanently closed                                                                                                  |
+| `stream.processor.running`    | The stream processor has been assigned to stream and it is running                                                                               |
+| `stream.processor.completed`  | The stream processor has been completed successfully                                                                                             |
+| `stream.processor.error`      | The stream processor has failed                                                                                                                  |
+
+## Source IPs
+
+To make sure your server is able to receive the events, you can whitelist the following IP addresses:
+- `18.194.212.83`
+- `3.120.9.38`
+- `3.68.55.77`
+
+## Redelivery
+
+If the server does not respond with a `2xx` status code, the event redelivery will be retried for the next few days with an exponential backoff strategy.
+
+## Development
+
+For experimenting the webhook integration on a local environment, you can create the setup described below.
+
+<Accordion title="Setup steps">
+    <Steps>
+        <Step title="Install ngrok">
+            <Tabs>
+                <Tab title='Linux (Apt)'>
+                    ```bash
+                     curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
+                    ```
+                </Tab>
+                <Tab title='Linux (Snap)'>
+                    ```bash
+                    snap install ngrok
+                    ```
+                </Tab>
+                <Tab title='Mac'>
+                    ```bash
+                    brew install ngrok/ngrok/ngrok
+                    ```
+                </Tab>
+                <Tab title='Windows'>
+                    ```bash
+                    choco install ngrok
+                    ```
+                </Tab>
+            </Tabs>
+            Alternatively, you can download the executable from the [official website](https://ngrok.com/download)
+        </Step>
+        <Step title="Install Nginx">
+            <Tabs>
+                <Tab title='Linux (Apt)'>
+                    ```bash
+                    apt install nginx
+                    ```
+                </Tab>
+                <Tab title='Mac'>
+                    ```bash
+                    brew install nginx
+                    ```
+                </Tab>
+                <Tab title='Windows'>
+                    Download the installer from the [official website](https://nginx.org/en/download.html)
+                </Tab>
+            </Tabs>
+        </Step>
+        <Step title="Configure Nginx">
+            <Tabs>
+                <Tab title='Linux'>
+                    ```bash
+                    cat <<EOF > /etc/nginx/conf.d/dev-webhook.conf
+                    server {
+                      listen 8081;
+                      server_name localhost;
+
+                      location /200 {
+                        add_header Content-Type text/plain;
+                        return 200 "200 - OK";
+                      }
+
+                      location /400 {
+                        add_header Content-Type text/plain;
+                        return 400 "400 - ERROR";
+                      }
+
+                      location /500 {
+                        add_header Content-Type text/plain;
+                        return 500 "500 - SERVER ERROR";
+                      }
+                    }
+                    ```
+                </Tab>
+                <Tab title="MacOS">
+                    ```bash
+                    cat <<EOF > /opt/homebrew/etc/nginx/servers/dev-webhook.conf
+                    server {
+                      listen 8081;
+                      server_name localhost;
+
+                      location /200 {
+                        add_header Content-Type text/plain;
+                        return 200 "200 - OK";
+                      }
+
+                      location /400 {
+                        add_header Content-Type text/plain;
+                        return 400 "400 - ERROR";
+                      }
+
+                      location /500 {
+                        add_header Content-Type text/plain;
+                        return 500 "500 - SERVER ERROR";
+                      }
+                    }
+                    ```
+                </Tab>
+            </Tabs>
+        </Step>
+        <Step title="Prepare the tunnel">
+            ```bash
+            nginx
+            ngrok http 8081
+            ```
+        </Step>
+        <Step title="Create/update the webhook">
+            Create or update the webhook endpoint URL with the temporary URL provided by ngrok.
+            Choose one of the following as URL paths, based on the test you want to perform:
+            - `/200`
+            - `/400`
+            - `/500`
+        </Step>
+        <Step title="Monitor requests">
+            Open the Ngrok dashboard at [http://localhost:4040](http://localhost:4040) to monitor the requests.
+            Create a new stream or group to trigger the events.
+        </Step>
+    </Steps>
+</Accordion>
+
+## Considerations
+
+1. A user can define up to 20 webhook endpoints
+2. The same event may be sent multiple times to the same endpoint
+3. The order of the events is not guaranteed
+
+## Securing webhooks (coming soon)
