@@ -25,7 +25,12 @@ curl https://stream-service.vatis.tech/api-docs | \
   jq '.components.schemas.ErrorResponse.properties.nestedErrors.items = {"type": "object"} | .servers = [{"url": "https://stream-service.vatis.tech", "description": "Default server"}]' \
   > api-reference/openapi/stream-service.json
 
-# Update OpenAPI for Stream Service
+# Update OpenAPI for Egress Service
 curl https://egress-service.vatis.tech/api-docs | \
   jq '.components.schemas.ErrorResponse.properties.nestedErrors.items = {"type": "object"} | .servers = [{"url": "https://egress-service.vatis.tech", "description": "Default server"}]' \
   > api-reference/openapi/egress-service.json
+
+# Update OpenAPI for Notification Service
+curl https://notification-service.vatis.tech/api-docs | \
+  jq '.components.schemas.ErrorResponse.properties.nestedErrors.items = {"type": "object"} | .servers = [{"url": "https://notification-service.vatis.tech", "description": "Default server"}]' \
+  > api-reference/openapi/notification-service.json

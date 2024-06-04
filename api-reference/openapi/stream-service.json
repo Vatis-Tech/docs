@@ -1,5 +1,10 @@
 {
   "openapi": "3.0.1",
+  "info": {
+    "title": "Vatis Stream Service",
+    "description": "Vatis Stream Service API",
+    "version": "1.0"
+  },
   "servers": [
     {
       "url": "https://stream-service.vatis.tech",
@@ -26,10 +31,5 @@
         "bearerFormat": "JWT"
       }
     }
-  },
-  "info": {
-    "title": "Vatis Stream Service",
-    "description": "Vatis Stream Service API",
-    "version": "1.0"
   }
 }

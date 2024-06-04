@@ -1,5 +1,10 @@
 {
   "openapi": "3.0.1",
+  "info": {
+    "title": "Vatis Egress Service",
+    "description": "Vatis Egress Service API",
+    "version": "1.0"
+  },
   "servers": [
     {
       "url": "https://egress-service.vatis.tech",
@@ -79,6 +84,30 @@
   },
   "components": {
     "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "internalErrorName": {
+            "type": "string"
+          },
+          "nestedErrors": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
       "StreamSinkDataDto": {
         "type": "object",
         "properties": {
@@ -110,50 +139,6 @@
             "type": "object"
           }
         }
-      },
-      "ErrorResponse": {
-        "type": "object",
-        "properties": {
-          "statusCode": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          },
-          "internalErrorName": {
-            "type": "string",
-            "enum": [
-              "GENERAL_INTERNAL_ERROR",
-              "GENERAL_VALIDATION_ERROR",
-              "GENERAL_AUTHENTICATION_ERROR",
-              "GENERAL_AUTHORIZATION_ERROR",
-              "GENERAL_NOT_FOUND_ERROR",
-              "GENERAL_BAD_REQUEST_ERROR",
-              "GENERAL_TIME_OUT_ERROR",
-              "GENERAL_CONFLICT_ERROR",
-              "STREAM_CONFIGURATION_BAD_TEMPLATE",
-              "PROCESSOR_FAILED_RESERVATION_ERROR",
-              "PROCESSOR_FAILED_CONFIRMATION_ERROR",
-              "PROCESSOR_PROPERTIES_VALIDATION_ERROR",
-              "PROCESSOR_TRANSCODING_ERROR",
-              "PROCESSOR_TRANSCRIPTION_ERROR",
-              "PROCESSOR_SPEAKER_DIARIZATION_ERROR",
-              "PROCESSOR_GENERAL_ERROR",
-              "PROCESSOR_CORDONED_ERROR",
-              "PULSAR_ERROR"
-            ]
-          },
-          "nestedErrors": {
-            "type": "array",
-            "items": {
-              "type": "object"
-            }
-          }
-        }
       }
     },
     "securitySchemes": {
@@ -163,10 +148,5 @@
         "bearerFormat": "JWT"
       }
     }
-  },
-  "info": {
-    "title": "Vatis Egress Service",
-    "description": "Vatis Egress Service API",
-    "version": "1.0"
   }
 }

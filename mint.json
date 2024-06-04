@@ -45,6 +45,12 @@
       ]
     },
     {
+      "group": "Integration",
+      "pages": [
+        "integration/webhooks"
+      ]
+    },
+    {
       "group": "API Documentation",
       "pages": [
         "api-reference/introduction",
@@ -63,6 +69,17 @@
       "pages": [
         "api-reference/commons/authenticate"
       ]
+    },
+    {
+      "group": "Webhooks",
+      "pages": [
+        "api-reference/webhooks/webhook-endpoint-resource-impl/find-all",
+        "api-reference/webhooks/webhook-endpoint-resource-impl/createupdate",
+        "api-reference/webhooks/webhook-endpoint-resource-impl/toggle-endpoint",
+        "api-reference/webhooks/webhook-endpoint-resource-impl/find-by-id",
+        "api-reference/webhooks/webhook-endpoint-resource-impl/delete",
+        "api-reference/webhooks/webhook-endpoint-resource-impl/get-available-event-type"
+      ]
     }
   ],
   "footerSocials": {
@@ -75,6 +92,7 @@
     "api-reference/openapi/http-gateway.json",
     "api-reference/openapi/stream-configuration-service.json",
     "api-reference/openapi/stream-service.json",
-    "api-reference/openapi/egress-service.json"
+    "api-reference/openapi/egress-service.json",
+    "api-reference/openapi/notification-service.json"
   ]
 }

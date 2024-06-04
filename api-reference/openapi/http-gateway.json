@@ -1,5 +1,10 @@
 {
   "openapi": "3.0.1",
+  "info": {
+    "title": "Vatis HTTP Gateway",
+    "description": "Vatis HTTP Gateway API",
+    "version": "1.0"
+  },
   "servers": [
     {
       "url": "https://http-gateway.vatis.tech",
@@ -55,17 +60,38 @@
             "schema": {
               "type": "object"
             },
-            "example": "labels.key1=value1,labels.key2=value2"
+            "example": {
+              "labels.key1": "value1",
+              "labels.key2": "value2"
+            }
           },
           {
             "name": "patches",
             "in": "query",
-            "description": "Stream patches. A map of key-value pairs where all keys start with 'patches.'",
+            "description": "Stream patches. A map of key-value pairs where all keys start with 'patches.'. By default, a replace patch will be applied. To add, prefix the value with '+' (e.g. patches.key=+value). To remove, set the value to '-' (e.g. patches.key=-). To escape the special characters + and -, use '\\' escape-character. ",
             "explode": true,
             "schema": {
               "type": "object"
             },
-            "example": "patches.key1=value1,patches.key2=value2"
+            "example": {
+              "patches.key1": "value1",
+              "patches.key2": "value2"
+            }
+          },
+          {
+            "name": "X-Vat-Meta-Template-Patch",
+            "in": "header",
+            "description": "Stream configuration template JSON patches as described in RFC-6902",
+            "schema": {
+              "type": "string"
+            },
+            "example": [
+              {
+                "op": "replace",
+                "path": "/json/path",
+                "value": "some_value"
+              }
+            ]
           }
         ],
         "requestBody": {
@@ -111,6 +137,30 @@
   },
   "components": {
     "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "internalErrorName": {
+            "type": "string"
+          },
+          "nestedErrors": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
       "ProcessorConfigurationDto": {
         "type": "object",
         "properties": {
@@ -266,50 +316,6 @@
             }
           }
         }
-      },
-      "ErrorResponse": {
-        "type": "object",
-        "properties": {
-          "statusCode": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          },
-          "internalErrorName": {
-            "type": "string",
-            "enum": [
-              "GENERAL_INTERNAL_ERROR",
-              "GENERAL_VALIDATION_ERROR",
-              "GENERAL_AUTHENTICATION_ERROR",
-              "GENERAL_AUTHORIZATION_ERROR",
-              "GENERAL_NOT_FOUND_ERROR",
-              "GENERAL_BAD_REQUEST_ERROR",
-              "GENERAL_TIME_OUT_ERROR",
-              "GENERAL_CONFLICT_ERROR",
-              "STREAM_CONFIGURATION_BAD_TEMPLATE",
-              "PROCESSOR_FAILED_RESERVATION_ERROR",
-              "PROCESSOR_FAILED_CONFIRMATION_ERROR",
-              "PROCESSOR_PROPERTIES_VALIDATION_ERROR",
-              "PROCESSOR_TRANSCODING_ERROR",
-              "PROCESSOR_TRANSCRIPTION_ERROR",
-              "PROCESSOR_SPEAKER_DIARIZATION_ERROR",
-              "PROCESSOR_GENERAL_ERROR",
-              "PROCESSOR_CORDONED_ERROR",
-              "PULSAR_ERROR"
-            ]
-          },
-          "nestedErrors": {
-            "type": "array",
-            "items": {
-              "type": "object"
-            }
-          }
-        }
       }
     },
     "securitySchemes": {
@@ -319,10 +325,5 @@
         "bearerFormat": "JWT"
       }
     }
-  },
-  "info": {
-    "title": "Vatis HTTP Gateway",
-    "description": "Vatis HTTP Gateway API",
-    "version": "1.0"
   }
 }

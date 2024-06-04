@@ -1,5 +1,10 @@
 {
   "openapi": "3.0.1",
+  "info": {
+    "title": "Vatis Stream Configuration Service",
+    "description": "Vatis Stream Configuration Service API",
+    "version": "1.0"
+  },
   "servers": [
     {
       "url": "https://stream-configuration-service.vatis.tech",
@@ -25,8 +30,18 @@
           }
         ],
         "responses": {
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
-            "description": "Misdeclaration of the stream configuration template",
+            "description": "Bad alias in stream configuration template",
             "content": {
               "*/*": {
                 "schema": {
@@ -99,6 +114,16 @@
           "required": true
         },
         "responses": {
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Error in stream configuration template",
             "content": {
@@ -172,11 +197,36 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "X-Vat-Meta-Template-Patch",
+            "in": "header",
+            "description": "Patch object or array of patch objects as described in RFC-6902",
+            "schema": {
+              "type": "string"
+            },
+            "example": [
+              {
+                "op": "replace",
+                "path": "/json/path",
+                "value": "some_value"
+              }
+            ]
           }
         ],
         "responses": {
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
-            "description": "Misdeclaration of the stream configuration template",
+            "description": "Bad alias in stream configuration template",
             "content": {
               "*/*": {
                 "schema": {
@@ -251,8 +301,18 @@
           }
         ],
         "responses": {
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
-            "description": "Misdeclaration of the stream configuration template",
+            "description": "Bad alias in stream configuration template",
             "content": {
               "*/*": {
                 "schema": {
@@ -326,27 +386,7 @@
             "type": "string"
           },
           "internalErrorName": {
-            "type": "string",
-            "enum": [
-              "GENERAL_INTERNAL_ERROR",
-              "GENERAL_VALIDATION_ERROR",
-              "GENERAL_AUTHENTICATION_ERROR",
-              "GENERAL_AUTHORIZATION_ERROR",
-              "GENERAL_NOT_FOUND_ERROR",
-              "GENERAL_BAD_REQUEST_ERROR",
-              "GENERAL_TIME_OUT_ERROR",
-              "GENERAL_CONFLICT_ERROR",
-              "STREAM_CONFIGURATION_BAD_TEMPLATE",
-              "PROCESSOR_FAILED_RESERVATION_ERROR",
-              "PROCESSOR_FAILED_CONFIRMATION_ERROR",
-              "PROCESSOR_PROPERTIES_VALIDATION_ERROR",
-              "PROCESSOR_TRANSCODING_ERROR",
-              "PROCESSOR_TRANSCRIPTION_ERROR",
-              "PROCESSOR_SPEAKER_DIARIZATION_ERROR",
-              "PROCESSOR_GENERAL_ERROR",
-              "PROCESSOR_CORDONED_ERROR",
-              "PULSAR_ERROR"
-            ]
+            "type": "string"
           },
           "nestedErrors": {
             "type": "array",
@@ -400,6 +440,12 @@
           },
           "markDestinationTopicAsSink": {
             "type": "boolean"
+          },
+          "patchAliases": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           }
         }
       },
@@ -422,6 +468,12 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CreateProcessorConfigurationTemplateDto"
+            }
+          },
+          "patchAliases": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
             }
           }
         }
@@ -470,6 +522,12 @@
           },
           "markDestinationTopicAsSink": {
             "type": "boolean"
+          },
+          "patchAliases": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           }
         }
       },
@@ -505,6 +563,38 @@
           },
           "outputSchema": {
             "type": "string"
+          },
+          "features": {
+            "$ref": "#/components/schemas/ProcessorFeaturesDto"
+          }
+        }
+      },
+      "ProcessorFeaturesDto": {
+        "type": "object",
+        "properties": {
+          "support": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "require": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "implement": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requireSupport": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -527,6 +617,12 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ProcessorConfigurationTemplateDto"
+            }
+          },
+          "patchAliases": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
             }
           }
         }
@@ -601,11 +697,11 @@
       "PageableObject": {
         "type": "object",
         "properties": {
-          "pageSize": {
+          "pageNumber": {
             "type": "integer",
             "format": "int32"
           },
-          "pageNumber": {
+          "pageSize": {
             "type": "integer",
             "format": "int32"
           },
@@ -692,10 +788,5 @@
         "bearerFormat": "JWT"
       }
     }
-  },
-  "info": {
-    "title": "Vatis Stream Configuration Service",
-    "description": "Vatis Stream Configuration Service API",
-    "version": "1.0"
   }
 }
