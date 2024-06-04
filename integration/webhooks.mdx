@@ -10,6 +10,7 @@ When an event is triggered, a `POST` request will be sent to all the registered 
 
 ## Webhook structure
 
+The webhook endpoint you can define will have the following structure:
 ```json
 {
   "id": "<string>",
@@ -22,18 +23,19 @@ When an event is triggered, a `POST` request will be sent to all the registered 
 }
 ```
 
-| Property      | Description                                                                                                            |
-|---------------|------------------------------------------------------------------------------------------------------------------------|
-| `id`          | The webhook endpoint identifier                                                                                        |
-| `url`         | The URL where the events will be sent. Accepted protocols: `HTTP`, `HTTPS`                                             |
-| `events`      | The list of event types the endpoint is listening to. Check the avaiable event types [here](#event-types)                                                                   |
+| Property      | Description                                                                                                             |
+|---------------|-------------------------------------------------------------------------------------------------------------------------|
+| `id`          | The webhook endpoint identifier                                                                                         |
+| `url`         | The URL where the events will be sent. Accepted protocols: `HTTP`, `HTTPS`                                              |
+| `events`      | The list of event types the endpoint is listening to. Check the avaiable event types [here](#event-types)               |
 | `enabled`     | Indicates if the webhook is enabled. You can disable an endpoint to temporarily stop receiving requests to the endpoint |
-| `description` | An optional description of the webhook                                                                                 |
+| `description` | An optional description of the webhook                                                                                  |
 
 <Warning>Local IP addresses and loopback interfaces are not allowed in the `url`</Warning>
 
 ## Event structure
 
+The webhook event you'll receive will have the following structure:
 ```json
 {
   "id": "<string>",
@@ -74,7 +76,7 @@ When an event is triggered, a `POST` request will be sent to all the registered 
 
 ## Source IPs
 
-To make sure your server is able to receive the events, you can whitelist the following IP addresses:
+To make sure your server is able to receive the events, you can **whitelist** the following IP addresses:
 - `18.194.212.83`
 - `3.120.9.38`
 - `3.68.55.77`
