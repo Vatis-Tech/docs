@@ -63,9 +63,11 @@ The webhook event you'll receive will have the following structure:
 | `stream.ready`                | The stream has just been cerated and is ready to receive data                                                                                    |
 | `stream.completed`            | The stream completed successfully                                                                                                                |
 | `stream.failed`               | The stream failed                                                                                                                                |
+| `stream.expired`              | The stream storage time expired and it was deleted                                                                                               |
 | `group.created`               | A new group has been created                                                                                                                     |
 | `group.completed`             | All the streams in the group completed successfully. This event will be emitted again if a new stream joins the group and completes              |
 | `group.failed`                | All the streams in the group finished and at least one stream failed. This event will be emitted again if a new stream joins the group and fails |
+| `group.expired`               | The group storage time expired and it was deleted. A group will expire only after all the streams in the group had expired                       |
 | `group.stream-joined`         | A new stream has joined the group                                                                                                                |
 | `stream.gateway.connected`    | A client connected to the stream gateway                                                                                                         |
 | `stream.gateway.disconnected` | The client disconnected from the stream gateway                                                                                                  |

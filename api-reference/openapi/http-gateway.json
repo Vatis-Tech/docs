@@ -53,19 +53,6 @@
             }
           },
           {
-            "name": "labels",
-            "in": "query",
-            "description": "Stream labels. A map of key-value pairs where all keys start with 'labels.'",
-            "explode": true,
-            "schema": {
-              "type": "object"
-            },
-            "example": {
-              "labels.key1": "value1",
-              "labels.key2": "value2"
-            }
-          },
-          {
             "name": "patches",
             "in": "query",
             "description": "Stream patches. A map of key-value pairs where all keys start with 'patches.'. By default, a replace patch will be applied. To add, prefix the value with '+' (e.g. patches.key=+value). To remove, set the value to '-' (e.g. patches.key=-). To escape the special characters + and -, use '\\' escape-character. ",
@@ -184,6 +171,26 @@
           },
           "properties": {
             "type": "object"
+          },
+          "egress": {
+            "$ref": "#/components/schemas/ProcessorEgressConfigurationDto"
+          }
+        }
+      },
+      "ProcessorEgressConfigurationDto": {
+        "type": "object",
+        "properties": {
+          "persist": {
+            "type": "boolean"
+          },
+          "sink": {
+            "type": "boolean"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -247,12 +254,6 @@
           },
           "stateDescription": {
             "type": "string"
-          },
-          "labels": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
           }
         }
       },

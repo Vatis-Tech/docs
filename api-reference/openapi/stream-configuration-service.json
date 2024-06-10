@@ -30,6 +30,16 @@
           }
         ],
         "responses": {
+          "4xx/5xx": {
+            "description": "Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Exception on client authorization",
             "content": {
@@ -62,16 +72,6 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "4xx/5xx": {
-            "description": "Error",
             "content": {
               "*/*": {
                 "schema": {
@@ -114,6 +114,16 @@
           "required": true
         },
         "responses": {
+          "4xx/5xx": {
+            "description": "Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Exception on client authorization",
             "content": {
@@ -146,16 +156,6 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "4xx/5xx": {
-            "description": "Error",
             "content": {
               "*/*": {
                 "schema": {
@@ -215,6 +215,16 @@
           }
         ],
         "responses": {
+          "4xx/5xx": {
+            "description": "Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Exception on client authorization",
             "content": {
@@ -247,16 +257,6 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "4xx/5xx": {
-            "description": "Error",
             "content": {
               "*/*": {
                 "schema": {
@@ -301,6 +301,16 @@
           }
         ],
         "responses": {
+          "4xx/5xx": {
+            "description": "Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Exception on client authorization",
             "content": {
@@ -333,16 +343,6 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "4xx/5xx": {
-            "description": "Error",
             "content": {
               "*/*": {
                 "schema": {
@@ -438,14 +438,14 @@
               "type": "string"
             }
           },
-          "markDestinationTopicAsSink": {
-            "type": "boolean"
-          },
           "patchAliases": {
             "type": "object",
             "additionalProperties": {
               "type": "string"
             }
+          },
+          "egress": {
+            "$ref": "#/components/schemas/ProcessorEgressConfigurationDto"
           }
         }
       },
@@ -473,6 +473,23 @@
           "patchAliases": {
             "type": "object",
             "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ProcessorEgressConfigurationDto": {
+        "type": "object",
+        "properties": {
+          "persist": {
+            "type": "boolean"
+          },
+          "sink": {
+            "type": "boolean"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
               "type": "string"
             }
           }
@@ -520,14 +537,14 @@
               "type": "string"
             }
           },
-          "markDestinationTopicAsSink": {
-            "type": "boolean"
-          },
           "patchAliases": {
             "type": "object",
             "additionalProperties": {
               "type": "string"
             }
+          },
+          "egress": {
+            "$ref": "#/components/schemas/ProcessorEgressConfigurationDto"
           }
         }
       },

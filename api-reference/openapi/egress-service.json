@@ -53,7 +53,7 @@
             "content": {
               "application/x-ndjson": {
                 "schema": {
-                  "$ref": "#/components/schemas/StreamSinkDataDto"
+                  "$ref": "#/components/schemas/StreamSinkMessageDto"
                 }
               },
               "application/octet-stream": {
@@ -108,7 +108,7 @@
           }
         }
       },
-      "StreamSinkDataDto": {
+      "StreamSinkMessageDto": {
         "type": "object",
         "properties": {
           "streamId": {
@@ -119,10 +119,13 @@
             "type": "string",
             "format": "uuid"
           },
-          "sinkDataLabelValue": {
-            "type": "string"
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
-          "sourceTopicName": {
+          "sinkTopicName": {
             "type": "string"
           },
           "publishTimestamp": {
@@ -137,6 +140,12 @@
           },
           "payload": {
             "type": "object"
+          },
+          "headers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           }
         }
       }
