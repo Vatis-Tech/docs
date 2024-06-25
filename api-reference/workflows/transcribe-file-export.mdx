@@ -1,0 +1,49 @@
+---
+title: 'Transcribe file with export'
+description: 'Transcribe a file and export the complete result using the Vatis Streams Engine'
+---
+
+import TranscribeFilePython from '/snippets/api-reference/transcribe-file-export-python.mdx'
+
+Features:
+* automatic transcoding
+* language auto-detection
+* dynamic language code switch
+
+
+<Tabs>
+    <Tab title="Python">
+        <Steps>
+            <Step title="Open terminal">
+                Open a terminal window and export the following environment variables
+                ```bash
+                export CLIENT_ID="your-client-id"
+                export CLIENT_SECRET="your-client-secret"
+                export CONFIGURATION_ID=65f169a51351291e67a7a7fa
+                export FILE_PATH="path/to/your/file"
+                ```
+
+                <Info>More details about the `Configuration Id` can be found on the [stream configuration templates page](/api-reference/stream-configuration-templates)</Info>
+            </Step>
+            <Step title='Install requirements'>
+                ```bash
+                pip install requests
+                ```
+            </Step>
+            <Step title="Write the script">
+                Write the following script to a file
+                <Accordion title="Code snippet" icon="code">
+                    <CodeGroup>
+                        <TranscribeFilePython/>
+                    </CodeGroup>
+                </Accordion>
+            </Step>
+            <Step title="Start the transcription">
+                Execute the python script with the file path as an argument
+                ```bash
+                python transcribe.py "$FILE_PATH"
+                ```
+            </Step>
+        </Steps>
+    </Tab>
+</Tabs>
