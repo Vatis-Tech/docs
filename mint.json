@@ -78,6 +78,14 @@
       ]
     },
     {
+      "group": "Streams",
+      "pages": [
+        "api-reference/streams/stream-resource-impl/find-all",
+        "api-reference/streams/stream-resource-impl/find-by-id",
+        "api-reference/streams/stream-resource-impl/cancel"
+      ]
+    },
+    {
       "group": "Webhooks",
       "pages": [
         "api-reference/webhooks/webhook-endpoint-resource-impl/find-all",
