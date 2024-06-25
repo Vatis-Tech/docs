@@ -85,7 +85,7 @@ To make sure your server is able to receive the events, you can **whitelist** th
 
 ## Redelivery
 
-If the server does not respond with a `2xx` status code, the event redelivery will be retried for the next few days with an exponential backoff strategy.
+If the server does not respond with a `2xx` status code, the event redelivery will be retried for the next three hours with an exponential backoff strategy.
 
 ## Development
 

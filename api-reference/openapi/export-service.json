@@ -11,14 +11,245 @@
       "description": "Default server"
     }
   ],
-  "paths": {},
+  "paths": {
+    "/export-service/api/v1/export/{exportFormat}": {
+      "get": {
+        "summary": "Export",
+        "description": "Exports results of one or more streams in various formats",
+        "operationId": "export",
+        "parameters": [
+          {
+            "name": "exportFormat",
+            "in": "path",
+            "description": "Export format",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "JSON",
+                "TEXT"
+              ]
+            }
+          },
+          {
+            "name": "streams",
+            "in": "query",
+            "description": "List of stream ids for watching",
+            "schema": {
+              "type": "array"
+            }
+          },
+          {
+            "name": "streamsInclusion",
+            "in": "query",
+            "description": "Inclusion mode for the streams. When using 'EXCLUDE' the 'group' and 'count' must be specified",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "INCLUDE",
+                "EXCLUDE"
+              ]
+            }
+          },
+          {
+            "name": "group",
+            "in": "query",
+            "description": "Group id of the streams",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of streams to search. Used when the included streams are not specified",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "description": "List of tags to match",
+            "schema": {
+              "type": "array",
+              "default": "main"
+            }
+          },
+          {
+            "name": "matchTags",
+            "in": "query",
+            "description": "Match mode for the tags. 'ALL' matches all tags, 'ANY' matches any tag.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ALL",
+                "ANY"
+              ]
+            }
+          },
+          {
+            "name": "timeout",
+            "in": "query",
+            "description": "Timeout for the stream creation in milliseconds. If not specified, the maximum timeout allowed by the server will be used.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "omitPayload",
+            "in": "query",
+            "description": "Exclude the payload from the result. If true, the payload value will be set to 'null'. This is compatible only with 'EVENTS' format.",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Export response",
+            "content": {
+              "application/json - AudioIntelligenceResponseDto": {
+                "schema": {
+                  "$ref": "#/components/schemas/AudioIntelligenceResponseDto"
+                }
+              },
+              "application/json - DiarizationResponseDto": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiarizationResponseDto"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ]
+      }
+    }
+  },
   "components": {
     "schemas": {
       "ErrorResponse": {
+        "type": "object",
         "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "internalErrorName": {
+            "type": "string"
+          },
           "nestedErrors": {
+            "type": "array",
             "items": {
               "type": "object"
+            }
+          }
+        }
+      },
+      "AudioIntelligenceResponseDto": {
+        "type": "object",
+        "properties": {
+          "transcription": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TranscriptionWordDto"
+            }
+          }
+        }
+      },
+      "TranscriptionWordDto": {
+        "type": "object",
+        "properties": {
+          "word": {
+            "type": "string"
+          },
+          "start": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "end": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "confidence": {
+            "type": "number",
+            "format": "float"
+          },
+          "language": {
+            "type": "string"
+          },
+          "speakers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "speakersOverlap": {
+            "type": "boolean"
+          },
+          "channelNumber": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "DiarizationDto": {
+        "type": "object",
+        "properties": {
+          "speakerIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "overlap": {
+            "type": "boolean"
+          },
+          "start": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "end": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "DiarizationResponseDto": {
+        "type": "object",
+        "properties": {
+          "diarization": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiarizationDto"
             }
           }
         }

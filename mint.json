@@ -80,6 +80,12 @@
         "api-reference/webhooks/webhook-endpoint-resource-impl/delete",
         "api-reference/webhooks/webhook-endpoint-resource-impl/get-available-event-type"
       ]
+    },
+    {
+      "group": "Export",
+      "pages": [
+        "api-reference/export/exports-a-stream-of-data-in-various-formats"
+      ]
     }
   ],
   "footerSocials": {
