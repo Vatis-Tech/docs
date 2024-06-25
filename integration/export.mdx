@@ -1,0 +1,28 @@
+---
+title: 'Export'
+description: 'Export results from one or multiple streams in various formats'
+---
+
+## Overview
+The Vatis Streams API is designed to egress the results from one or multiple streams in real-time as JSON events or as bytes.<br /><br />
+This means the client will receive the results in the fastest way possible, but it also means that the client needs to reconstruct the final results based on the received events.<br />
+In some scenarios, the client will not need the data in real-time, but rather in a more structured format.<br /><br />
+For these cases, the Vatis Streams API provides an **export functionality** that handles this layer of complexity
+and allows the client to export the results from one or multiple streams in various formats.
+
+## Formats
+Currently, the single format supported is `JSON`. The exact structure of the JSON response is determined by the aggregated event type from the stream(s).
+Please refer to the [export OpenAPI specification](https://export-service.vatis.tech/swagger-ui/index.html) for more details.
+
+## When to export?
+Although the export functionality is available at any time after the stream was created, it is recommended to export the results only after the stream has finished.
+
+This is because the export functionality will return the results in a single response, so the blocking connection may time out if it's long-running stream.
+
+To find out when a stream is completed, either us the [webhook integration](/integration/webhooks) or stream status polling.
+
+<Note>Perform the export before the stream expires, as describe in [data retention](/infrastructure/data-retention)</Note>
+
+## Considerations
+- only non-raw results can be used as part of the export functionality
+- the export functionality works only with [persistent streams](/infrastructure/data-retention)

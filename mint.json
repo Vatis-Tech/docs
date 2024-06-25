@@ -45,9 +45,16 @@
       ]
     },
     {
+      "group": "Infrastructure",
+      "pages": [
+        "infrastructure/data-retention"
+      ]
+    },
+    {
       "group": "Integration",
       "pages": [
-        "integration/webhooks"
+        "integration/webhooks",
+        "integration/export"
       ]
     },
     {

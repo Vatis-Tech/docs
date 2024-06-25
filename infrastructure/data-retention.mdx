@@ -1,0 +1,21 @@
+---
+title: 'Data retention'
+description: 'Data retention policy of the Vatis Streams API'
+---
+
+## Overview
+
+The streams created using the Vatis Streams API falls under one of the following categories:
+- **ephemeral**: Streams that are created with a retention period of 0 seconds. These stream results are not persisted and are deleted as soon as the last subscriber disconnects.
+- **persistent**: Streams that retain the result for a limited period of time.
+
+## Ephemeral streams
+This is the default behavior of a stream. It's ideal for real-time usage and mitigates any data privacy concerns by removing all the data in the stream as soon as the last subscriber disconnects, or in up 60 seconds if the data is not consumed.
+
+## Persistent streams
+The persistent streams can be used for non-real-time use cases (e.g. file transcription) when the results must be exported all at once.
+For this king of stream, the data is persisted for a few hours before being deleted.
+
+To configure a stream as persistent, use the `persist=true` flag at creation time. The API also provides the means to selectively persist only some of the results.
+
+Please refer to the [OpenAPI specification](https://http-gateway.vatis.tech/swagger-ui/index.html) for more details.
