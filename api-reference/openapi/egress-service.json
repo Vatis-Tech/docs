@@ -18,32 +18,112 @@
         "operationId": "live-egress",
         "parameters": [
           {
-            "name": "streamIds",
+            "name": "streams",
             "in": "query",
             "description": "List of stream ids for watching",
-            "required": true,
             "schema": {
               "type": "array"
             }
           },
           {
-            "name": "sinks",
+            "name": "streamsInclusion",
             "in": "query",
-            "description": "Sinks selector",
+            "description": "Inclusion mode for the streams. When using 'EXCLUDE' the 'group' and 'count' must be specified",
             "schema": {
-              "type": "array"
+              "type": "string",
+              "enum": [
+                "INCLUDE",
+                "EXCLUDE"
+              ]
+            }
+          },
+          {
+            "name": "group",
+            "in": "query",
+            "description": "Group id of the streams",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of streams to search. Used when the included streams are not specified",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "description": "List of tags to match",
+            "schema": {
+              "type": "array",
+              "default": "main"
+            }
+          },
+          {
+            "name": "matchTags",
+            "in": "query",
+            "description": "Match mode for the tags. 'ALL' matches all tags, 'ANY' matches any tag.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ALL",
+                "ANY"
+              ]
             }
           },
           {
             "name": "format",
             "in": "query",
-            "description": "Output format of the events",
+            "description": "Output format of the events. Only raw output formats are supported with 'RAW' output format.",
             "schema": {
               "type": "string",
               "enum": [
                 "EVENTS",
                 "RAW"
               ]
+            }
+          },
+          {
+            "name": "acceptFrameType",
+            "in": "query",
+            "description": "Accept frame type for the stream. 'partial-final' accepts partial and final frames, 'final' accepts only final frames.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "partial-final",
+                "final"
+              ],
+              "default": "partial-final"
+            }
+          },
+          {
+            "name": "timeout",
+            "in": "query",
+            "description": "Timeout for the stream creation in milliseconds. If not specified, the maximum timeout allowed by the server will be used.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "omitPayload",
+            "in": "query",
+            "description": "Exclude the payload from the result. If true, the payload value will be set to 'null'. This is compatible only with 'EVENTS' format.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "excludeNoPayload",
+            "in": "query",
+            "description": "Filter out messages without payload.",
+            "schema": {
+              "type": "boolean"
             }
           }
         ],
@@ -127,6 +207,13 @@
           },
           "sinkTopicName": {
             "type": "string"
+          },
+          "processorId": {
+            "type": "string"
+          },
+          "sequenceId": {
+            "type": "integer",
+            "format": "int64"
           },
           "publishTimestamp": {
             "type": "string",

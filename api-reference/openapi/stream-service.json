@@ -11,14 +11,338 @@
       "description": "Default server"
     }
   ],
-  "paths": {},
+  "paths": {
+    "/stream-service/api/v1/streams/{streamId}/cancel": {
+      "put": {
+        "tags": [
+          "stream-resource-impl"
+        ],
+        "description": "Cancels a stream. This operation can be performed by a gateway, on behalf of the user",
+        "operationId": "cancel",
+        "parameters": [
+          {
+            "name": "streamId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Failed to create the stream",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Requested feature is not implemented",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "One or more processors are not available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Stream usage limit reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Mis-declaration of the stream configuration template",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Default error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Stream canceled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ]
+      }
+    }
+  },
   "components": {
     "schemas": {
       "ErrorResponse": {
+        "type": "object",
         "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "internalErrorName": {
+            "type": "string"
+          },
           "nestedErrors": {
+            "type": "array",
             "items": {
               "type": "object"
+            }
+          }
+        }
+      },
+      "ProcessorConfigurationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/SubscriptionDto"
+          },
+          "destination": {
+            "$ref": "#/components/schemas/TopicDto"
+          },
+          "clusterDomainName": {
+            "type": "string"
+          },
+          "podsDiscoveryClusterDomainName": {
+            "type": "string"
+          },
+          "propertiesSchema": {
+            "type": "string"
+          },
+          "properties": {
+            "type": "object"
+          },
+          "egress": {
+            "$ref": "#/components/schemas/ProcessorEgressConfigurationDto"
+          }
+        }
+      },
+      "ProcessorEgressConfigurationDto": {
+        "type": "object",
+        "properties": {
+          "persist": {
+            "type": "boolean"
+          },
+          "sink": {
+            "type": "boolean"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "StreamConfigurationDto": {
+        "type": "object",
+        "properties": {
+          "streamConfigurationTemplateId": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/TopicDto"
+          },
+          "dataSinks": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/TopicDto"
+            }
+          },
+          "processors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProcessorConfigurationDto"
+            }
+          }
+        }
+      },
+      "StreamDto": {
+        "type": "object",
+        "properties": {
+          "streamId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "groupId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "configuration": {
+            "$ref": "#/components/schemas/StreamConfigurationDto"
+          },
+          "createdTimestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "creatorId": {
+            "type": "string"
+          },
+          "groupCreatorId": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "COMPLETED",
+              "FAILED",
+              "EXPIRED"
+            ]
+          },
+          "stateDescription": {
+            "type": "string"
+          }
+        }
+      },
+      "SubscriptionDto": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "string"
+          },
+          "topic": {
+            "type": "string"
+          },
+          "messageSchema": {
+            "type": "string"
+          },
+          "connectionOptions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "headers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "TopicDto": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string"
+          },
+          "messageSchema": {
+            "type": "string"
+          },
+          "connectionOptions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "headers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "messageHeaders": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "subscriptions": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SubscriptionDto"
             }
           }
         }

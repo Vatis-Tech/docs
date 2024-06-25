@@ -79,6 +79,35 @@
                 "value": "some_value"
               }
             ]
+          },
+          {
+            "name": "persist",
+            "in": "query",
+            "description": "Persist the sinks of the stream matched by the tags",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "persistTags",
+            "in": "query",
+            "description": "Persist tags to match the sinks of the stream",
+            "schema": {
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          {
+            "name": "matchPersistTags",
+            "in": "query",
+            "description": "Tags matching strategy. 'ALL'/'ANY' of specified tags must be present on the sink to be marked as persistent",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ALL",
+                "ANY"
+              ]
+            }
           }
         ],
         "requestBody": {
@@ -249,7 +278,8 @@
             "enum": [
               "READY",
               "COMPLETED",
-              "FAILED"
+              "FAILED",
+              "EXPIRED"
             ]
           },
           "stateDescription": {

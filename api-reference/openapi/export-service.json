@@ -1,0 +1,35 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Vatis Export Service",
+    "description": "Vatis Export Service API",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://export-service.vatis.tech",
+      "description": "Default server"
+    }
+  ],
+  "paths": {},
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "properties": {
+          "nestedErrors": {
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
