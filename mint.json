@@ -68,7 +68,7 @@
     {
       "group": "Workflows",
       "pages": [
-        "api-reference/workflows/transcribe-file"
+        "api-reference/workflows/transcribe-file-real-time"
       ]
     },
     {
