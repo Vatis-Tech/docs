@@ -117,11 +117,6 @@
                   "$ref": "#/components/schemas/AudioIntelligenceResponseDto"
                 }
               },
-              "application/json - DiarizationResponseDto": {
-                "schema": {
-                  "$ref": "#/components/schemas/DiarizationResponseDto"
-                }
-              },
               "text/plain": {
                 "schema": {
                   "type": "string"
@@ -178,6 +173,23 @@
         "type": "object",
         "properties": {
           "transcription": {
+            "$ref": "#/components/schemas/TranscriptionDto"
+          },
+          "utterances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UtteranceDto"
+            }
+          }
+        }
+      },
+      "TranscriptionDto": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "words": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TranscriptionWordDto"
@@ -221,7 +233,7 @@
           }
         }
       },
-      "DiarizationDto": {
+      "UtteranceDto": {
         "type": "object",
         "properties": {
           "speakerIds": {
@@ -240,16 +252,14 @@
           "end": {
             "type": "integer",
             "format": "int64"
-          }
-        }
-      },
-      "DiarizationResponseDto": {
-        "type": "object",
-        "properties": {
-          "diarization": {
+          },
+          "text": {
+            "type": "string"
+          },
+          "words": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DiarizationDto"
+              "$ref": "#/components/schemas/TranscriptionWordDto"
             }
           }
         }

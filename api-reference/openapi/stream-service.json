@@ -156,7 +156,7 @@
           "stream-resource-impl"
         ],
         "summary": "Find all",
-        "description": "Find all streams the current user has access to in a paginated manner",
+        "description": "Retrieves a stream by id",
         "operationId": "findAll",
         "parameters": [
           {

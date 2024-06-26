@@ -55,14 +55,17 @@
           {
             "name": "patches",
             "in": "query",
-            "description": "Stream patches. A map of key-value pairs where all keys start with 'patches.'. By default, a replace patch will be applied. To add, prefix the value with '+' (e.g. patches.key=+value). To remove, set the value to '-' (e.g. patches.key=-). To escape the special characters + and -, use '\\' escape-character. ",
+            "description": "Stream patches. A map of key-value pairs where all unknown query parameters will be interpreted as patches.\n\nPrefix keys with 'patches.' to explicitly mark the query parameter as patch (e.g. when it coincides with another parameter name).\n\nBy default, a replace patch will be applied.\n\nTo add, prefix the value with '+' (e.g. patches.key=+value).\n\nTo remove, set the value to '-' (e.g. patches.key=-).\n\nTo escape the special characters + and -, use '\\\\' (backslash) escape-character (e.g. 'patches.key=\\\\+value' will replace the key 'key' with value '+value').\n\nTo symbolize a path, use '.' as a separator (e.g. 'patches.key.with.path' will be parsed to '/key/with/path').\n\n",
             "explode": true,
             "schema": {
               "type": "object"
             },
             "example": {
-              "patches.key1": "value1",
-              "patches.key2": "value2"
+              "patches.key1": "value-replace-explicit-patch",
+              "key2": "value-replace-implicit-patch",
+              "patches.key3": "+add-value",
+              "patches.key-remove": "-",
+              "patches.key.with.path": "value"
             }
           },
           {
