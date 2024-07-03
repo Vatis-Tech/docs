@@ -1,0 +1,50 @@
+---
+title: 'Transcribe link with export'
+description: 'Transcribe a file by passing a public URL to that file and export the complete result'
+---
+
+import TranscribeFilePython from '/snippets/api-reference/transcribe-link-export-python.mdx'
+
+Features:
+* automatic transcoding
+* language auto-detection
+* dynamic language code switch
+* send a public link instead of a file
+
+
+<Tabs>
+    <Tab title="Python">
+        <Steps>
+            <Step title="Open terminal">
+                Open a terminal window and export the following environment variables
+                ```bash
+                export CLIENT_ID="your-client-id"
+                export CLIENT_SECRET="your-client-secret"
+                export CONFIGURATION_ID=668115d123bca7e3509723d4
+                export FILE_LINK="https://your/public/link"
+                ```
+
+                <Info>More details about the `Configuration Id` can be found on the [stream configuration templates page](/api-reference/stream-configuration-templates)</Info>
+            </Step>
+            <Step title='Install requirements'>
+                ```bash
+                pip install requests
+                ```
+            </Step>
+            <Step title="Write the script">
+                Write the following script to a file
+                <Accordion title="Code snippet" icon="code">
+                    <CodeGroup>
+                        <TranscribeFilePython/>
+                    </CodeGroup>
+                </Accordion>
+            </Step>
+            <Step title="Start the transcription">
+                Execute the python script with the file link as an argument
+                ```bash
+                python transcribe.py "$FILE_LINK"
+                ```
+            </Step>
+        </Steps>
+    </Tab>
+</Tabs>
