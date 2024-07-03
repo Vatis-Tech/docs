@@ -29,4 +29,15 @@ description: 'Stream configuration template ids'
         Input data: `wav` `mp3` `mp4` `m4a` `webm` etc.<br/>
         Output data: `partial and final transcription and diarization packets`<br/>
     </Accordion>
+    <Accordion title="File-optimized transcribe">
+        Stream Configuration Template Id: `668115d123bca7e3509723d4`<br/>
+        Input data: `wav` `mp3` `mp4` `m4a` `webm` etc.<br/>
+        Output data: `final transcription packets`<br/>
+
+        | Query parameter | Default value | Description |
+        | --- | --- | --- |
+        | `language` | None | The language as country ISO code to transcribe the audio to. When not specified, it is automatically detected |
+        | `noSpeechThreshold` | 0.5 | The threshold value to consider a segment as a speech segment. The value ranges from 0 to 1 |
+
+    </Accordion>
 </AccordionGroup>
