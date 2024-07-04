@@ -34,7 +34,7 @@ def transcribe(file_path: str, client_id: str, client_secret: str, stream_config
         upload_response = requests.post(upload_url, headers=upload_headers, data=payload)
 
     if not upload_response.ok:
-        print(f'Error on file upload: {upload_response.json()}')
+        print(f'Error on file upload: {upload_response.status_code} - {upload_response.json()}')
         return
 
     print(f'File uploaded successfully: {stream_id}')
@@ -56,6 +56,9 @@ def transcribe(file_path: str, client_id: str, client_secret: str, stream_config
             return
 
         if status_response.json()['state'] == 'COMPLETED':
+            break
+        elif status_response.json()['state'] == 'FAILED':
+            print(f'Error on stream: {status_response.json()}')
             break
         else:
             sleep(3)

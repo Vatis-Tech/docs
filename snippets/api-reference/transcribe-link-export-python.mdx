@@ -49,10 +49,13 @@ def transcribe(file_link: str, client_id: str, client_secret: str, stream_config
         status_response = requests.request('GET', status_url, headers=status_headers)
 
         if not status_response.ok:
-            print(f'Error on stream status: {status_response.json()}')
+            print(f'Error on stream status: {upload_response.status_code} - {status_response.json()}')
             return
 
         if status_response.json()['state'] == 'COMPLETED':
+            break
+        elif status_response.json()['state'] == 'FAILED':
+            print(f'Error on stream: {status_response.json()}')
             break
         else:
             sleep(3)
