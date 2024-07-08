@@ -14,7 +14,8 @@
   "paths": {
     "/http-gateway/api/v1/upload": {
       "post": {
-        "summary": "Uploads a stream of bytes",
+        "summary": "Upload",
+        "description": "Upload a stream of bytes to a new stream",
         "operationId": "upload",
         "parameters": [
           {

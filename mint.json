@@ -80,6 +80,12 @@
       ]
     },
     {
+      "group": "Gateway",
+      "pages": [
+        "api-reference/gateway/upload"
+      ]
+    },
+    {
       "group": "Streams",
       "pages": [
         "api-reference/streams/stream-resource-impl/find-all",
