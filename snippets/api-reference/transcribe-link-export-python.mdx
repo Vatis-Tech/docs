@@ -19,7 +19,8 @@ def transcribe(file_link: str, client_id: str, client_secret: str, stream_config
     # Upload the file
     upload_url: str = ('https://http-gateway.vatis.tech/http-gateway/api/v1/upload?'
                        f'streamConfigurationTemplateId={stream_configuration_template_id}&'
-                       f'id={stream_id}')
+                       f'id={stream_id}&'
+                        'persist=true')
 
     upload_headers: dict = {
         'Accept': 'application/json',

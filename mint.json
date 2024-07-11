@@ -74,6 +74,12 @@
       ]
     },
     {
+      "group": "Auxiliaries",
+      "pages": [
+        "api-reference/auxiliaries/transcription-languages"
+      ]
+    },
+    {
       "group": "Authentication",
       "pages": [
         "api-reference/commons/authenticate"
