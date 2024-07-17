@@ -45,6 +45,13 @@
       ]
     },
     {
+      "group": "Diagrams",
+      "pages": [
+        "diagrams/system-overview",
+        "diagrams/export-results"
+      ]
+    },
+    {
       "group": "Infrastructure",
       "pages": [
         "infrastructure/data-retention"
