@@ -164,30 +164,6 @@
   },
   "components": {
     "schemas": {
-      "ErrorResponse": {
-        "type": "object",
-        "properties": {
-          "statusCode": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          },
-          "internalErrorName": {
-            "type": "string"
-          },
-          "nestedErrors": {
-            "type": "array",
-            "items": {
-              "type": "object"
-            }
-          }
-        }
-      },
       "StreamSinkMessageDto": {
         "type": "object",
         "properties": {
@@ -232,6 +208,30 @@
             "type": "object",
             "additionalProperties": {
               "type": "string"
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "internalErrorName": {
+            "type": "string"
+          },
+          "nestedErrors": {
+            "type": "array",
+            "items": {
+              "type": "object"
             }
           }
         }

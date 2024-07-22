@@ -32,6 +32,26 @@
           }
         ],
         "responses": {
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create the stream",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "501": {
             "description": "Requested feature is not implemented",
             "content": {
@@ -62,8 +82,8 @@
               }
             }
           },
-          "401": {
-            "description": "Authentication required",
+          "400": {
+            "description": "Mis-declaration of the stream configuration template",
             "content": {
               "application/json": {
                 "schema": {
@@ -74,16 +94,6 @@
           },
           "404": {
             "description": "Resource not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Mis-declaration of the stream configuration template",
             "content": {
               "application/json": {
                 "schema": {
@@ -122,16 +132,6 @@
               }
             }
           },
-          "500": {
-            "description": "Failed to create the stream",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Stream canceled successfully",
             "content": {
@@ -156,7 +156,7 @@
           "stream-resource-impl"
         ],
         "summary": "Find all",
-        "description": "Retrieves a stream by id",
+        "description": "Find all streams the current user has access to in a paginated manner",
         "operationId": "findAll",
         "parameters": [
           {
@@ -196,6 +196,26 @@
           }
         ],
         "responses": {
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create the stream",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "501": {
             "description": "Requested feature is not implemented",
             "content": {
@@ -226,8 +246,8 @@
               }
             }
           },
-          "401": {
-            "description": "Authentication required",
+          "400": {
+            "description": "Mis-declaration of the stream configuration template",
             "content": {
               "application/json": {
                 "schema": {
@@ -238,16 +258,6 @@
           },
           "404": {
             "description": "Resource not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Mis-declaration of the stream configuration template",
             "content": {
               "application/json": {
                 "schema": {
@@ -278,16 +288,6 @@
           },
           "default": {
             "description": "Default error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Failed to create the stream",
             "content": {
               "application/json": {
                 "schema": {
@@ -334,6 +334,26 @@
           }
         ],
         "responses": {
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create the stream",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "501": {
             "description": "Requested feature is not implemented",
             "content": {
@@ -364,8 +384,8 @@
               }
             }
           },
-          "401": {
-            "description": "Authentication required",
+          "400": {
+            "description": "Mis-declaration of the stream configuration template",
             "content": {
               "application/json": {
                 "schema": {
@@ -376,16 +396,6 @@
           },
           "404": {
             "description": "Resource not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Mis-declaration of the stream configuration template",
             "content": {
               "application/json": {
                 "schema": {
@@ -424,6 +434,55 @@
               }
             }
           },
+          "200": {
+            "description": "Stream retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ]
+      }
+    },
+    "/stream-service/api/v1/streams/{streamId}/components": {
+      "get": {
+        "tags": [
+          "stream-resource-impl"
+        ],
+        "summary": "Get components",
+        "description": "Get the components of a stream",
+        "operationId": "getComponents",
+        "parameters": [
+          {
+            "name": "streamId",
+            "in": "path",
+            "description": "Stream id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Failed to create the stream",
             "content": {
@@ -434,12 +493,92 @@
               }
             }
           },
-          "200": {
-            "description": "Stream retrieved successfully",
+          "501": {
+            "description": "Requested feature is not implemented",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StreamDto"
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "One or more processors are not available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Stream usage limit reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Mis-declaration of the stream configuration template",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Default error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Stream components retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamComponentsDto"
                 }
               }
             }
@@ -733,6 +872,86 @@
           },
           "empty": {
             "type": "boolean"
+          }
+        }
+      },
+      "GatewayComponentDto": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "CONNECTED",
+              "DISCONNECTED",
+              "CLOSED"
+            ]
+          },
+          "stateChangedTimestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ProcessorComponentDto": {
+        "type": "object",
+        "properties": {
+          "processorId": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "RUNNING",
+              "COMPLETED",
+              "WAITING",
+              "ERROR",
+              "CLOSED"
+            ]
+          },
+          "stateChangedTimestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "stateDescription": {
+            "type": "string"
+          }
+        }
+      },
+      "StreamComponentsDto": {
+        "type": "object",
+        "properties": {
+          "streamId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "groupId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "COMPLETED",
+              "FAILED",
+              "EXPIRED"
+            ]
+          },
+          "stateDescription": {
+            "type": "string"
+          },
+          "stateChangedTimestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "gateway": {
+            "$ref": "#/components/schemas/GatewayComponentDto"
+          },
+          "processors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProcessorComponentDto"
+            }
           }
         }
       }

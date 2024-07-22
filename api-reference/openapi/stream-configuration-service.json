@@ -30,26 +30,6 @@
           }
         ],
         "responses": {
-          "401": {
-            "description": "Exception on client authorization",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "4xx/5xx": {
-            "description": "Error",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "400": {
             "description": "Bad alias in stream configuration template",
             "content": {
@@ -72,6 +52,26 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "4xx/5xx": {
+            "description": "Error",
             "content": {
               "*/*": {
                 "schema": {
@@ -114,26 +114,6 @@
           "required": true
         },
         "responses": {
-          "401": {
-            "description": "Exception on client authorization",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "4xx/5xx": {
-            "description": "Error",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "400": {
             "description": "Error in stream configuration template",
             "content": {
@@ -156,6 +136,26 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "4xx/5xx": {
+            "description": "Error",
             "content": {
               "*/*": {
                 "schema": {
@@ -215,26 +215,6 @@
           }
         ],
         "responses": {
-          "401": {
-            "description": "Exception on client authorization",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "4xx/5xx": {
-            "description": "Error",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "400": {
             "description": "Bad alias in stream configuration template",
             "content": {
@@ -257,6 +237,26 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "4xx/5xx": {
+            "description": "Error",
             "content": {
               "*/*": {
                 "schema": {
@@ -301,26 +301,6 @@
           }
         ],
         "responses": {
-          "401": {
-            "description": "Exception on client authorization",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "4xx/5xx": {
-            "description": "Error",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "400": {
             "description": "Bad alias in stream configuration template",
             "content": {
@@ -343,6 +323,26 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "4xx/5xx": {
+            "description": "Error",
             "content": {
               "*/*": {
                 "schema": {
@@ -676,12 +676,12 @@
             "type": "integer",
             "format": "int64"
           },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -722,31 +722,31 @@
             "type": "integer",
             "format": "int32"
           },
+          "paged": {
+            "type": "boolean"
+          },
+          "unpaged": {
+            "type": "boolean"
+          },
           "offset": {
             "type": "integer",
             "format": "int64"
           },
           "sort": {
             "$ref": "#/components/schemas/SortObject"
-          },
-          "paged": {
-            "type": "boolean"
-          },
-          "unpaged": {
-            "type": "boolean"
           }
         }
       },
       "SortObject": {
         "type": "object",
         "properties": {
+          "unsorted": {
+            "type": "boolean"
+          },
           "sorted": {
             "type": "boolean"
           },
           "empty": {
-            "type": "boolean"
-          },
-          "unsorted": {
             "type": "boolean"
           }
         }
@@ -762,12 +762,12 @@
             "type": "integer",
             "format": "int64"
           },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",

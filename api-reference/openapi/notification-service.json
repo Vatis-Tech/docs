@@ -21,26 +21,6 @@
         "description": "Finds all webhook endpoints of the current user.",
         "operationId": "findAll",
         "responses": {
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "400": {
             "description": "Validation exception",
             "content": {
@@ -51,8 +31,18 @@
               }
             }
           },
-          "403": {
-            "description": "Full authentication required",
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -73,6 +63,16 @@
           },
           "default": {
             "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Full authentication required",
             "content": {
               "application/json": {
                 "schema": {
@@ -119,26 +119,6 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "400": {
             "description": "Validation exception",
             "content": {
@@ -149,8 +129,18 @@
               }
             }
           },
-          "403": {
-            "description": "The current user is not allowed to perform this action.",
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -171,6 +161,16 @@
           },
           "default": {
             "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The current user is not allowed to perform this action.",
             "content": {
               "application/json": {
                 "schema": {
@@ -229,26 +229,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "400": {
             "description": "Validation exception",
             "content": {
@@ -259,8 +239,18 @@
               }
             }
           },
-          "403": {
-            "description": "The current user is not allowed to perform this action or the endpoint does not exist.",
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -281,6 +271,16 @@
           },
           "default": {
             "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The current user is not allowed to perform this action or the endpoint does not exist.",
             "content": {
               "application/json": {
                 "schema": {
@@ -327,26 +327,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "The webhook endpoint could not be found by the current user subject and endpoint id.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "400": {
             "description": "Validation exception",
             "content": {
@@ -357,8 +337,18 @@
               }
             }
           },
-          "403": {
-            "description": "Full authentication required",
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The webhook endpoint could not be found by the current user subject and endpoint id.",
             "content": {
               "application/json": {
                 "schema": {
@@ -379,6 +369,16 @@
           },
           "default": {
             "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Full authentication required",
             "content": {
               "application/json": {
                 "schema": {
@@ -423,26 +423,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "400": {
             "description": "Validation exception",
             "content": {
@@ -453,8 +433,18 @@
               }
             }
           },
-          "403": {
-            "description": "The current user is not allowed to perform this action or the endpoint does not exist.",
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -475,6 +465,16 @@
           },
           "default": {
             "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The current user is not allowed to perform this action or the endpoint does not exist.",
             "content": {
               "application/json": {
                 "schema": {
@@ -503,26 +503,6 @@
         "description": "Finds all supported events for webhook endpoints.",
         "operationId": "getSupportedEvents",
         "responses": {
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "400": {
             "description": "Validation exception",
             "content": {
@@ -533,8 +513,18 @@
               }
             }
           },
-          "403": {
-            "description": "Full authentication required",
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -555,6 +545,16 @@
           },
           "default": {
             "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Full authentication required",
             "content": {
               "application/json": {
                 "schema": {
