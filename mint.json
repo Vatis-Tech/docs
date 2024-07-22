@@ -103,7 +103,8 @@
       "pages": [
         "api-reference/streams/stream-resource-impl/find-all",
         "api-reference/streams/stream-resource-impl/find-by-id",
-        "api-reference/streams/stream-resource-impl/cancel"
+        "api-reference/streams/stream-resource-impl/cancel",
+        "api-reference/streams/stream-resource-impl/get-components"
       ]
     },
     {
