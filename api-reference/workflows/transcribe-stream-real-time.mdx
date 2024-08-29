@@ -1,0 +1,51 @@
+---
+title: 'Transcribe stream in real-time'
+description: 'Transcribing a stream of audio-video data in real-time using the Vatis Streams Engine'
+---
+
+import TranscribeStreamPython from '/snippets/api-reference/transcribe-stream-real-time-python.mdx'
+
+Features:
+* real-time transcription
+* real-time transcoding (process any multi-media file)
+* language auto-detection
+* dynamic language code switch
+
+
+<Tabs>
+    <Tab title="Python">
+        <Steps>
+            <Step title="Open terminal">
+                Open a terminal window and export the following environment variables
+                ```bash
+                export CLIENT_ID="your-client-id"
+                export CLIENT_SECRET="your-client-secret"
+                export CONFIGURATION_ID=65f169a51351291e67a7a7fa
+                export FILE_PATH="path/to/your/file"
+                ```
+
+                <Info>More details about the `Configuration Id` can be found on the [stream configuration templates page](/api-reference/stream-configuration-templates)</Info>
+                <Info>In the current example the stream is backed by a file, but it can be any kind of media binary stream (e.g. microphone stream)</Info>
+            </Step>
+            <Step title='Install requirements'>
+                ```bash
+                pip install requests
+                ```
+            </Step>
+            <Step title="Write the script">
+                Write the following script to a file
+                <Accordion title="Code snippet" icon="code">
+                    <CodeGroup>
+                        <TranscribeStreamPython/>
+                    </CodeGroup>
+                </Accordion>
+            </Step>
+            <Step title="Start the transcription">
+                Execute the python script with the file path as an argument
+                ```bash
+                python transcribe.py "$FILE_PATH"
+                ```
+            </Step>
+        </Steps>
+    </Tab>
+</Tabs>
