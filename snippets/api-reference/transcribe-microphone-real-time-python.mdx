@@ -1,0 +1,212 @@
+```python transcribe.py
+import signal
+import uuid
+from typing import Generator, Optional
+
+import requests
+import pyaudio
+
+import os
+import sys
+import json
+
+import threading
+
+
+interrupted: bool = False
+
+
+def transcribe(stream_generator: Generator[bytes, None, None], client_id: str, client_secret: str, stream_configuration_template_id: str):
+    global interrupted
+
+    assert client_id, 'Client ID is required'
+    assert client_secret, 'Client secret is required'
+
+    stream_id: str = str(uuid.uuid4())
+
+    # Upload the stream asynchronously
+    upload_thread: threading.Thread = threading.Thread(target=upload_stream,
+                                                       args=(stream_generator, stream_id, stream_configuration_template_id, client_id, client_secret),
+                                                       daemon=True,
+                                                       name='upload_stream')
+    upload_thread.start()
+
+    # Retrieve the results
+    retrieve_url: str = ("https://egress-service.vatis.tech/egress-service/api/v1/egress/live?"
+                         f"streamIds={stream_id}&"
+                         f"format=EVENTS")
+
+    retrieve_headers: dict = {
+        'X-Client-Id': client_id,
+        'X-Client-Secret': client_secret,
+        'Accept': 'application/x+ndjson'
+    }
+
+    try:
+        with requests.get(retrieve_url, headers=retrieve_headers, stream=True) as response:
+            response.raise_for_status()
+            # Stream the results, set the display all option to print both partial and final results
+            print_transcription(response.iter_lines(), display_all=True)
+    finally:
+        interrupted = True
+
+
+def print_transcription(events_generator, display_all: bool = False):
+    final_transcript: str = ''
+
+    try:
+        for event_json in events_generator:
+            if not event_json:
+                continue
+
+            event: dict = json.loads(event_json)
+
+            assert event['payloadSchema'] == 'tech.vatis.schema.stream.processor.messages.transcription.TranscriptionResponseDto', f'Not a transcription event: {event}'
+
+            # filter out partial frames, display only the final results
+            if event['frameType'] == 'final' or display_all:
+                transcript: str = event['payload']['transcription']
+                start_time: int = event['payload']['start'] / 1000
+                end_time: int = event['payload']['end'] / 1000
+                frame_type: str = event['frameType']
+
+                if frame_type == 'final':
+                    final_transcript += transcript
+
+                formatted_start: str = f'{start_time:.2f}'
+                formatted_end: str = f'{end_time:.2f}'
+                print(f'{formatted_start:>6} - {formatted_end:<6} - {frame_type:<7}: {transcript}')
+    finally:
+        print('\n\nFinal transcription:\n')
+        print(final_transcript)
+
+
+def upload_stream(stream_generator: Generator[bytes, None, None],
+                  stream_id: str,
+                  stream_configuration_template_id: str,
+                  client_id: str,
+                  client_secret: str):
+    global interrupted
+
+    upload_url: str = ("https://http-gateway.vatis.tech/http-gateway/api/v1/upload?"
+                       f"streamConfigurationTemplateId={stream_configuration_template_id}&"
+                       f"id={stream_id}")
+
+    upload_headers: dict = {
+        'Accept': 'application/json',
+        'X-Client-Id': client_id,
+        'X-Client-Secret': client_secret,
+        'Content-Type': 'application/octet-stream'
+    }
+
+    upload_response = requests.post(upload_url, headers=upload_headers, data=stream_generator)
+
+    if not upload_response.ok:
+        print(f'Error on upload: {upload_response.json()}')
+        interrupted = True
+        os.kill(os.getpid(), signal.SIGUSR1)
+
+
+def create_wav_headers(channels: int, sample_rate: int, sample_width: int) -> bytes:
+    import wave
+    import io
+
+    buffer = io.BytesIO()
+
+    with wave.open(buffer, 'wb') as wav_file:
+        wav_file.setnchannels(channels)
+        wav_file.setsampwidth(sample_width)
+        wav_file.setframerate(sample_rate)
+        wav_file.setnframes(0)
+
+    return buffer.getvalue()
+
+
+def select_input_device(pa: pyaudio.PyAudio) -> int:
+    info = pa.get_host_api_info_by_index(0)
+    numdevices: int = info.get('deviceCount')
+
+    default_input_device: Optional = pa.get_default_input_device_info()
+    default_input_device_index: Optional[int] = None
+
+    if default_input_device:
+        default_input_device_index = default_input_device.get('index')
+
+    for i in range(0, numdevices):
+        if (pa.get_device_info_by_index(i).get('maxInputChannels')) > 0:
+            print("Input Device index ",
+                  i,
+                  " - ",
+                  pa.get_device_info_by_index(i).get('name'),
+                  ' (default)' if i == default_input_device_index else '')
+
+    index = input('Select input device index: ')
+
+    if not index:
+        if default_input_device_index:
+            return default_input_device_index
+        else:
+            raise ValueError('No input device selected')
+    else:
+        return int(index)
+
+
+def stream_microphone(p: pyaudio.PyAudio, input_device_index: int, chunk_size: int = 1024) -> Generator[bytes, None, None]:
+    sample_format = pyaudio.paInt16
+    channels: int = 1
+    sample_rate: int = 16000
+    sample_width: int = pyaudio.get_sample_size(sample_format)
+
+    stream = p.open(format=sample_format,
+                    channels=channels,
+                    rate=sample_rate,
+                    input=True,
+                    frames_per_buffer=chunk_size,
+                    input_device_index=input_device_index)
+
+    try:
+        yield create_wav_headers(channels, sample_rate, sample_width)
+
+        print('Recording started')
+
+        while not interrupted:
+            data = stream.read(chunk_size)
+            yield data
+
+        print('Recording stopped')
+    finally:
+        stream.stop_stream()
+        stream.close()
+
+        p.terminate()
+
+
+def signal_handler(sig, frame):
+    global interrupted
+    interrupted = True
+    try:
+        sys.exit(0)
+    except SystemExit:
+        pass
+
+
+if __name__ == '__main__':
+    client_id: str = os.environ.get('CLIENT_ID')
+    client_secret: str = os.environ.get('CLIENT_SECRET')
+    stream_configuration_template_id: str = os.environ.get('CONFIGURATION_ID')
+
+    signal.signal(signal.SIGINT, signal_handler)
+
+    p = pyaudio.PyAudio()
+
+    input_device_index = select_input_device(p)
+
+    try:
+        transcribe(stream_generator=stream_microphone(p, input_device_index),
+                   client_id=client_id,
+                   client_secret=client_secret,
+                   stream_configuration_template_id=stream_configuration_template_id)
+    finally:
+        p.terminate()
+
+```

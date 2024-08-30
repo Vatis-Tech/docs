@@ -77,6 +77,7 @@
       "pages": [
         "api-reference/workflows/transcribe-file-real-time",
         "api-reference/workflows/transcribe-stream-real-time",
+        "api-reference/workflows/transcribe-microphone-real-time",
         "api-reference/workflows/transcribe-file-export",
         "api-reference/workflows/transcribe-link-export"
       ]
