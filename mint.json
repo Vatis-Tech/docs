@@ -125,6 +125,13 @@
       "pages": [
         "api-reference/export/exports-a-stream-of-data-in-various-formats"
       ]
+    },
+    {
+      "group": "Usage",
+      "pages": [
+        "api-reference/usage/stream-usage-resource-impl/stream-usage",
+        "api-reference/usage/usage-report-resource-impl/usage-report"
+      ]
     }
   ],
   "footerSocials": {

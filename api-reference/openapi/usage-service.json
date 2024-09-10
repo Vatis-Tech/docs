@@ -43,8 +43,8 @@
           }
         ],
         "responses": {
-          "401": {
-            "description": "Exception on client authorization",
+          "default": {
+            "description": "Default error",
             "content": {
               "application/json": {
                 "schema": {
@@ -54,7 +54,17 @@
             }
           },
           "400": {
-            "description": "Bad requested currency",
+            "description": "Interval too short",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -85,16 +95,6 @@
           },
           "409": {
             "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Default error",
             "content": {
               "application/json": {
                 "schema": {
@@ -218,8 +218,8 @@
           }
         ],
         "responses": {
-          "401": {
-            "description": "Exception on client authorization",
+          "default": {
+            "description": "Default error",
             "content": {
               "application/json": {
                 "schema": {
@@ -229,7 +229,17 @@
             }
           },
           "400": {
-            "description": "Bad requested currency",
+            "description": "Interval too short",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -260,16 +270,6 @@
           },
           "409": {
             "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Default error",
             "content": {
               "application/json": {
                 "schema": {
@@ -384,8 +384,8 @@
             "type": "string"
           },
           "processors": {
-            "type": "object",
-            "additionalProperties": {
+            "type": "array",
+            "items": {
               "$ref": "#/components/schemas/UsageRecordDto"
             }
           }
