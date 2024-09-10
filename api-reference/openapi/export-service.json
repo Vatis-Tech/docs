@@ -124,6 +124,9 @@
               }
             }
           },
+          "204": {
+            "description": "Export was successful but no data was present on the stream"
+          },
           "default": {
             "description": "Error",
             "content": {
@@ -227,9 +230,8 @@
           "speakersOverlap": {
             "type": "boolean"
           },
-          "channelNumber": {
-            "type": "integer",
-            "format": "int32"
+          "channel": {
+            "type": "string"
           }
         }
       },
@@ -244,6 +246,9 @@
           },
           "overlap": {
             "type": "boolean"
+          },
+          "channel": {
+            "type": "string"
           },
           "start": {
             "type": "integer",

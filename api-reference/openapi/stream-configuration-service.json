@@ -30,6 +30,16 @@
           }
         ],
         "responses": {
+          "4xx/5xx": {
+            "description": "Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad alias in stream configuration template",
             "content": {
@@ -62,16 +72,6 @@
           },
           "401": {
             "description": "Exception on client authorization",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "4xx/5xx": {
-            "description": "Error",
             "content": {
               "*/*": {
                 "schema": {
@@ -114,6 +114,16 @@
           "required": true
         },
         "responses": {
+          "4xx/5xx": {
+            "description": "Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Error in stream configuration template",
             "content": {
@@ -146,16 +156,6 @@
           },
           "401": {
             "description": "Exception on client authorization",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "4xx/5xx": {
-            "description": "Error",
             "content": {
               "*/*": {
                 "schema": {
@@ -215,6 +215,16 @@
           }
         ],
         "responses": {
+          "4xx/5xx": {
+            "description": "Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad alias in stream configuration template",
             "content": {
@@ -247,16 +257,6 @@
           },
           "401": {
             "description": "Exception on client authorization",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "4xx/5xx": {
-            "description": "Error",
             "content": {
               "*/*": {
                 "schema": {
@@ -301,6 +301,16 @@
           }
         ],
         "responses": {
+          "4xx/5xx": {
+            "description": "Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad alias in stream configuration template",
             "content": {
@@ -333,16 +343,6 @@
           },
           "401": {
             "description": "Exception on client authorization",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "4xx/5xx": {
-            "description": "Error",
             "content": {
               "*/*": {
                 "schema": {
@@ -714,6 +714,12 @@
       "PageableObject": {
         "type": "object",
         "properties": {
+          "paged": {
+            "type": "boolean"
+          },
+          "unpaged": {
+            "type": "boolean"
+          },
           "pageNumber": {
             "type": "integer",
             "format": "int32"
@@ -721,12 +727,6 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
-          },
-          "paged": {
-            "type": "boolean"
-          },
-          "unpaged": {
-            "type": "boolean"
           },
           "offset": {
             "type": "integer",

@@ -1,0 +1,584 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Vatis Stream Service",
+    "description": "Vatis Stream Service API",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://usage-service.vatis.tech",
+      "description": "Default server"
+    }
+  ],
+  "paths": {
+    "/usage-service/api/v1/usage/streams/{streamId}": {
+      "get": {
+        "tags": [
+          "stream-usage-resource-impl"
+        ],
+        "summary": "Stream usage",
+        "description": "Get the usage of all processors in a stream",
+        "operationId": "getStreamUsage",
+        "parameters": [
+          {
+            "name": "streamId",
+            "in": "path",
+            "description": "Stream id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "description": "Currency to use for the report. If not specified, the default credits abstraction will be used",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "USD"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad requested currency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Default error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "One or more processors are not available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Stream usage limit reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create the stream",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Requested feature is not implemented",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Stream usage retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamUsageDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ]
+      }
+    },
+    "/usage-service/api/v1/usage/report": {
+      "get": {
+        "tags": [
+          "usage-report-resource-impl"
+        ],
+        "summary": "Usage report",
+        "description": "Retrieve usage report for a given time interval",
+        "operationId": "generate",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start of the interval. If not specified, it will be the 1st of the current month",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2021-08-01T00:00:00Z"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "End of the interval. If not specified, it will be the current date-time",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2021-08-01T00:00:00Z"
+            }
+          },
+          {
+            "name": "granularity",
+            "in": "query",
+            "description": "Granularity of the report",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "HOURS",
+                "DAYS",
+                "MONTHS"
+              ]
+            }
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "description": "Currency to use for the report. If not specified, the default credits abstraction will be used",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "USD"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad requested currency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Default error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "One or more processors are not available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Stream usage limit reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create the stream",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Requested feature is not implemented",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Stream canceled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsageReportDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "internalErrorName": {
+            "type": "string"
+          },
+          "nestedErrors": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "StreamUsageDto": {
+        "type": "object",
+        "properties": {
+          "creatorId": {
+            "type": "string"
+          },
+          "groupId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "streamId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "streamConfigurationTemplateId": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "processors": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/UsageRecordDto"
+            }
+          }
+        }
+      },
+      "UsageRecordDto": {
+        "type": "object",
+        "properties": {
+          "creatorId": {
+            "type": "string"
+          },
+          "groupId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "streamId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "processorId": {
+            "type": "string"
+          },
+          "operationType": {
+            "type": "string",
+            "enum": [
+              "BATCH_TRANSCRIPTION",
+              "REAL_TIME_TRANSCRIPTION",
+              "SPEAKERS_DIARIZATION",
+              "VOICE_ACTIVITY_DETECTION",
+              "TRANSCODE",
+              "TRANSLATION",
+              "SUMMARIZATION",
+              "SENTIMENT_ANALYSIS",
+              "NO_OPERATION"
+            ]
+          },
+          "streamConfigurationTemplateId": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "credits": {
+            "type": "string"
+          },
+          "executionTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "storageSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ingressSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "egressSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "processedAudioLength": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "processedTokens": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "finalUsage": {
+            "type": "boolean"
+          },
+          "errorOccurred": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UsageReportDto": {
+        "type": "object",
+        "properties": {
+          "startTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "endTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "granularity": {
+            "type": "string",
+            "enum": [
+              "HOURS",
+              "DAYS",
+              "MONTHS"
+            ]
+          },
+          "currency": {
+            "type": "string"
+          },
+          "totalMeasurements": {
+            "$ref": "#/components/schemas/UsageReportItemDto"
+          },
+          "aggregatedMeasurements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UsageReportItemDto"
+            }
+          },
+          "operationTypeAggregatedMeasurements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UsageReportItemDto"
+            }
+          },
+          "streamConfigurationTemplateIdAggregatedMeasurements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UsageReportItemDto"
+            }
+          }
+        }
+      },
+      "UsageReportItemDto": {
+        "type": "object",
+        "properties": {
+          "credits": {
+            "type": "string"
+          },
+          "startTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "endTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "streamsCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "operationType": {
+            "type": "string",
+            "enum": [
+              "BATCH_TRANSCRIPTION",
+              "REAL_TIME_TRANSCRIPTION",
+              "SPEAKERS_DIARIZATION",
+              "VOICE_ACTIVITY_DETECTION",
+              "TRANSCODE",
+              "TRANSLATION",
+              "SUMMARIZATION",
+              "SENTIMENT_ANALYSIS",
+              "NO_OPERATION"
+            ]
+          },
+          "streamConfigurationTemplateId": {
+            "type": "string"
+          },
+          "measurements": {
+            "$ref": "#/components/schemas/UsageReportItemMeasurementsDto"
+          }
+        }
+      },
+      "UsageReportItemMeasurementsDto": {
+        "type": "object",
+        "properties": {
+          "executionTime": {
+            "type": "string"
+          },
+          "storageSize": {
+            "type": "string"
+          },
+          "ingressSize": {
+            "type": "string"
+          },
+          "egressSize": {
+            "type": "string"
+          },
+          "processedAudioLength": {
+            "type": "string"
+          },
+          "processedTokens": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

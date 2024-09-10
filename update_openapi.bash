@@ -39,3 +39,8 @@ curl https://notification-service.vatis.tech/api-docs | \
 curl https://export-service.vatis.tech/api-docs | \
   jq '.components.schemas.ErrorResponse.properties.nestedErrors.items = {"type": "object"} | .servers = [{"url": "https://export-service.vatis.tech", "description": "Default server"}]' \
   > api-reference/openapi/export-service.json
+
+# Update OpenAPI for Export Service
+curl https://usage-service.vatis.tech/api-docs | \
+  jq '.components.schemas.ErrorResponse.properties.nestedErrors.items = {"type": "object"} | .servers = [{"url": "https://usage-service.vatis.tech", "description": "Default server"}]' \
+  > api-reference/openapi/usage-service.json

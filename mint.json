@@ -139,6 +139,7 @@
     "api-reference/openapi/stream-service.json",
     "api-reference/openapi/egress-service.json",
     "api-reference/openapi/notification-service.json",
-    "api-reference/openapi/export-service.json"
+    "api-reference/openapi/export-service.json",
+    "api-reference/openapi/usage-service.json"
   ]
 }
