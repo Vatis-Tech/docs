@@ -17,53 +17,46 @@
         "tags": [
           "stream-configuration-template-resource-impl"
         ],
-        "summary": "Retrieves all the stream configuration templates the user can access in a paginated manner",
+        "summary": "Find all",
+        "description": "Retrieves all the stream configuration templates the user can access in a paginated manner",
         "operationId": "getAll",
         "parameters": [
           {
-            "name": "pageable",
+            "name": "page",
             "in": "query",
-            "required": true,
+            "description": "Page number",
             "schema": {
-              "$ref": "#/components/schemas/Pageable"
+              "type": "integer",
+              "example": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Page size",
+            "schema": {
+              "type": "integer",
+              "example": 10,
+              "default": 10
             }
           }
         ],
         "responses": {
-          "4xx/5xx": {
-            "description": "Error",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad alias in stream configuration template",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "403": {
             "description": "Full authentication required",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
           },
-          "500": {
-            "description": "Exception on Pulsar operation",
+          "default": {
+            "description": "Default error",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -73,7 +66,37 @@
           "401": {
             "description": "Exception on client authorization",
             "content": {
-              "*/*": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad alias in stream configuration template",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Exception on Pulsar operation",
+            "content": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -101,7 +124,8 @@
         "tags": [
           "stream-configuration-template-resource-impl"
         ],
-        "summary": "Create or update a stream configuration template",
+        "summary": "Create or update",
+        "description": "Create or update a stream configuration template",
         "operationId": "createOrUpdate",
         "requestBody": {
           "content": {
@@ -114,40 +138,20 @@
           "required": true
         },
         "responses": {
-          "4xx/5xx": {
-            "description": "Error",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Error in stream configuration template",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "403": {
             "description": "The current user does not have sufficient permission",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
           },
-          "500": {
-            "description": "Exception on Pulsar operation",
+          "default": {
+            "description": "Default error",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -157,7 +161,37 @@
           "401": {
             "description": "Exception on client authorization",
             "content": {
-              "*/*": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error in stream configuration template",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Exception on Pulsar operation",
+            "content": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -187,7 +221,8 @@
         "tags": [
           "stream-configuration-template-resource-impl"
         ],
-        "summary": "Retrieves the stream configuration template with patches applied. It accepts JSON paths and values as query parameters for hot patches over the template. Only values that exist can be patched. No addition/deletion supported",
+        "summary": "Find by id",
+        "description": "Retrieves the stream configuration template with patches applied. It accepts JSON paths and values as query parameters for hot patches over the template. Only values that exist can be patched. No addition/deletion supported",
         "operationId": "getById",
         "parameters": [
           {
@@ -215,40 +250,20 @@
           }
         ],
         "responses": {
-          "4xx/5xx": {
-            "description": "Error",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad alias in stream configuration template",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "403": {
             "description": "Full authentication required",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
           },
-          "500": {
-            "description": "Exception on Pulsar operation",
+          "default": {
+            "description": "Default error",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -258,7 +273,37 @@
           "401": {
             "description": "Exception on client authorization",
             "content": {
-              "*/*": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad alias in stream configuration template",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Exception on Pulsar operation",
+            "content": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -288,53 +333,46 @@
         "tags": [
           "processor-declaration-resource-impl"
         ],
-        "summary": "Retrieves all the processor declarations the user can access in a paginated manner",
+        "summary": "Find all",
+        "description": "Retrieves all the processor declarations the user can access in a paginated manner",
         "operationId": "getAll_1",
         "parameters": [
           {
-            "name": "pageable",
+            "name": "page",
             "in": "query",
-            "required": true,
+            "description": "Page number",
             "schema": {
-              "$ref": "#/components/schemas/Pageable"
+              "type": "integer",
+              "example": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Page size",
+            "schema": {
+              "type": "integer",
+              "example": 10,
+              "default": 10
             }
           }
         ],
         "responses": {
-          "4xx/5xx": {
-            "description": "Error",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad alias in stream configuration template",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "403": {
             "description": "Full authentication required",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
           },
-          "500": {
-            "description": "Exception on Pulsar operation",
+          "default": {
+            "description": "Default error",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -344,7 +382,37 @@
           "401": {
             "description": "Exception on client authorization",
             "content": {
-              "*/*": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad alias in stream configuration template",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Exception on Pulsar operation",
+            "content": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -583,6 +651,20 @@
           },
           "features": {
             "$ref": "#/components/schemas/ProcessorFeaturesDto"
+          },
+          "operationType": {
+            "type": "string",
+            "enum": [
+              "BATCH_TRANSCRIPTION",
+              "REAL_TIME_TRANSCRIPTION",
+              "SPEAKERS_DIARIZATION",
+              "VOICE_ACTIVITY_DETECTION",
+              "TRANSCODE",
+              "TRANSLATION",
+              "SUMMARIZATION",
+              "SENTIMENT_ANALYSIS",
+              "NO_OPERATION"
+            ]
           }
         }
       },
@@ -644,27 +726,6 @@
           }
         }
       },
-      "Pageable": {
-        "type": "object",
-        "properties": {
-          "page": {
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "size": {
-            "minimum": 1,
-            "type": "integer",
-            "format": "int32"
-          },
-          "sort": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "PageStreamConfigurationTemplateDto": {
         "type": "object",
         "properties": {
@@ -714,12 +775,6 @@
       "PageableObject": {
         "type": "object",
         "properties": {
-          "paged": {
-            "type": "boolean"
-          },
-          "unpaged": {
-            "type": "boolean"
-          },
           "pageNumber": {
             "type": "integer",
             "format": "int32"
@@ -727,6 +782,12 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "paged": {
+            "type": "boolean"
+          },
+          "unpaged": {
+            "type": "boolean"
           },
           "offset": {
             "type": "integer",
@@ -740,10 +801,10 @@
       "SortObject": {
         "type": "object",
         "properties": {
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
           "empty": {

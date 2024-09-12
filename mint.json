@@ -132,6 +132,19 @@
         "api-reference/usage/stream-usage-resource-impl/stream-usage",
         "api-reference/usage/usage-report-resource-impl/usage-report"
       ]
+    },
+    {
+      "group": "Stream configuration",
+      "pages": [
+        "api-reference/stream-configuration/stream-configuration-template-resource-impl/find-all",
+        "api-reference/stream-configuration/stream-configuration-template-resource-impl/find-by-id"
+      ]
+    },
+    {
+      "group": "Processor",
+      "pages": [
+        "api-reference/stream-configuration/processor-declaration-resource-impl/find-all"
+      ]
     }
   ],
   "footerSocials": {
