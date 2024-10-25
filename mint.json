@@ -61,7 +61,8 @@
       "group": "Integration",
       "pages": [
         "integration/webhooks",
-        "integration/export"
+        "integration/export",
+        "integration/websocket"
       ]
     },
     {

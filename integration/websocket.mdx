@@ -1,0 +1,204 @@
+---
+title: 'Websocket'
+description: 'Perform real-time operations with Vatis Streams websocket API'
+---
+
+## Overview
+Websocket API comes as an alternative to the integration of the ingress (via `HTTP Gateway`) and the egress connection (via `Egress Service`) that combines the two in a single, easier to manage, connection.
+
+The connection is managed by the `WS Gateway` component and it can be used as a bot ingress and egress connection, or only as an ingress connection.
+The `Egress Service` can be used along side with the `WS Gateway` to retrieve the results of the websocket-initiated stream from multiple clients.
+
+### Diagrams
+<Accordion title="General workflow">
+  ```mermaid
+    sequenceDiagram
+        participant C as Client
+        participant S as Server
+
+        C->>S: Initiate stream
+        S->>C: Return stream metada
+
+        loop Exchange messages
+            C->>S: Audio data
+            C->>S: Audio data
+            S->>C: Response
+            C->>S: Audio data
+            S->>C: Response
+            C-->>S: keep-alive
+            C->>S: Audio data
+            S->>C: Response
+        end
+
+        C->>S: End of stream
+        S->>C: Response
+        S->>C: End of stream
+        S-->>C: Normal connection close
+    ```
+</Accordion>
+
+
+## Authentication
+A client can authenticate to the websocket API by providing either a `Basic` or a `Bearer` token. The token can be placed in either the `Authorization` or `Sec-WebSocket-Protocol` headers.
+- `Authorization: Basic <basic_token>`
+- `Authorization: Bearer <basic_token>`
+
+### Basic token
+The basic token is a base64 encoded string of the `username:password` pair. The `username` is the `client_id` and the `password` is the `client_secret`.
+
+### Bearer token
+Generate a bearer token using the [authentication endpoint](/api-reference/commons/authenticate).
+<Tip>Use this authentication method when the token will reach a front channel (e.g. website)</Tip>
+
+
+## Configuration
+The stream configuration options will be passed as query parameters to the websocket connection URL.
+
+For more details, please check the [WS Gateway API Reference](/api-reference/introduction.mdx) and the properties of the stream configuration template you're planning to use.
+
+## Stream metadata
+Right after the client connects, and attempt to create the stream is made. If successful, a `stream metadata` message will be sent to the client.
+Otherwise, an error will be emitted and the connection will be closed.
+
+### Diagrams
+<Accordion title="Stream creation failure">
+  ```mermaid
+   sequenceDiagram
+    participant C as Client
+    participant S as Server
+
+    C->>S: Initiate stream
+    S->>C: Error on stream creation
+
+    S-->>C: Normal connection close
+
+    ```
+</Accordion>
+
+## Timeouts
+Generally the client will continuously send messages to the server, but there are scenarios where the client will stay idle (e.g. waiting for a new chunk of data to send or waiting for the end of stream signal).<br/>
+The websocket connection will be closed after **10 seconds of inactivity**. We define the period inactivity as the time elapsed since the last message was sent by the client.
+
+To prevent the connection to close, the client has two options:
+- send a `KeepAlive message` when the client becomes idle
+- send a `Ping message` to the server. This will trigger a `Pong message` from the server
+
+In this case the connection will become idle. We define the idle period as the time elapsed since the last non-keep-alive message was sent by the client.
+
+<Info>Idle connections will timeout after 30 minutes</Info>
+<Info>Timeout connections will be closed without any error message or signal</Info>
+
+### Diagrams
+<Accordion title="Inactive connection">
+  ```mermaid
+   sequenceDiagram
+    participant C as Client
+    participant S as Server
+
+    C->>S: Initiate stream
+    S->>C: Return stream metada
+
+    C->>+S: Data
+    S-->S: Wait for new data
+    Note right of S: 10 seconds of inactivity
+    S-->-C: Timeout - sudden connection close
+    ```
+</Accordion>
+
+<Accordion title="Idle connection">
+  ```mermaid
+   sequenceDiagram
+    participant C as Client
+    participant S as Server
+
+    C->>S: Initiate stream
+    S->>C: Return stream metada
+
+    C->>+S: Data
+    S-->S: Wait for new data
+    C-->>S: keep-alive
+    S-->S: Wait for new data
+
+    C-->>S: keep-alive
+    S-->S: Wait for new data
+    Note right of S: 30 minutes since last sent data
+    S-->-C: Timeout - sudden connection close
+    ```
+</Accordion>
+
+<Accordion title="Wait for end of stream">
+  ```mermaid
+   sequenceDiagram
+    participant C as Client
+    participant S as Server
+
+    C-->S: initial messages
+
+    C->>+S: End of stream
+    S->>C: Response
+    Note right of S: Inactivity
+    S->>C: Response
+    S-->-C: keep-alive
+    S->>C: Response
+    S->>C: End of stream
+    S-->>C: Normal connection close
+    ```
+</Accordion>
+
+## End of stream
+
+After the client has sent all the data, it must signal this by sending an `End of stream` message.
+If the client is waiting for all responses, it must wait for the `End of stream` message from the server.
+After sending the `End of stream` message, the server will immediately close the connection.
+
+<Info>A client disconnect will trigger the end of stream signal</Info>
+<Info>The server will emit an End of Stream signal only if the websocket connection is also used as egress</Info>
+
+### Diagrams
+<Accordion title="Server-sent end of stream">
+  ```mermaid
+   sequenceDiagram
+    participant C as Client
+    participant S as Server
+
+    C-->S: initial messages
+
+    C->>S: End of stream
+    S->>C: Response
+    S->>C: Response
+    Note over S,C: All responses sent
+    S->>C: End of stream
+    S-->>C: Close connection
+    ```
+</Accordion>
+
+## Error handling
+
+The server will emit an error message if the client sends an invalid message or if the server encounters an error while processing the message.
+The connection will be closed by the server immediately after sending the error message.
+
+<Info>Whether an error occurs or not, the connection will be closed with a `1000 - Normal Closure` code</Info>
+
+### Diagrams
+<Accordion title="Error occurance">
+  ```mermaid
+   sequenceDiagram
+    participant C as Client
+    participant S as Server
+
+    C-->S: initial messages
+
+    break on invalid client-sent messages
+        S->>C: Error message
+    end
+
+    S-->>C: Normal connection close
+    ```
+</Accordion>
+
+
+
+
+## API reference
+
+Please check the [WS Gateway API Reference](/api-reference/introduction.mdx) for API details.
