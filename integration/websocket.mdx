@@ -10,7 +10,7 @@ The connection is managed by the `WS Gateway` component and it can be used as a 
 The `Egress Service` can be used along side with the `WS Gateway` to retrieve the results of the websocket-initiated stream from multiple clients.
 
 ### Diagrams
-<Accordion title="General workflow">
+<Accordion title="General workflow" defaultOpen>
   ```mermaid
     sequenceDiagram
         participant C as Client
@@ -60,19 +60,17 @@ For more details, please check the [WS Gateway API Reference](/api-reference/int
 Right after the client connects, and attempt to create the stream is made. If successful, a `stream metadata` message will be sent to the client.
 Otherwise, an error will be emitted and the connection will be closed.
 
-### Diagrams
 <Accordion title="Stream creation failure">
   ```mermaid
-   sequenceDiagram
-    participant C as Client
-    participant S as Server
+    sequenceDiagram
+        participant C as Client
+        participant S as Server
 
-    C->>S: Initiate stream
-    S->>C: Error on stream creation
+        C->>S: Initiate stream
+        S->>C: Error on stream creation
 
-    S-->>C: Normal connection close
-
-    ```
+        S-->>C: Normal connection close
+  ```
 </Accordion>
 
 ## Timeouts
@@ -91,57 +89,57 @@ In this case the connection will become idle. We define the idle period as the t
 ### Diagrams
 <Accordion title="Inactive connection">
   ```mermaid
-   sequenceDiagram
-    participant C as Client
-    participant S as Server
+    sequenceDiagram
+        participant C as Client
+        participant S as Server
 
-    C->>S: Initiate stream
-    S->>C: Return stream metada
+        C->>S: Initiate stream
+        S->>C: Return stream metada
 
-    C->>+S: Data
-    S-->S: Wait for new data
-    Note right of S: 10 seconds of inactivity
-    S-->-C: Timeout - sudden connection close
+        C->>+S: Data
+        S-->S: Wait for new data
+        Note right of S: 10 seconds of inactivity
+        S-->-C: Timeout - sudden connection close
     ```
 </Accordion>
 
 <Accordion title="Idle connection">
   ```mermaid
-   sequenceDiagram
-    participant C as Client
-    participant S as Server
+    sequenceDiagram
+        participant C as Client
+        participant S as Server
 
-    C->>S: Initiate stream
-    S->>C: Return stream metada
+        C->>S: Initiate stream
+        S->>C: Return stream metada
 
-    C->>+S: Data
-    S-->S: Wait for new data
-    C-->>S: keep-alive
-    S-->S: Wait for new data
+        C->>+S: Data
+        S-->S: Wait for new data
+        C-->>S: keep-alive
+        S-->S: Wait for new data
 
-    C-->>S: keep-alive
-    S-->S: Wait for new data
-    Note right of S: 30 minutes since last sent data
-    S-->-C: Timeout - sudden connection close
+        C-->>S: keep-alive
+        S-->S: Wait for new data
+        Note right of S: 30 minutes since last sent data
+        S-->-C: Timeout - sudden connection close
     ```
 </Accordion>
 
 <Accordion title="Wait for end of stream">
   ```mermaid
-   sequenceDiagram
-    participant C as Client
-    participant S as Server
+    sequenceDiagram
+        participant C as Client
+        participant S as Server
 
-    C-->S: initial messages
+        C-->S: initial messages
 
-    C->>+S: End of stream
-    S->>C: Response
-    Note right of S: Inactivity
-    S->>C: Response
-    S-->-C: keep-alive
-    S->>C: Response
-    S->>C: End of stream
-    S-->>C: Normal connection close
+        C->>+S: End of stream
+        S->>C: Response
+        Note right of S: Inactivity
+        S->>C: Response
+        S-->-C: keep-alive
+        S->>C: Response
+        S->>C: End of stream
+        S-->>C: Normal connection close
     ```
 </Accordion>
 
@@ -157,18 +155,18 @@ After sending the `End of stream` message, the server will immediately close the
 ### Diagrams
 <Accordion title="Server-sent end of stream">
   ```mermaid
-   sequenceDiagram
-    participant C as Client
-    participant S as Server
+    sequenceDiagram
+        participant C as Client
+        participant S as Server
 
-    C-->S: initial messages
+        C-->S: initial messages
 
-    C->>S: End of stream
-    S->>C: Response
-    S->>C: Response
-    Note over S,C: All responses sent
-    S->>C: End of stream
-    S-->>C: Close connection
+        C->>S: End of stream
+        S->>C: Response
+        S->>C: Response
+        Note over S,C: All responses sent
+        S->>C: End of stream
+        S-->>C: Close connection
     ```
 </Accordion>
 
@@ -182,17 +180,17 @@ The connection will be closed by the server immediately after sending the error 
 ### Diagrams
 <Accordion title="Error occurance">
   ```mermaid
-   sequenceDiagram
-    participant C as Client
-    participant S as Server
+    sequenceDiagram
+        participant C as Client
+        participant S as Server
 
-    C-->S: initial messages
+        C-->S: initial messages
 
-    break on invalid client-sent messages
-        S->>C: Error message
-    end
+        break on invalid client-sent messages
+            S->>C: Error message
+        end
 
-    S-->>C: Normal connection close
+        S-->>C: Normal connection close
     ```
 </Accordion>
 
