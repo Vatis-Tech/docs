@@ -1,90 +1,132 @@
 ```python transcribe.py
-import uuid
-
-import requests
+import json
 import os
 import sys
+import threading
+import uuid
 from pathlib import Path
-import json
+from typing import Generator
+
+import websocket
+
+# configuration #####
+BASE_URL: str = 'wss://ws-gateway.vatis.tech'
+DISPLAY_PARTIAL_FRAMES: bool = False
+# configuration end #####
+
+EOS = '{"type": "END_OF_STREAM"}'
+closed_event: threading.Event = threading.Event()
+final_transcript: str = ''
 
 
-def transcribe(file_path: str, client_id: str, client_secret: str, stream_configuration_template_id: str):
-    file_path = Path(file_path).resolve()
-
-    assert file_path.exists() and file_path.is_file(), f'File {file_path} does not exist or is not a file'
+def transcribe(stream_generator: Generator[bytes, None, None], client_id: str, client_secret: str, stream_configuration_template_id: str):
     assert client_id, 'Client ID is required'
     assert client_secret, 'Client secret is required'
 
     stream_id: str = str(uuid.uuid4())
 
-    # Upload the file
-    upload_url: str = ("https://http-gateway.vatis.tech/http-gateway/api/v1/upload?"
-                       f"streamConfigurationTemplateId={stream_configuration_template_id}&"
-                       f"id={stream_id}")
-
-    upload_headers: dict = {
-        'Accept': 'application/json',
-        'X-Client-Id': client_id,
-        'X-Client-Secret': client_secret,
-        'Content-Type': 'application/octet-stream'
+    # configuration options here
+    parameters = {
+        'id': stream_id,
+        'streamConfigurationTemplateId': stream_configuration_template_id,
+        'language': 'en',  # set the language here
     }
 
-    with open(file_path, 'rb') as payload:
-        upload_response = requests.post(upload_url, headers=upload_headers, data=payload)
+    # authentication headers
+    headers = {
+        'X-Client-Id': client_id,
+        'X-Client-Secret': client_secret
+    }
 
-    if not upload_response.ok:
-        print(f'Error on file upload: {upload_response.json()}')
+    # define the connection and its callbacks
+    connection: websocket.WebSocketApp = websocket.WebSocketApp(
+        f'{BASE_URL}/ws-gateway/api/v1/?{"&".join([f"{k}={v}" for k, v in parameters.items()])}',
+        header=headers,
+        on_open=lambda ws: on_open(ws, stream_generator),
+        on_message=on_message,
+        on_error=lambda ws, error: print(f'Error: {error}'),
+        on_close=lambda ws, _, __: closed_event.set(),
+    )
+
+    connection.run_forever(ping_interval=5)
+
+    print(f'\nTranscription:\n\n{final_transcript}')
+
+
+def on_open(ws: websocket.WebSocketApp, stream_generator: Generator[bytes, None, None]):
+    def _send_data():
+        for data in stream_generator:
+            if closed_event.is_set():
+                break
+            ws.send_bytes(data)
+
+        if not closed_event.is_set():
+            ws.send_text(EOS)
+
+    threading.Thread(target=_send_data, name='data-sender', daemon=True).start()
+
+
+def on_message(ws: websocket.WebSocket, event_json: str):
+    if not event_json:
         return
 
-    # Retrieve the results
-    retrieve_url: str = ("https://egress-service.vatis.tech/egress-service/api/v1/egress/live?"
-                         f"streamIds={stream_id}&"
-                         f"format=EVENTS")
+    event: dict = json.loads(event_json)
 
-    retrieve_headers: dict = {
-        'X-Client-Id': client_id,
-        'X-Client-Secret': client_secret,
-        'Accept': 'application/x+ndjson'
-    }
+    if event['type'] == 'RESPONSE':
+        try:
+            print_transcription(event['response'], display_all=DISPLAY_PARTIAL_FRAMES)
+        except Exception as e:
+            print(f'Error processing response: {e}')
+    elif event['type'] == 'ERROR':
+        print(f'Error: {event["error"]}')
+    elif event['type'] == 'STREAM_METADATA':
+        print(f'Stream id: {event["stream"]["streamId"]}\n')
+    elif event['type'] == 'END_OF_STREAM':
+        ws.close()
+    else:
+        print(f'Unknown event: {event}')
 
-    with requests.get(retrieve_url, headers=retrieve_headers, stream=True) as response:
-        response.raise_for_status()
-        # Stream the results
-        print_transcription(response.iter_lines())
 
+def print_transcription(event: dict, display_all: bool = False):
+    global final_transcript
 
-def print_transcription(events_generator):
-    final_transcript: str = ''
+    assert event['payloadSchema'] == 'tech.vatis.schema.stream.processor.messages.transcription.TranscriptionResponseDto', f'Not a transcription event: {event}'
 
-    for event_json in events_generator:
-        if not event_json:
-            continue
-
-        event: dict = json.loads(event_json)
-
-        assert event['payloadSchema'] == 'tech.vatis.schema.stream.processor.messages.transcription.TranscriptionResponseDto', f'Not a transcription event: {event}'
-
+    # filter out partial frames, display only the final results
+    if event['frameType'] == 'final' or display_all:
         transcript: str = event['payload']['transcription']
         start_time: int = event['payload']['start'] / 1000
         end_time: int = event['payload']['end'] / 1000
+        frame_type: str = event['frameType']
 
-        if event['frameType'] == 'final':
+        if frame_type == 'final':
             final_transcript += transcript
-            formatted_start: str = f'{start_time:.2f}'
-            formatted_end: str = f'{end_time:.2f}'
-            print(f'{formatted_start:>6} - {formatted_end:<6}: {transcript}')
 
-    print('\n\nFinal transcription:\n')
-    print(final_transcript)
+        formatted_start: str = f'{start_time:.2f}'
+        formatted_end: str = f'{end_time:.2f}'
+        print(f'{formatted_start:>6} - {formatted_end:<6} - {frame_type:<7}: {transcript}')
+
+
+def stream_file(file_path: Path, chunk_size: int = 1024) -> Generator[bytes, None, None]:
+    with open(file_path, 'rb') as file:
+        while True:
+            chunk = file.read(chunk_size)
+            if not chunk:
+                break
+            yield chunk
 
 
 if __name__ == '__main__':
-    file_path: str = sys.argv[1]
+    file_path = sys.argv[1]
     client_id: str = os.environ.get('CLIENT_ID')
     client_secret: str = os.environ.get('CLIENT_SECRET')
     stream_configuration_template_id: str = os.environ.get('CONFIGURATION_ID')
 
-    transcribe(file_path=file_path,
+    file_path = Path(file_path).resolve()
+
+    assert file_path.exists() and file_path.is_file(), f'File {file_path} does not exist or is not a file'
+
+    transcribe(stream_generator=stream_file(file_path),
                client_id=client_id,
                client_secret=client_secret,
                stream_configuration_template_id=stream_configuration_template_id)

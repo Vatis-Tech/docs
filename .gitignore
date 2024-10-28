@@ -281,3 +281,6 @@ fabric.properties
 
 code/**/*
 venv/**/*
+
+package.json
+package-lock.json
