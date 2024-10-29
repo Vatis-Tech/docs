@@ -60,6 +60,8 @@ For more details, please check the [WS Gateway API Reference](/api-reference/int
 Right after the client connects, and attempt to create the stream is made. If successful, a `stream metadata` message will be sent to the client.
 Otherwise, an error will be emitted and the connection will be closed.
 
+> *Message schema*: [StreamMetadataMessageDto](https://schema.vatis.tech/swagger-ui/index.html#/)
+
 <Accordion title="Stream creation failure">
   ```mermaid
     sequenceDiagram
@@ -73,6 +75,16 @@ Otherwise, an error will be emitted and the connection will be closed.
   ```
 </Accordion>
 
+## Responses
+The server will respond in one of the following formats based on the configured egress format:
+- `EVENTS`: wrap the processor response in a metadata JSON object
+- `RAW`: return the processor response as is, generally as a websocket binary message
+The default format is `EVENTS`, that will be suited for most of the use-cases.
+
+> *Message schema*: [ResponseMessageDto](https://schema.vatis.tech/swagger-ui/index.html#/)
+
+<Note>Use the `RAW` format only when a binary response is expected</Note>
+
 ## Timeouts
 Generally the client will continuously send messages to the server, but there are scenarios where the client will stay idle (e.g. waiting for a new chunk of data to send or waiting for the end of stream signal).<br/>
 The websocket connection will be closed after **10 seconds of inactivity**. We define the period inactivity as the time elapsed since the last message was sent by the client.
@@ -82,6 +94,8 @@ To prevent the connection to close, the client has two options:
 - send a `Ping message` to the server. This will trigger a `Pong message` from the server
 
 In this case the connection will become idle. We define the idle period as the time elapsed since the last non-keep-alive message was sent by the client.
+
+> *Message schema*: [KeepAliveMessageDto](https://schema.vatis.tech/swagger-ui/index.html#/)
 
 <Info>Idle connections will timeout after 30 minutes</Info>
 <Info>Timeout connections will be closed without any error message or signal</Info>
@@ -150,6 +164,8 @@ After the client has sent all the data, it must signal this by sending an `End o
 If the client is waiting for all responses, it must wait for the `End of stream` message from the server.
 After sending the `End of stream` message, the server will immediately close the connection.
 
+> *Message schema*: [EndOfStreamMessageDto](https://schema.vatis.tech/swagger-ui/index.html#/)
+
 <Info>A client disconnect will trigger the end of stream signal</Info>
 <Info>The server will emit an End of Stream signal only if the websocket connection is also used as egress</Info>
 
@@ -176,6 +192,8 @@ After sending the `End of stream` message, the server will immediately close the
 The server will emit an error message if the client sends an invalid message or if the server encounters an error while processing the message.
 The connection will be closed by the server immediately after sending the error message.
 
+> *Message schema*: [ErrorMessageDto](https://schema.vatis.tech/swagger-ui/index.html#/)
+
 <Info>Whether an error occurs or not, the connection will be closed with a `1000 - Normal Closure` code</Info>
 
 ### Diagrams
@@ -194,9 +212,6 @@ The connection will be closed by the server immediately after sending the error 
         S-->>C: Normal connection close
     ```
 </Accordion>
-
-
-
 
 ## API reference
 
