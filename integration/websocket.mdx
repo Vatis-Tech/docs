@@ -30,8 +30,11 @@ The `Egress Service` can be used along side with the `WS Gateway` to retrieve th
             S->>C: Response
         end
 
+        note over S,C: All client data sent
         C->>S: End of stream
+        note over S,C: Wait for the last responses
         S->>C: Response
+        C-->>S: keep-alive
         S->>C: End of stream
         S-->>C: Normal connection close
     ```
