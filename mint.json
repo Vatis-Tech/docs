@@ -54,7 +54,8 @@
     {
       "group": "Infrastructure",
       "pages": [
-        "infrastructure/data-retention"
+        "infrastructure/data-retention",
+        "infrastructure/configuration-patches"
       ]
     },
     {
