@@ -17,6 +17,7 @@ The `Egress Service` can be used along side with the `WS Gateway` to retrieve th
         participant S as Server
 
         C->>S: Initiate stream
+        C-->>S: Send configuration
         S->>C: Return stream metada
 
         loop Exchange messages
@@ -55,9 +56,11 @@ Generate a bearer token using the [authentication endpoint](/api-reference/commo
 
 
 ## Configuration
-The stream configuration options will be passed as query parameters to the websocket connection URL.
+The stream configuration options will be passed as query parameters to the websocket connection URL or using the configuration message.
 
-For more details, please check the [WS Gateway API Reference](/api-reference/introduction.mdx) and the properties of the stream configuration template you're planning to use.
+By default, no configuration message is expected, and sending one will result in an error. To enable the configuration message, set the configuration message query parameter in the connection URL, then send the configuration message after the connection is established. Learn about configuration patches [here](/infrastructure/configuration-patches).
+
+For more details, please check the [WS Gateway API Reference](/api-reference/introduction) and the properties of the stream configuration template you're planning to use.
 
 ## Stream metadata
 Right after the client connects, and attempt to create the stream is made. If successful, a `stream metadata` message will be sent to the client.
