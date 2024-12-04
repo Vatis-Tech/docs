@@ -1,18 +1,23 @@
 ---
 title: 'Authentication'
-description: 'Obtain API access token'
+description: 'Authenticate to Vatis Streams API'
 ---
+
+The Vatis Streams API offers the following authentication schemas:
+- **Client credentials**: Authenticate using the `Client Id` and `Client Secret` provided by Vatis Tech Platform
+- **Authorization token**: Authenticate using an `access_token` obtained by exchanging the client credentials
+- **API Key**: Authenticate using an `api key` provided by Vatis Tech Platform
 
 <Tabs>
     <Tab title="Client credentials">
         <Steps>
             <Step title='Get client credentials'>
-                Get the `Client Id` and `Client Secret` from your Vatis Tech Platform account
+                Get the `Client Id` and `Client Secret` from your [API Dashboard](https://vatis.tech/app/playground/transcribe)
             </Step>
             <Step title="Set the client credentials">
                 There are two ways to set the client credentials on each request:
-                1. Set the `X-Client-Id` and `X-Client-Secret` as headers
-                2. Set the `client_id` and `client_secret` as query parameters
+                1. Set the `X-Client-Id` and `X-Client-Secret` headers
+                2. Set the `client_id` and `client_secret` query parameters
 
                 <Warning>Send the credentials as query parameters with extra caution as they may get logged</Warning>
             </Step>
@@ -23,17 +28,19 @@ description: 'Obtain API access token'
             <Step title='Get client credentials'>
                 Get the `Client Id` and `Client Secret` from your Vatis Tech Platform account
             </Step>
-             <Step title='Exchange for access token'>
-                Send a `POST` request with the following parameters:
+             <Step title='Exchange credentials for access token'>
+                Request the access token as illustrated below:
 
-                 ```json
-                 {
-                    "grant_type": "client_credentials",
-                    "client_id": "YOUR_CLIENT_ID",
-                    "client_secret": "YOUR_CLIENT_SECRET"
-                 }
-                 ```
-                <Note>The actual request will be shown in the workflows</Note>
+                ```bash
+                 curl --request POST \
+                  --url https://auth.vatis.tech/realms/vatistech/protocol/openid-connect/token \
+                  --header 'Content-Type: application/x-www-form-urlencoded' \
+                  --data 'client_id=string' \
+                  --data 'client_secret=string' \
+                  --data grant_type=client_credentials
+                ```
+
+                <Tip>[Try it out](https://docs.vatis.tech/api-reference/commons/authenticate)</Tip>
             </Step>
             <Step title='Extract the access token'>
                 In the response, you will get an `access_token` which you can use to authenticate your requests.
@@ -54,6 +61,20 @@ description: 'Obtain API access token'
                 2. Set the `access_token` as a query parameter having the token as the value
 
                 <Note>It's recommended to set the token as a header</Note>
+            </Step>
+        </Steps>
+    </Tab>
+     <Tab title="API key">
+        <Steps>
+            <Step title='Get the API key'>
+                Get the `API key` from your [API Dashboard](https://vatis.tech/app/playground/transcribe)
+            </Step>
+            <Step title="Set the API key">
+                There are two ways to set the API key on each subsequent request:
+                1. Set the `Authorization` header with the `Basic [api_key]` value
+                2. Set the `access_token` as a query parameter having the API key as the value
+
+                <Warning>Send the API key as query parameter with extra caution as it may get logged</Warning>
             </Step>
         </Steps>
     </Tab>
