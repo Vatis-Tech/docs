@@ -1,0 +1,15 @@
+<ParamField query="language" type="string" default="none">
+    The language as country [ISO code](/api-reference/auxiliaries/transcription-languages) to transcribe the audio to. When not specified, it is automatically detected.
+</ParamField>
+
+<ParamField query="noSpeechThreshold" type="float" default="0.5">
+    The threshold value to consider a segment as a speech segment. The value ranges from 0 to 1.
+</ParamField>
+
+<ParamField query="vad" type="bool" default="true">
+    Enable or disable voice activity detection. Possible values: `true` or `false`.
+</ParamField>
+
+<ParamField query="splitStereo" type="bool" default="false">
+    Enable or disable splitting stereo audio into two mono audio streams. Possible values: `true` or `false`.
+</ParamField>

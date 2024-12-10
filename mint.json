@@ -45,6 +45,13 @@
       ]
     },
     {
+      "group": "Speech to Text",
+      "pages": [
+        "speech-to-text/batch-transcription",
+        "speech-to-text/speaker-diarization"
+      ]
+    },
+    {
       "group": "Diagrams",
       "pages": [
         "diagrams/system-overview",
@@ -87,6 +94,25 @@
       "group": "Auxiliaries",
       "pages": [
         "api-reference/auxiliaries/transcription-languages"
+      ]
+    },
+    {
+      "group": "Schemas",
+      "pages": [
+        {
+          "group": "Egress",
+          "pages": [
+            "api-reference/schemas/egress/transcription-response",
+            "api-reference/schemas/egress/diarization-response",
+            "api-reference/schemas/egress/llm-response"
+          ]
+        },
+        {
+          "group": "Export",
+          "pages": [
+            "api-reference/schemas/export/audio-intelligence-response"
+          ]
+        }
       ]
     },
     {
@@ -161,6 +187,7 @@
     "api-reference/openapi/egress-service.json",
     "api-reference/openapi/notification-service.json",
     "api-reference/openapi/export-service.json",
-    "api-reference/openapi/usage-service.json"
+    "api-reference/openapi/usage-service.json",
+    "api-reference/openapi/schema-server.json"
   ]
 }

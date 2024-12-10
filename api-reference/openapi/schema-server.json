@@ -1,0 +1,2402 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Vatis Schemas Server",
+    "description": "Vatis Schemas Server API",
+    "version": "0.2.18"
+  },
+  "servers": [
+    {
+      "url": "https://schema.vatis.tech",
+      "description": "Default server"
+    }
+  ],
+  "paths": {},
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "internalErrorName": {
+            "type": "string"
+          },
+          "nestedErrors": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "ResponseMessageDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "KEEP_ALIVE",
+              "END_OF_STREAM",
+              "ERROR",
+              "BINARY",
+              "RESPONSE",
+              "STREAM_METADATA",
+              "CONFIGURATION"
+            ]
+          },
+          "response": {
+            "$ref": "#/components/schemas/StreamSinkMessageDto"
+          }
+        },
+        "description": "Response sent by the server."
+      },
+      "KeepAliveMessageDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "KEEP_ALIVE",
+              "END_OF_STREAM",
+              "ERROR",
+              "BINARY",
+              "RESPONSE",
+              "STREAM_METADATA",
+              "CONFIGURATION"
+            ]
+          }
+        },
+        "description": "Message for keeping the connection alive. Sent by the client to the server. This is equivalent to a ping message, but without requesting a pong response."
+      },
+      "StreamConfigurationPatchDto": {
+        "type": "object",
+        "properties": {
+          "jsonPatches": {
+            "type": "array",
+            "description": "List of encoded JSON Patch objects or arrays of objects based on RFC-6902",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "Stream configuration patch request body"
+      },
+      "UsageReportItemMeasurementsDto": {
+        "type": "object",
+        "properties": {
+          "executionTime": {
+            "type": "string",
+            "description": "The aggregated processing time in milliseconds represented as string"
+          },
+          "storageSize": {
+            "type": "string",
+            "description": "The aggregated storage size in bytes represented as string"
+          },
+          "ingressSize": {
+            "type": "string",
+            "description": "The aggregated ingress size in bytes represented as string"
+          },
+          "egressSize": {
+            "type": "string",
+            "description": "The aggregated egress size in bytes represented as string"
+          },
+          "processedAudioLength": {
+            "type": "string",
+            "description": "The aggregated processed audio length in milliseconds represented as string"
+          },
+          "processedTokens": {
+            "type": "string",
+            "description": "The aggregated processed tokens represented as string"
+          },
+          "processedInputTokens": {
+            "type": "string",
+            "description": "The aggregated processed input tokens represented as string"
+          },
+          "processedOutputTokens": {
+            "type": "string",
+            "description": "The aggregated processed output tokens represented as string"
+          }
+        },
+        "description": "Aggregated measurements for a usage report item"
+      },
+      "DiarizationResponseDto": {
+        "type": "object",
+        "properties": {
+          "speakerIds": {
+            "type": "array",
+            "description": "List of speaker ids. The length will always be at least 1. In case of overlapping, the array may contain multiple speakers",
+            "items": {
+              "type": "string"
+            }
+          },
+          "overlap": {
+            "type": "boolean",
+            "description": "Indicates and overlap"
+          },
+          "start": {
+            "type": "integer",
+            "description": "The start time of the current speaker(s) turn in milliseconds",
+            "format": "int64"
+          },
+          "end": {
+            "type": "integer",
+            "description": "The end time of the current speaker(s) turn in milliseconds",
+            "format": "int64"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Additional metadata"
+          }
+        },
+        "description": "Response from a diarization service"
+      },
+      "ErrorMessageDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "KEEP_ALIVE",
+              "END_OF_STREAM",
+              "ERROR",
+              "BINARY",
+              "RESPONSE",
+              "STREAM_METADATA",
+              "CONFIGURATION"
+            ]
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": "Message indicating an error on the server-side. This message should always be sent by the server."
+      },
+      "UtteranceDto": {
+        "type": "object",
+        "properties": {
+          "speakerIds": {
+            "type": "array",
+            "description": "List of speaker ids. The length will always be at least 1. In case of overlapping, the array may contain multiple speakers",
+            "items": {
+              "type": "string"
+            }
+          },
+          "overlap": {
+            "type": "boolean",
+            "description": "Indicates and overlap"
+          },
+          "channel": {
+            "type": "string",
+            "description": "The channel name in the input audio the utterance associated to"
+          },
+          "start": {
+            "type": "integer",
+            "description": "The start time of the current speaker(s) turn in milliseconds",
+            "format": "int64"
+          },
+          "end": {
+            "type": "integer",
+            "description": "The end time of the current speaker(s) turn in milliseconds",
+            "format": "int64"
+          },
+          "text": {
+            "type": "string",
+            "description": "Transcription text"
+          },
+          "words": {
+            "type": "array",
+            "description": "Transcription words",
+            "items": {
+              "$ref": "#/components/schemas/TranscriptionWordDto"
+            }
+          }
+        },
+        "description": "Transcription utterances split by diarized speakers"
+      },
+      "GroupStreamJoinedEventDto": {
+        "type": "object",
+        "properties": {
+          "groupId": {
+            "type": "string",
+            "description": "The id of the group that has changed.",
+            "format": "uuid"
+          },
+          "streamId": {
+            "type": "string",
+            "description": "The id of the stream that has been joined to the group.",
+            "format": "uuid"
+          },
+          "subject": {
+            "type": "string",
+            "description": "The subject of the underlying resource"
+          },
+          "streamSubject": {
+            "type": "string",
+            "description": "The subject of the stream"
+          }
+        },
+        "description": "Event emitted when a stream is joined to a group"
+      },
+      "ProcessorReservationConfirmationDto": {
+        "type": "object",
+        "properties": {
+          "stream": {
+            "$ref": "#/components/schemas/StreamDto"
+          },
+          "processorConfigurationId": {
+            "type": "string",
+            "description": "Configuration id for this processor"
+          }
+        },
+        "description": "Processor reservation request object"
+      },
+      "ProcessorFeaturesDto": {
+        "type": "object",
+        "properties": {
+          "support": {
+            "type": "array",
+            "description": "Features the processor supports from the downstream processor. The type is tech.vatis.schema.stream.processor.ProcessorFeatureNameDto",
+            "items": {
+              "type": "string"
+            }
+          },
+          "require": {
+            "type": "array",
+            "description": "Features the processor requires from the downstream processor. The type is tech.vatis.schema.stream.processor.ProcessorFeatureNameDto",
+            "items": {
+              "type": "string"
+            }
+          },
+          "implement": {
+            "type": "array",
+            "description": "Features the processor implements and are forwarded upstream. The type is tech.vatis.schema.stream.processor.ProcessorFeatureNameDto",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requireSupport": {
+            "type": "array",
+            "description": "Features the upstream processor must support. All feature present here must also be included in the 'implement' list. The type is tech.vatis.schema.stream.processor.ProcessorFeatureNameDto",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "Objects representing processor features declaration"
+      },
+      "SentimentAnalysisDto": {
+        "type": "object",
+        "properties": {
+          "segments": {
+            "type": "array",
+            "description": "Sentiment analysis segments",
+            "items": {
+              "$ref": "#/components/schemas/SentimentAnalysisContentDto"
+            }
+          },
+          "summary": {
+            "$ref": "#/components/schemas/SentimentAnalysisSummaryDto"
+          }
+        },
+        "description": "Sentiment analysis response"
+      },
+      "CommandArgumentDto": {
+        "type": "object",
+        "properties": {
+          "argument": {
+            "type": "string",
+            "description": "Argument"
+          },
+          "value": {
+            "type": "string",
+            "description": "Value"
+          }
+        },
+        "description": "Command-line argument for FFmpeg or FFprobe"
+      },
+      "FFprobePropertiesDto": {
+        "type": "object",
+        "properties": {
+          "probeSize": {
+            "type": "string",
+            "description": "Number of bytes to probe from the input stream. Null defaults to processor default"
+          },
+          "analyzeDuration": {
+            "type": "string",
+            "description": "Duration in microseconds to probe from the input stream. Null defaults to processor default"
+          },
+          "commandArguments": {
+            "type": "array",
+            "description": "Arguments used for the probing command",
+            "items": {
+              "$ref": "#/components/schemas/CommandArgumentDto"
+            }
+          }
+        },
+        "description": "Properties for probing the input. The probing ends when either of its specified limits is reached"
+      },
+      "VoiceActivityDetectorPropertiesDto": {
+        "type": "object",
+        "properties": {
+          "speechThreshold": {
+            "type": "number",
+            "description": "Confidence threshold for speech detection",
+            "format": "float"
+          },
+          "minimumSpeechDurationMillis": {
+            "type": "integer",
+            "description": "Minimum duration of voice activity in milliseconds to be considered as speech",
+            "format": "int32"
+          },
+          "minimumSilenceDurationMillis": {
+            "type": "integer",
+            "description": "Minimum duration of trailing silence in milliseconds needed to filter out the packet",
+            "format": "int32"
+          },
+          "forwardNoSpeechFrames": {
+            "type": "boolean",
+            "description": "Forward frames with no speech detected"
+          },
+          "includeAudioPayload": {
+            "type": "boolean",
+            "description": "Include audio payload in the output"
+          },
+          "includeVoiceActivityRanges": {
+            "type": "boolean",
+            "description": "Include voice activity ranges header with details ranges of detected speech activity"
+          }
+        },
+        "description": "Voice Activity Detector properties"
+      },
+      "ProcessorReservationResponseDto": {
+        "type": "object",
+        "properties": {
+          "reservationId": {
+            "type": "string",
+            "description": "Reservation confirmation key",
+            "format": "uuid"
+          }
+        },
+        "description": "Successful reservation response"
+      },
+      "SubscriptionDto": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "string",
+            "description": "The subscription name"
+          },
+          "topic": {
+            "type": "string",
+            "description": "Fully qualified topic name (including tenant, namespace)"
+          },
+          "messageSchema": {
+            "type": "string",
+            "description": "Fully qualified schema name"
+          },
+          "connectionOptions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Properties for connecting to the subscription"
+          },
+          "headers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Subscription headers. Pattern: X-Vat-Sub-[a-zA-Z0-9\\-]+$"
+          }
+        },
+        "description": "Information regarding a subscription to a topic"
+      },
+      "LlmPropertiesDto": {
+        "type": "object",
+        "properties": {
+          "summary": {
+            "$ref": "#/components/schemas/PredefinedPromptPropertiesDto"
+          },
+          "sentimentAnalysis": {
+            "$ref": "#/components/schemas/PredefinedPromptPropertiesDto"
+          },
+          "topicDetection": {
+            "$ref": "#/components/schemas/PredefinedPromptPropertiesDto"
+          },
+          "autoChapter": {
+            "$ref": "#/components/schemas/PredefinedPromptPropertiesDto"
+          },
+          "intentDetection": {
+            "$ref": "#/components/schemas/PredefinedPromptPropertiesDto"
+          },
+          "askAnything": {
+            "type": "array",
+            "description": "List of custom ask-anything prompts to be used in the LLM processor. The generated promptId will be the index of the prompt in the list, if not explicitly set.",
+            "items": {
+              "$ref": "#/components/schemas/PromptPropertiesDto"
+            }
+          }
+        },
+        "description": "Configuration properties for the LLM processor"
+      },
+      "TranscriptionDto": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Transcription text"
+          },
+          "words": {
+            "type": "array",
+            "description": "Transcription words",
+            "items": {
+              "$ref": "#/components/schemas/TranscriptionWordDto"
+            }
+          }
+        },
+        "description": "Transcription response"
+      },
+      "StreamConfigurationDto": {
+        "type": "object",
+        "properties": {
+          "streamConfigurationTemplateId": {
+            "type": "string",
+            "description": "The ID of the underlying stream configuration template"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/TopicDto"
+          },
+          "dataSinks": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/TopicDto"
+            },
+            "description": "Association of processor id and corresponding sink topic. Only the processor with a sink destination are present."
+          },
+          "processors": {
+            "type": "array",
+            "description": "Configurations array of stream processors objects",
+            "items": {
+              "$ref": "#/components/schemas/ProcessorConfigurationDto"
+            }
+          }
+        },
+        "description": "Configuration object of a stream"
+      },
+      "ConfigurationMessageDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "KEEP_ALIVE",
+              "END_OF_STREAM",
+              "ERROR",
+              "BINARY",
+              "RESPONSE",
+              "STREAM_METADATA",
+              "CONFIGURATION"
+            ]
+          },
+          "patches": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            },
+            "description": "Map of configuration patches. The key is the configuration path or alias, the value is the new value. The default operation is 'replace'. To add, prefix de value with '+'. To remove, prefix the value with '-'. To escape the prefix, use '\\+' or '\\-'"
+          }
+        },
+        "description": "Configuration message sent by the client."
+      },
+      "StreamComponentsDto": {
+        "type": "object",
+        "properties": {
+          "streamId": {
+            "type": "string",
+            "description": "Stream id. It can be either auto-generated or specified by the user",
+            "format": "uuid"
+          },
+          "groupId": {
+            "type": "string",
+            "description": "The id of the streams group",
+            "format": "uuid"
+          },
+          "state": {
+            "type": "string",
+            "description": "Stream's state",
+            "enum": [
+              "READY",
+              "COMPLETED",
+              "FAILED",
+              "EXPIRED"
+            ]
+          },
+          "stateDescription": {
+            "type": "string",
+            "description": "Description of the current stream state, most probably the error details"
+          },
+          "stateChangedTimestamp": {
+            "type": "string",
+            "description": "Timestamp of the last stream state change",
+            "format": "date-time"
+          },
+          "gateway": {
+            "$ref": "#/components/schemas/GatewayComponentDto"
+          },
+          "processors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProcessorComponentDto"
+            }
+          }
+        },
+        "description": "Description of the state of the components of a stream"
+      },
+      "SentimentAnalysisSummaryDto": {
+        "type": "object",
+        "properties": {
+          "channels": {
+            "type": "array",
+            "description": "The channel number of the analyzed text",
+            "items": {
+              "$ref": "#/components/schemas/SentimentAnalysisChannelSummaryDto"
+            }
+          },
+          "negativeCount": {
+            "type": "integer",
+            "description": "The number of negative sentiment",
+            "format": "int32"
+          },
+          "positiveCount": {
+            "type": "integer",
+            "description": "The number of positive sentiment",
+            "format": "int32"
+          },
+          "neutralCount": {
+            "type": "integer",
+            "description": "The number of neutral sentiment",
+            "format": "int32"
+          },
+          "averageScore": {
+            "type": "number",
+            "description": "The average sentiment score",
+            "format": "double"
+          }
+        },
+        "description": "Sentiment Analysis Summary DTO"
+      },
+      "AudioIntelligenceResponseDto": {
+        "type": "object",
+        "properties": {
+          "transcription": {
+            "$ref": "#/components/schemas/TranscriptionDto"
+          },
+          "utterances": {
+            "type": "array",
+            "description": "Utterances diarized by speakers in the audio",
+            "items": {
+              "$ref": "#/components/schemas/UtteranceDto"
+            }
+          },
+          "summary": {
+            "$ref": "#/components/schemas/SummaryDto"
+          },
+          "askAnything": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/AskAnythingDto"
+            },
+            "description": "Ask anything response for each given prompt. The key is the prompt id, and the value is the response."
+          },
+          "sentimentAnalysis": {
+            "$ref": "#/components/schemas/SentimentAnalysisDto"
+          }
+        },
+        "description": "Broad response aggregating audio intelligence data"
+      },
+      "IntentDetectionContentDto": {
+        "type": "object",
+        "description": "Intent Detection response content"
+      },
+      "LiveAsrProcessorPropertiesDto": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "type": "string",
+            "description": "Audio language. If not specified, defaults to processors default language (generally 'en')"
+          },
+          "modelOption": {
+            "type": "string",
+            "description": "Model option to use for ASR"
+          },
+          "multichannel": {
+            "type": "boolean",
+            "description": "Whether to use multichannel audio processing"
+          },
+          "finalFrameStrategy": {
+            "type": "string",
+            "description": "Strategy to use for determining final frame. Accepted values are: 'transcription' - when the transcription cannot be improved any further, 'utterance' - when a utterance has semantically ended"
+          },
+          "utteranceEndSilence": {
+            "type": "integer",
+            "description": "Silence duration in milliseconds to consider as end of utterance. Used only when finalFrameStrategy is 'utterance'",
+            "format": "int64"
+          }
+        },
+        "description": "Properties for Live ASR processor"
+      },
+      "SentimentAnalysisChannelSummaryDto": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "integer",
+            "description": "The channel number of the analyzed text",
+            "format": "int32"
+          },
+          "negativeCount": {
+            "type": "integer",
+            "description": "The number of negative sentiment",
+            "format": "int32"
+          },
+          "positiveCount": {
+            "type": "integer",
+            "description": "The number of positive sentiment",
+            "format": "int32"
+          },
+          "neutralCount": {
+            "type": "integer",
+            "description": "The number of neutral sentiment",
+            "format": "int32"
+          },
+          "averageScore": {
+            "type": "number",
+            "description": "The average sentiment score",
+            "format": "double"
+          }
+        },
+        "description": "Sentiment Analysis Summary for a channel"
+      },
+      "StreamUsageDto": {
+        "type": "object",
+        "properties": {
+          "creatorId": {
+            "type": "string",
+            "description": "The id of the user who created the stream"
+          },
+          "groupId": {
+            "type": "string",
+            "description": "The id of the group the stream belongs to",
+            "format": "uuid"
+          },
+          "streamId": {
+            "type": "string",
+            "description": "The id of the stream",
+            "format": "uuid"
+          },
+          "streamConfigurationTemplateId": {
+            "type": "string",
+            "description": "The id of the stream configuration template"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency of the usages. If null, the usages are expressed in credits"
+          },
+          "processors": {
+            "type": "array",
+            "description": "The usage of each processor in the stream.",
+            "items": {
+              "$ref": "#/components/schemas/UsageRecordDto"
+            }
+          }
+        },
+        "description": "Aggregated current usage of a stream"
+      },
+      "EgressQueryDto": {
+        "type": "object",
+        "properties": {
+          "streams": {
+            "type": "array",
+            "description": "List of stream ids to be included or excluded from the group. If the group is specified, the streams must be from the that group, otherwise, the streams must by from the same group.",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "streamsInclusion": {
+            "type": "string",
+            "description": "The inclusion type for the streams. 'INCLUDE' will include the streams in the result, 'EXCLUDE' will exclude the streams from the result and it can only be used when the group is specified.",
+            "enum": [
+              "INCLUDE",
+              "EXCLUDE"
+            ]
+          },
+          "group": {
+            "type": "string",
+            "description": "Group id to filter the output",
+            "format": "uuid"
+          },
+          "count": {
+            "type": "integer",
+            "description": "The number of streams to search if the included stream ids are not specified",
+            "format": "int64"
+          },
+          "tags": {
+            "type": "array",
+            "description": "List of tags to select the sinks",
+            "items": {
+              "type": "string"
+            }
+          },
+          "matchTags": {
+            "type": "string",
+            "description": "The match condition for the tags. 'ALL' will match all the tags, 'ANY' will match any of the tags.",
+            "enum": [
+              "ALL",
+              "ANY"
+            ]
+          },
+          "format": {
+            "type": "string",
+            "description": "The format of the event to be egressed. 'EVENTS' will wrap the result in the event object. 'RAW' will export the results as is, but it's available only for raw result formats (e.g. string, bytes).",
+            "enum": [
+              "EVENTS",
+              "RAW"
+            ]
+          },
+          "acceptFrameType": {
+            "type": "string",
+            "description": "The type of frame to accept. Can be 'partial-final' or 'final'"
+          },
+          "timeout": {
+            "type": "integer",
+            "description": "The timeout in milliseconds to wait for stream creation. Leave null for maximum allowed timeout by the server.",
+            "format": "int64"
+          },
+          "omitPayload": {
+            "type": "boolean",
+            "description": "Flag to exclude the payload from the result. If true, the payload value will be set to 'null'. This is compatible only with 'EVENTS' format."
+          },
+          "excludeNoPayload": {
+            "type": "boolean",
+            "description": "Exclude messages without payload from the result."
+          },
+          "resume": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Key-value pair where the key is the topic name and the value is the message id to resume from, exclusively."
+          }
+        },
+        "description": "Query filter for egressing the stream data"
+      },
+      "TranscriptionWordDto": {
+        "type": "object",
+        "properties": {
+          "word": {
+            "type": "string",
+            "description": "The word. It may contain white characters and punctuation marks. All the words can be joined without any space to form the transcription."
+          },
+          "start": {
+            "type": "integer",
+            "description": "The start time of the word in milliseconds",
+            "format": "int64"
+          },
+          "end": {
+            "type": "integer",
+            "description": "The end time of the word in milliseconds",
+            "format": "int64"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "The confidence of the word",
+            "format": "float"
+          },
+          "language": {
+            "type": "string",
+            "description": "The language of the word"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "The metadata of the word"
+          }
+        },
+        "description": "A word in a transcription"
+      },
+      "SentimentAnalysisContentDto": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The analyzed text"
+          },
+          "sentiment": {
+            "type": "string",
+            "description": "The sentiment of the text",
+            "enum": [
+              "negative",
+              "neutral",
+              "positive"
+            ]
+          },
+          "channel": {
+            "type": "integer",
+            "description": "The channel number of the analyzed text",
+            "format": "int32"
+          },
+          "startTime": {
+            "type": "integer",
+            "description": "The start time in milliseconds of the analyzed text",
+            "format": "int64"
+          },
+          "endTime": {
+            "type": "integer",
+            "description": "The end time in milliseconds of the analyzed text",
+            "format": "int64"
+          },
+          "score": {
+            "type": "number",
+            "description": "The sentiment score of the analyzed text between -1 and 1, where -1 is negative, 0 is neutral and 1 is positive",
+            "format": "double"
+          }
+        },
+        "description": "Sentiment Analysis response content"
+      },
+      "PromptPropertiesDto": {
+        "type": "object",
+        "properties": {
+          "promptId": {
+            "type": "string",
+            "description": "Prompt ID, having up to 64 characters. Null will generate a random ID"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether to enable the prompt or not. If it is not enabled, or the content is null, the prompt will not be processed."
+          },
+          "flushInterval": {
+            "type": "integer",
+            "description": "Accumulate response and flush it after the given interval in milliseconds. The message may be sent earlier if it exceeds a defined size limit. The message may be also sent later if the required context to produce the response is not available.",
+            "format": "int64"
+          },
+          "responseFormat": {
+            "$ref": "#/components/schemas/LlmResponseFormatDto"
+          },
+          "content": {
+            "type": "string",
+            "description": "Prompt content in the context of the upstream results. When null, the prompt is always disabled. It allows template placeholders using the format '{placeholderName}'"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            },
+            "description": "Content placeholders. The key is the placeholder name and the value is the placeholder value"
+          },
+          "systemPrompt": {
+            "type": "string",
+            "description": "System prompt. It allows template placeholders using the format '{placeholderName}'"
+          },
+          "systemPromptProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            },
+            "description": "System prompt placeholders. The key is the placeholder name and the value is the placeholder value"
+          }
+        },
+        "description": "Prompt configuration"
+      },
+      "StreamStateEventDto": {
+        "type": "object",
+        "properties": {
+          "streamId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "groupId": {
+            "type": "string",
+            "description": "Group id of the stream",
+            "format": "uuid"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "COMPLETED",
+              "FAILED",
+              "EXPIRED"
+            ]
+          },
+          "subject": {
+            "type": "string",
+            "description": "Owner of the resource this event relates to"
+          },
+          "stream": {
+            "$ref": "#/components/schemas/StreamDto"
+          }
+        },
+        "description": "Event regarding stream state changed"
+      },
+      "ProcessorReservationStateDto": {
+        "type": "object",
+        "properties": {
+          "maxStreams": {
+            "type": "integer",
+            "description": "The maximum number of streams that can be run on this processor",
+            "format": "int32"
+          },
+          "activeStreams": {
+            "type": "integer",
+            "description": "The number of streams currently running on this processor",
+            "format": "int32"
+          },
+          "reservedStreams": {
+            "type": "integer",
+            "description": "The number of streams that have been reserved on this processor",
+            "format": "int32"
+          },
+          "activeStreamIds": {
+            "type": "array",
+            "description": "List containing the IDs of the active streams on this processor",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        },
+        "description": "Object describing the state of a processor reservation"
+      },
+      "TopicDetectionContentDto": {
+        "type": "object",
+        "description": "Topic Detection response content"
+      },
+      "ProcessorComponentDto": {
+        "type": "object",
+        "properties": {
+          "processorId": {
+            "type": "string",
+            "description": "Processor id"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "RUNNING",
+              "COMPLETED",
+              "WAITING",
+              "ERROR",
+              "CLOSED"
+            ]
+          },
+          "stateChangedTimestamp": {
+            "type": "string",
+            "description": "Timestamp of the last state change for this processor",
+            "format": "date-time"
+          },
+          "stateDescription": {
+            "type": "string",
+            "description": "Description of the current processor state, most probably the error details"
+          }
+        },
+        "description": "Processor component"
+      },
+      "LlmResponseDto": {
+        "type": "object",
+        "properties": {
+          "promptId": {
+            "type": "string",
+            "description": "Corresponding prompt ID"
+          },
+          "sequenceId": {
+            "type": "integer",
+            "description": "Monotonically increasing sequence ID for the responses of the given prompt",
+            "format": "int32"
+          },
+          "responseFormatSpecification": {
+            "type": "string",
+            "description": "LLM response format specification used for the current prompt. 'null' means either no custom format was specified or it was configured to be excluded."
+          },
+          "summary": {
+            "type": "array",
+            "description": "Accumulated Summary responses content",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sentimentAnalysis": {
+            "type": "array",
+            "description": "Accumulated SentimentAnalysis responses content",
+            "items": {
+              "$ref": "#/components/schemas/SentimentAnalysisContentDto"
+            }
+          },
+          "topicDetection": {
+            "type": "array",
+            "description": "Accumulated TopicDetection responses content",
+            "items": {
+              "$ref": "#/components/schemas/TopicDetectionContentDto"
+            }
+          },
+          "autoChapter": {
+            "type": "array",
+            "description": "Accumulated AutoChapter responses content",
+            "items": {
+              "$ref": "#/components/schemas/AutoChapterContentDto"
+            }
+          },
+          "intentDetection": {
+            "type": "array",
+            "description": "Accumulated IntentDetection responses content",
+            "items": {
+              "$ref": "#/components/schemas/IntentDetectionContentDto"
+            }
+          },
+          "askAnything": {
+            "type": "array",
+            "description": "Accumulated AskAnything responses content",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sentimentAnalysisSummary": {
+            "$ref": "#/components/schemas/SentimentAnalysisSummaryDto"
+          }
+        },
+        "description": "LLM response"
+      },
+      "FasterWhisperProcessorPropertiesDto": {
+        "type": "object",
+        "properties": {
+          "vad": {
+            "type": "boolean",
+            "description": "Enable Voice Activity Detection (VAD) for eliminating silent parts of the audio stream"
+          },
+          "noSpeechThreshold": {
+            "type": "number",
+            "description": "Threshold for VAD to consider a frame as silent",
+            "format": "double"
+          },
+          "language": {
+            "type": "string",
+            "description": "Language ISO code (e.g. 'en', 'ro') of the audio stream. If null, it will be auto-detected"
+          },
+          "splitStereo": {
+            "type": "boolean",
+            "description": "Split stereo audio into two mono audio to be transcribed separately"
+          }
+        },
+        "description": "Properties for FasterWhisperProcessor"
+      },
+      "PredefinedPromptPropertiesDto": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether to enable the prompt or not. If it is not enabled, the prompt will not be processed."
+          },
+          "flushInterval": {
+            "type": "integer",
+            "description": "Accumulate response and flush it after the given interval in milliseconds. The message may be sent earlier if it exceeds a defined size limit. The message may be also sent later if the required context to produce the response is not available.",
+            "format": "int64"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            },
+            "description": "Content placeholders. The key is the placeholder name and the value is the placeholder value"
+          }
+        },
+        "description": "Prompt configuration"
+      },
+      "WebhookEndpointDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The id of the webhook endpoint"
+          },
+          "url": {
+            "type": "string",
+            "description": "The url of the webhook endpoint"
+          },
+          "events": {
+            "type": "array",
+            "description": "The events that the webhook endpoint should be triggered on",
+            "items": {
+              "type": "string"
+            }
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the webhook endpoint is enabled"
+          },
+          "description": {
+            "type": "string",
+            "description": "A description of the webhook endpoint"
+          }
+        },
+        "description": "Object for creating, updating and listing webhook endpoints"
+      },
+      "LlmResponseFormatDto": {
+        "type": "object",
+        "properties": {
+          "specification": {
+            "type": "string",
+            "description": "Json Schema specification as defined here: https://json-schema.org/draft/2020-12/release-notes"
+          },
+          "strict": {
+            "type": "boolean",
+            "description": "If the 'strict' mode is enabled and the input data does not match the schema or the schema is invalid, the processor will throw an exception"
+          },
+          "includeInResponse": {
+            "type": "boolean",
+            "description": "If the 'includeInResponse' mode is enabled, the processor will include the schema in the LLM response. This is useful when multiple prompts are specified."
+          }
+        },
+        "description": "Output schema for LLM processor responses"
+      },
+      "UsageReportItemDto": {
+        "type": "object",
+        "properties": {
+          "credits": {
+            "type": "string",
+            "description": "The aggregated number of credits consumed represented as string"
+          },
+          "startTimestamp": {
+            "type": "integer",
+            "description": "The start timestamp of the aggregated measurements as epoch millis",
+            "format": "int64"
+          },
+          "endTimestamp": {
+            "type": "integer",
+            "description": "The end timestamp of the aggregated measurements as epoch millis",
+            "format": "int64"
+          },
+          "streamsCount": {
+            "type": "integer",
+            "description": "The number of streams that contributed to the aggregated measurements",
+            "format": "int64"
+          },
+          "operationType": {
+            "type": "string",
+            "description": "The operation type of the aggregated measurements, if the aggregation is based on a specific operation type",
+            "enum": [
+              "BATCH_TRANSCRIPTION",
+              "REAL_TIME_TRANSCRIPTION",
+              "SPEAKERS_DIARIZATION",
+              "VOICE_ACTIVITY_DETECTION",
+              "TRANSCODE",
+              "TRANSLATION",
+              "SUMMARIZATION",
+              "SENTIMENT_ANALYSIS",
+              "NO_OPERATION",
+              "LLM_PROCESSING"
+            ]
+          },
+          "streamConfigurationTemplateId": {
+            "type": "string",
+            "description": "The stream configuration template id of the aggregated measurements, if the aggregation is based on a specific stream configuration template"
+          },
+          "measurements": {
+            "$ref": "#/components/schemas/UsageReportItemMeasurementsDto"
+          }
+        },
+        "description": "Usage report item"
+      },
+      "StreamDto": {
+        "type": "object",
+        "properties": {
+          "streamId": {
+            "type": "string",
+            "description": "Stream id. It can be either auto-generated or specified by the user",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "Arbitrary name of the stream"
+          },
+          "groupId": {
+            "type": "string",
+            "description": "The id of the streams group",
+            "format": "uuid"
+          },
+          "configuration": {
+            "$ref": "#/components/schemas/StreamConfigurationDto"
+          },
+          "createdTimestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "creatorId": {
+            "type": "string",
+            "description": "Id of the user that created this stream"
+          },
+          "groupCreatorId": {
+            "type": "string",
+            "description": "Id of the user that created the group of this stream. This should save round-trips to stream-service for access control checks"
+          },
+          "state": {
+            "type": "string",
+            "description": "Stream's state",
+            "enum": [
+              "READY",
+              "COMPLETED",
+              "FAILED",
+              "EXPIRED"
+            ]
+          },
+          "stateDescription": {
+            "type": "string",
+            "description": "Description of the current stream state, most probably the error details"
+          },
+          "finalizedTimestamp": {
+            "type": "string",
+            "description": "Timestamp when the stream was finalized",
+            "format": "date-time"
+          }
+        },
+        "description": "Stream object representing the current state of the stream"
+      },
+      "ProcessorReservationRequestDto": {
+        "type": "object",
+        "properties": {
+          "processorConfiguration": {
+            "$ref": "#/components/schemas/ProcessorConfigurationDto"
+          },
+          "reservationTimeoutMillis": {
+            "type": "integer",
+            "description": "Reservation timeout",
+            "format": "int64"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Owner of the underlying stream"
+          }
+        },
+        "description": "Processor reservation request object"
+      },
+      "TranscriptionResponseDto": {
+        "type": "object",
+        "properties": {
+          "transcription": {
+            "type": "string",
+            "description": "The transcription of the audio"
+          },
+          "words": {
+            "type": "array",
+            "description": "The words of the transcription. It may be null if stated not to include them",
+            "items": {
+              "$ref": "#/components/schemas/TranscriptionWordDto"
+            }
+          },
+          "start": {
+            "type": "integer",
+            "description": "The start time of the segment in milliseconds",
+            "format": "int64"
+          },
+          "end": {
+            "type": "integer",
+            "description": "The end time of the segment in milliseconds",
+            "format": "int64"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "The metadata of the segment"
+          },
+          "channel": {
+            "type": "integer",
+            "description": "The audio channel of the segment",
+            "format": "int32"
+          },
+          "utterance": {
+            "type": "boolean",
+            "description": "Whether the segment is an utterance end"
+          }
+        },
+        "description": "Response from the transcription service"
+      },
+      "WhisperGpuProcessorPropertiesDto": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "type": "string",
+            "description": "The language of the Whisper GPU processor. Default is None, meaning auto-detect. When specified, this will be the preferred or enforced language. The format is a 2-charater ISO 639-1 language code."
+          },
+          "allowedLanguages": {
+            "type": "array",
+            "description": "The list of languages that the Whisper GPU processor is allowed to use. When the preferred language is specified, it will be used as much as possible. Otherwise, only languages from this list will be used by the highest confidence. The format is a 2-charater ISO 639-1 language code.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "includeWords": {
+            "type": "boolean",
+            "description": "Whether to include words in the output"
+          }
+        },
+        "description": "Properties for the Whisper GPU processor"
+      },
+      "AutoChapterContentDto": {
+        "type": "object",
+        "description": "Auto Chapter response content"
+      },
+      "CreateStreamConfigurationTemplateDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Template id. Set when updating, leave blank when inserting"
+          },
+          "name": {
+            "type": "string",
+            "description": "Template name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional description of the configuration"
+          },
+          "dataSourceSchema": {
+            "type": "string",
+            "description": "Fully qualified schema name for the input data"
+          },
+          "processors": {
+            "type": "array",
+            "description": "Processor configuration templates",
+            "items": {
+              "$ref": "#/components/schemas/CreateProcessorConfigurationTemplateDto"
+            }
+          },
+          "patchAliases": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Map of aliases of relative JSON paths to this template. The key is the alias and the value is the relative JSON path. Name tha alias as 'stream.<property>', unless is a well-known property and it can be simply named as '<property>'. '/' are not allowed"
+          }
+        },
+        "description": "Creation object of a template for stream configuration"
+      },
+      "AskAnythingDto": {
+        "type": "object",
+        "properties": {
+          "promptId": {
+            "type": "string",
+            "description": "The id of the prompt used to generate this response"
+          },
+          "content": {
+            "type": "string",
+            "description": "The response content"
+          },
+          "responseFormatSpecification": {
+            "type": "string",
+            "description": "LLM response format specification used for the current prompt. 'null' means either no custom format was specified or it was configured to be excluded."
+          }
+        },
+        "description": "Ask Anything response"
+      },
+      "WebhookEventDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the event"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of the event"
+          },
+          "webhookEndpointId": {
+            "type": "string",
+            "description": "ID of the webhook endpoint that the event is sent to"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Timestamp of the event",
+            "format": "date-time"
+          },
+          "payloadSchema": {
+            "type": "string",
+            "description": "Fully qualified name of the schema of the payload"
+          },
+          "payload": {
+            "type": "object",
+            "description": "Payload of the event",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GroupStateChangedEventDto"
+              },
+              {
+                "$ref": "#/components/schemas/GroupStreamJoinedEventDto"
+              },
+              {
+                "$ref": "#/components/schemas/StreamGatewayStateEventDto"
+              },
+              {
+                "$ref": "#/components/schemas/StreamProcessorStateEventDto"
+              },
+              {
+                "$ref": "#/components/schemas/StreamStateEventDto"
+              }
+            ]
+          }
+        },
+        "description": "Webhook event sent to the target webhook endpoint"
+      },
+      "TranscoderProcessorPropertiesDto": {
+        "type": "object",
+        "properties": {
+          "inputFormat": {
+            "type": "string",
+            "description": "Media input format. If null, it'll be auto-detected"
+          },
+          "outputFormat": {
+            "type": "string",
+            "description": "Media output format"
+          },
+          "outputBufferSize": {
+            "type": "integer",
+            "description": "Output buffer size in bytes. This represents the size of the output packets",
+            "format": "int64"
+          },
+          "commandArguments": {
+            "type": "array",
+            "description": "Arguments used for the transcoding command",
+            "items": {
+              "$ref": "#/components/schemas/CommandArgumentDto"
+            }
+          },
+          "ffprobe": {
+            "$ref": "#/components/schemas/FFprobePropertiesDto"
+          },
+          "mode": {
+            "type": "integer",
+            "description": "Transcoding mode. 0: streaming, 1: file, null: auto-detect. File mode is used for transcoding media type that require re-reading the input data. This comes with an increased latency making it not suitable for live streaming, and limitation of upload size",
+            "format": "int32"
+          }
+        }
+      },
+      "ProcessorEgressConfigurationDto": {
+        "type": "object",
+        "properties": {
+          "persist": {
+            "type": "boolean",
+            "description": "Whether to persist the results of the processor. Only final results will be persisted."
+          },
+          "sink": {
+            "type": "boolean",
+            "description": "Mark this processor as sink to capture the output. By default, all leaf processors are sinks."
+          },
+          "tags": {
+            "type": "array",
+            "description": "Tags of the sink. Only used when sink is true. Tags can be used to select the sinks. By default, all sink processors will have the processor id as a tag, and each leaf processor will additionally have the 'main' tag. They must respect the pattern '^[a-zA-Z0-9_.-]+$' and be up to 255 characters long. The maximum number of tags is 10.",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "Configuration for persisting and filtering the results of a processor"
+      },
+      "StreamProcessorStateEventDto": {
+        "type": "object",
+        "properties": {
+          "streamId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "processorConfigurationId": {
+            "type": "string",
+            "description": "Processor id as defined in the declaration"
+          },
+          "state": {
+            "type": "string",
+            "description": "The new state of the processor",
+            "enum": [
+              "RUNNING",
+              "COMPLETED",
+              "WAITING",
+              "ERROR",
+              "CLOSED"
+            ]
+          },
+          "details": {
+            "type": "string",
+            "description": "Optional details about the state change"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Owner of the resource this event relates to"
+          }
+        },
+        "description": "Event regarding the state of a stream processor"
+      },
+      "StreamCreationRequestDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "groupId": {
+            "type": "string",
+            "description": "Stream group id. When null, a group having the UUID of the stream will be created",
+            "format": "uuid"
+          },
+          "streamConfigurationTemplateId": {
+            "type": "string"
+          },
+          "patches": {
+            "type": "array",
+            "description": "List of encoded JSON Patch objects or arrays of objects based on RFC-6902",
+            "items": {
+              "type": "string"
+            }
+          },
+          "gatewayHost": {
+            "type": "string",
+            "description": "Cluster domain name or IP and port of the stream gateway"
+          },
+          "persist": {
+            "type": "boolean",
+            "description": "Whether the sink topics matched by tags should be persistent"
+          },
+          "persistTags": {
+            "type": "array",
+            "description": "List of tags to match for the sink topics to be persistent",
+            "items": {
+              "type": "string"
+            }
+          },
+          "matchPersistTags": {
+            "type": "string",
+            "description": "The match condition for the tags. 'ALL' will match all the tags, 'ANY' will match any of the tags.",
+            "enum": [
+              "ALL",
+              "ANY"
+            ]
+          }
+        },
+        "description": "Object for customizing the stream creation"
+      },
+      "UsageReportDto": {
+        "type": "object",
+        "properties": {
+          "startTimestamp": {
+            "type": "integer",
+            "description": "Start timestamp of the report as epoch millis",
+            "format": "int64"
+          },
+          "endTimestamp": {
+            "type": "integer",
+            "description": "End timestamp of the report as epoch millis",
+            "format": "int64"
+          },
+          "granularity": {
+            "type": "string",
+            "description": "Granularity of the report items",
+            "enum": [
+              "HOURS",
+              "DAYS",
+              "MONTHS"
+            ]
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency of the report. If null, the usages are expressed in credits"
+          },
+          "totalMeasurements": {
+            "$ref": "#/components/schemas/UsageReportItemDto"
+          },
+          "aggregatedMeasurements": {
+            "type": "array",
+            "description": "Measurements for the report period aggregated by time granularity",
+            "items": {
+              "$ref": "#/components/schemas/UsageReportItemDto"
+            }
+          },
+          "operationTypeAggregatedMeasurements": {
+            "type": "array",
+            "description": "Measurements for the report period aggregated by time granularity and operation type",
+            "items": {
+              "$ref": "#/components/schemas/UsageReportItemDto"
+            }
+          },
+          "streamConfigurationTemplateIdAggregatedMeasurements": {
+            "type": "array",
+            "description": "Measurements for the report period aggregated by time granularity and stream configuration template id",
+            "items": {
+              "$ref": "#/components/schemas/UsageReportItemDto"
+            }
+          }
+        },
+        "description": "Usage report on a given time period"
+      },
+      "StreamGatewayStateEventDto": {
+        "type": "object",
+        "properties": {
+          "streamId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "CONNECTED",
+              "DISCONNECTED",
+              "CLOSED"
+            ]
+          },
+          "gatewayHost": {
+            "type": "string",
+            "description": "The updated host of the gateway"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Owner of the resource this event relates to"
+          }
+        },
+        "description": "Event regarding changes in the state of a stream gateway"
+      },
+      "CreateProcessorConfigurationTemplateDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Arbitrary id referencable from another processor in the same template"
+          },
+          "name": {
+            "type": "string",
+            "description": "Arbitrary name of the processor"
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional description of the configuration"
+          },
+          "processorDeclarationId": {
+            "type": "string",
+            "description": "The id of the processor declaration"
+          },
+          "previousProcessorId": {
+            "type": "string",
+            "description": "Link to the previous processor in the stream"
+          },
+          "propertiesSchema": {
+            "type": "string",
+            "description": "Fully qualified name of AVRO schema for processor properties",
+            "enum": [
+              "tech.vatis.schema.stream.processor.properties.transcoder.TranscoderProcessorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.whispergpu.WhisperGpuProcessorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.vad.VoiceActivityDetectorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.fasterwhisper.FasterWhisperProcessorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.pyannote.PyAnnoteProcessorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.liveasr.LiveAsrProcessorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.llm.LlmPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.NoPropertiesDto"
+            ]
+          },
+          "properties": {
+            "type": "object",
+            "description": "Processor properties",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TranscoderProcessorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/WhisperGpuProcessorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/VoiceActivityDetectorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/FasterWhisperProcessorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/PyAnnoteProcessorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/LiveAsrProcessorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/LlmPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/NoPropertiesDto"
+              }
+            ]
+          },
+          "destinationTopicMessageHeaders": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Headers to be applied to the messages sent to the destination topic"
+          },
+          "destinationTopicHeaders": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Headers to be applied to the destination topic. They must respect the pattern '^X-Vat-Topic-[a-zA-Z0-9\\-]+$'"
+          },
+          "sourceSubscriptionHeaders": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Headers of the source subscription. They must respect the pattern '^X-Vat-Sub-[a-zA-Z0-9\\-]+$'"
+          },
+          "patchAliases": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Map of aliases of relative JSON paths to this processor. The key is the alias and the value is the relative JSON path. Name tha alias as '<processor_id>.<property>', unless is a well-known property and it can be simply named as '<property>'. '/' are not allowed"
+          },
+          "egress": {
+            "$ref": "#/components/schemas/ProcessorEgressConfigurationDto"
+          }
+        },
+        "description": "Creation object of a configuration template of a processor"
+      },
+      "ProcessorDeclarationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The processor name"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "Preferred processor display name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Processor description"
+          },
+          "clusterDomainNameTemplate": {
+            "type": "string",
+            "description": "The internal DNS template of the processor pod (e.g. my-statefulset-${REPLICA}.headless-service.svc.cluster.local). Allowed placeholders are: REPLICA"
+          },
+          "podsDiscoveryClusterDomainName": {
+            "type": "string",
+            "description": "Internal DNS of the headless service that exposes the pods (e.g. headless-service.default.svc.cluster.local)"
+          },
+          "revision": {
+            "type": "string",
+            "description": "Template version, best represented by a date in the format yyyy-MM-dd"
+          },
+          "propertiesSchema": {
+            "type": "string",
+            "description": "Fully qualified of AVRO schema for processor properties"
+          },
+          "inputSchemas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "outputSchema": {
+            "type": "string",
+            "description": "Fully qualified of AVRO schema of the output format"
+          },
+          "features": {
+            "$ref": "#/components/schemas/ProcessorFeaturesDto"
+          },
+          "operationType": {
+            "type": "string",
+            "description": "Processor high-level operation type",
+            "enum": [
+              "BATCH_TRANSCRIPTION",
+              "REAL_TIME_TRANSCRIPTION",
+              "SPEAKERS_DIARIZATION",
+              "VOICE_ACTIVITY_DETECTION",
+              "TRANSCODE",
+              "TRANSLATION",
+              "SUMMARIZATION",
+              "SENTIMENT_ANALYSIS",
+              "NO_OPERATION",
+              "LLM_PROCESSING"
+            ]
+          }
+        },
+        "description": "Declaration of a processor configuration"
+      },
+      "ProcessorConfigurationTemplateDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Arbitrary id referencable from another processor in the same template. Must respect the pattern '^[a-zA-Z0-9\\-]+$'"
+          },
+          "name": {
+            "type": "string",
+            "description": "Arbitrary name of the processor"
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional description of the configuration"
+          },
+          "processorDeclaration": {
+            "$ref": "#/components/schemas/ProcessorDeclarationDto"
+          },
+          "previousProcessorId": {
+            "type": "string",
+            "description": "Link to the previous processor in the stream"
+          },
+          "propertiesSchema": {
+            "type": "string",
+            "description": "Fully qualified name of AVRO schema for processor properties",
+            "enum": [
+              "tech.vatis.schema.stream.processor.properties.transcoder.TranscoderProcessorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.whispergpu.WhisperGpuProcessorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.vad.VoiceActivityDetectorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.fasterwhisper.FasterWhisperProcessorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.pyannote.PyAnnoteProcessorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.liveasr.LiveAsrProcessorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.llm.LlmPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.NoPropertiesDto"
+            ]
+          },
+          "properties": {
+            "type": "object",
+            "description": "Processor properties",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TranscoderProcessorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/WhisperGpuProcessorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/VoiceActivityDetectorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/FasterWhisperProcessorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/PyAnnoteProcessorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/LiveAsrProcessorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/LlmPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/NoPropertiesDto"
+              }
+            ]
+          },
+          "destinationTopicMessageHeaders": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Headers to be applied to the messages sent to the destination topic"
+          },
+          "destinationTopicHeaders": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Headers to be applied to the destination topic. They must respect the pattern '^X-Vat-Topic-[a-zA-Z0-9\\-]+$'"
+          },
+          "sourceSubscriptionHeaders": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Headers of the source subscription. They must respect the pattern '^X-Vat-Sub-[a-zA-Z0-9\\-]+$'"
+          },
+          "patchAliases": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Map of aliases of relative JSON paths to this processor. The key is the alias and the value is the relative JSON path. Name tha alias as '<processor_id>.<property>', unless is a well-known property and it can be simply named as '<property>'. '/' are not allowed"
+          },
+          "egress": {
+            "$ref": "#/components/schemas/ProcessorEgressConfigurationDto"
+          }
+        },
+        "description": "Configuration template of a processor"
+      },
+      "SummaryDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "The content of the summary"
+          }
+        },
+        "description": "Result of the summary operation"
+      },
+      "GroupStateChangedEventDto": {
+        "type": "object",
+        "properties": {
+          "groupId": {
+            "type": "string",
+            "description": "The id of the group that has changed.",
+            "format": "uuid"
+          },
+          "state": {
+            "type": "string",
+            "description": "The new state of the group. 'COMPLETED' means all streams in the group have been processed successfully, 'FAILED' means all stream in the group finished and at least one stream in the group has failed. A stream can be completed/failed multiple times if new streams are added to the group.",
+            "enum": [
+              "CREATED",
+              "COMPLETED",
+              "FAILED",
+              "EXPIRED"
+            ]
+          },
+          "subject": {
+            "type": "string",
+            "description": "The subject of the underlying resource"
+          }
+        },
+        "description": "Event that is triggered when the state of a group changes."
+      },
+      "PyAnnoteProcessorPropertiesDto": {
+        "type": "object",
+        "properties": {
+          "speakersNumber": {
+            "type": "integer",
+            "description": "Number of speakers",
+            "format": "int32"
+          },
+          "minSpeakersNumber": {
+            "type": "integer",
+            "description": "Minimum number of speakers",
+            "format": "int32"
+          },
+          "maxSpeakersNumber": {
+            "type": "integer",
+            "description": "Maximum number of speakers",
+            "format": "int32"
+          }
+        },
+        "description": "Properties for PyAnnote processor"
+      },
+      "UsageRecordDto": {
+        "type": "object",
+        "properties": {
+          "creatorId": {
+            "type": "string",
+            "description": "The id of the resource beneficiary"
+          },
+          "groupId": {
+            "type": "string",
+            "description": "The id of the resource group",
+            "format": "uuid"
+          },
+          "streamId": {
+            "type": "string",
+            "description": "The id of the resource stream",
+            "format": "uuid"
+          },
+          "processorId": {
+            "type": "string",
+            "description": "The id of the resource"
+          },
+          "operationType": {
+            "type": "string",
+            "description": "Processor high-level operation type",
+            "enum": [
+              "BATCH_TRANSCRIPTION",
+              "REAL_TIME_TRANSCRIPTION",
+              "SPEAKERS_DIARIZATION",
+              "VOICE_ACTIVITY_DETECTION",
+              "TRANSCODE",
+              "TRANSLATION",
+              "SUMMARIZATION",
+              "SENTIMENT_ANALYSIS",
+              "NO_OPERATION",
+              "LLM_PROCESSING"
+            ]
+          },
+          "streamConfigurationTemplateId": {
+            "type": "string",
+            "description": "The id of the stream configuration template"
+          },
+          "timestamp": {
+            "type": "integer",
+            "description": "The emitted timestamp in millis of the record",
+            "format": "int64"
+          },
+          "credits": {
+            "type": "string",
+            "description": "The amount of credits consumed represented as string to preserve precision when serialized as JSON"
+          },
+          "executionTime": {
+            "type": "integer",
+            "description": "The processing time in milliseconds",
+            "format": "int64"
+          },
+          "storageSize": {
+            "type": "integer",
+            "description": "The storage size in bytes",
+            "format": "int64"
+          },
+          "ingressSize": {
+            "type": "integer",
+            "description": "The ingress size in bytes",
+            "format": "int64"
+          },
+          "egressSize": {
+            "type": "integer",
+            "description": "The egress size in bytes",
+            "format": "int64"
+          },
+          "processedAudioLength": {
+            "type": "integer",
+            "description": "The processed audio length in milliseconds",
+            "format": "int64"
+          },
+          "processedTokens": {
+            "type": "integer",
+            "description": "The processed tokens",
+            "format": "int64"
+          },
+          "finalUsage": {
+            "type": "boolean",
+            "description": "Indicates if the record is the final usage record emitted by a processor on a stream"
+          },
+          "errorOccurred": {
+            "type": "boolean",
+            "description": "Indicates if an error occurred during the processing of the stream"
+          },
+          "processedInputTokens": {
+            "type": "integer",
+            "description": "The processed input tokens",
+            "format": "int64"
+          },
+          "processedOutputTokens": {
+            "type": "integer",
+            "description": "The processed output tokens",
+            "format": "int64"
+          }
+        },
+        "description": "Record of a resource usage"
+      },
+      "NoPropertiesDto": {
+        "type": "object",
+        "description": "Placeholder for no properties"
+      },
+      "StreamMetadataMessageDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "KEEP_ALIVE",
+              "END_OF_STREAM",
+              "ERROR",
+              "BINARY",
+              "RESPONSE",
+              "STREAM_METADATA",
+              "CONFIGURATION"
+            ]
+          },
+          "stream": {
+            "$ref": "#/components/schemas/StreamDto"
+          }
+        },
+        "description": "Stream metadata message. Sent only by the server after a stream was successfully created."
+      },
+      "TopicDto": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "description": "Fully qualified topic name (including tenant, namespace etc.)"
+          },
+          "messageSchema": {
+            "type": "string",
+            "description": "Fully qualified schema name"
+          },
+          "connectionOptions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Properties for connecting to the topic"
+          },
+          "headers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Topic headers"
+          },
+          "messageHeaders": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Headers to be applied on all messages sent to this topic"
+          },
+          "subscriptions": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SubscriptionDto"
+            },
+            "description": "Map of component name and subscription associations"
+          }
+        },
+        "description": "Required information for connecting to a topic"
+      },
+      "EndOfStreamMessageDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "KEEP_ALIVE",
+              "END_OF_STREAM",
+              "ERROR",
+              "BINARY",
+              "RESPONSE",
+              "STREAM_METADATA",
+              "CONFIGURATION"
+            ]
+          }
+        },
+        "description": "Message for indicating the end of stream. This can be used by the client to mark the end of input stream, so it can wait for the server to finish sending the responses, followed by the EOS. The server will always send the EOS regardless of the client sending it or not."
+      },
+      "StreamSinkMessageDto": {
+        "type": "object",
+        "properties": {
+          "streamId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "groupId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tags": {
+            "type": "array",
+            "description": "List of tags of the source processor of this message",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sinkTopicName": {
+            "type": "string",
+            "description": "Sink topic identifier"
+          },
+          "messageId": {
+            "type": "string",
+            "description": "Id of the emitted message"
+          },
+          "processorId": {
+            "type": "string",
+            "description": "Id of the processor that emitted the message"
+          },
+          "sequenceId": {
+            "type": "integer",
+            "description": "Sequence number of the emitted message. The sequence number is given by the emitting processor and it is stored as a message property, different from the Pulsar sequence id",
+            "format": "int64"
+          },
+          "publishTimestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "frameType": {
+            "type": "string",
+            "description": "Type of the frame extracted from 'X-Vat-Stream-Frame-Type' message header"
+          },
+          "payloadSchema": {
+            "type": "string",
+            "description": "Fully qualified AVRO schema of the payload",
+            "enum": [
+              "null",
+              "bytes",
+              "string",
+              "tech.vatis.schema.stream.processor.messages.transcription.TranscriptionResponseDto",
+              "tech.vatis.schema.stream.processor.messages.diarization.DiarizationResponseDto",
+              "tech.vatis.schema.stream.processor.messages.llm.LlmResponseDto"
+            ]
+          },
+          "payload": {
+            "type": "object",
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "description": "Bytes encoded in base64",
+                "format": "base64"
+              },
+              {
+                "$ref": "#/components/schemas/TranscriptionResponseDto"
+              },
+              {
+                "$ref": "#/components/schemas/DiarizationResponseDto"
+              },
+              {
+                "$ref": "#/components/schemas/LlmResponseDto"
+              }
+            ]
+          },
+          "headers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Headers extracted from the message"
+          }
+        },
+        "description": "Wrapper event over the emitted payload"
+      },
+      "StreamConfigurationTemplateDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Template id"
+          },
+          "name": {
+            "type": "string",
+            "description": "Template name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional description of the configuration"
+          },
+          "dataSourceSchema": {
+            "type": "string",
+            "description": "Fully qualified schema name for the input data"
+          },
+          "processors": {
+            "type": "array",
+            "description": "Processor configuration templates",
+            "items": {
+              "$ref": "#/components/schemas/ProcessorConfigurationTemplateDto"
+            }
+          },
+          "patchAliases": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Map of aliases of relative JSON paths to this template. The key is the alias and the value is the relative JSON path. Name tha alias as 'stream.<property>', unless is a well-known property and it can be simply named as '<property>'. '/' are not allowed"
+          }
+        },
+        "description": "Template for stream configuration"
+      },
+      "GatewayComponentDto": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string",
+            "description": "Gateway state",
+            "enum": [
+              "CONNECTED",
+              "DISCONNECTED",
+              "CLOSED"
+            ]
+          },
+          "stateChangedTimestamp": {
+            "type": "string",
+            "description": "Timestamp of the last gateway state change",
+            "format": "date-time"
+          }
+        },
+        "description": "Gateway component"
+      },
+      "ProcessorConfigurationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Auto-generated id of the configuration"
+          },
+          "source": {
+            "$ref": "#/components/schemas/SubscriptionDto"
+          },
+          "destination": {
+            "$ref": "#/components/schemas/TopicDto"
+          },
+          "clusterDomainName": {
+            "type": "string",
+            "description": "The internal DNS of the processor pod (e.g. my-statefulset-0.svc.cluster.local)"
+          },
+          "podsDiscoveryClusterDomainName": {
+            "type": "string",
+            "description": "Internal DNS of the headless service that exposes the pods (e.g. headless-service.default.svc.cluster.local)"
+          },
+          "propertiesSchema": {
+            "type": "string",
+            "description": "Fully qualified name of AVRO schema for processor properties",
+            "enum": [
+              "tech.vatis.schema.stream.processor.properties.transcoder.TranscoderProcessorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.whispergpu.WhisperGpuProcessorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.vad.VoiceActivityDetectorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.fasterwhisper.FasterWhisperProcessorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.pyannote.PyAnnoteProcessorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.liveasr.LiveAsrProcessorPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.llm.LlmPropertiesDto",
+              "tech.vatis.schema.stream.processor.properties.NoPropertiesDto"
+            ]
+          },
+          "properties": {
+            "type": "object",
+            "description": "Processor properties",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TranscoderProcessorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/WhisperGpuProcessorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/VoiceActivityDetectorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/FasterWhisperProcessorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/PyAnnoteProcessorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/LiveAsrProcessorPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/LlmPropertiesDto"
+              },
+              {
+                "$ref": "#/components/schemas/NoPropertiesDto"
+              }
+            ]
+          },
+          "egress": {
+            "$ref": "#/components/schemas/ProcessorEgressConfigurationDto"
+          }
+        },
+        "description": "Configuration object of a stream processor"
+      }
+    }
+  }
+}

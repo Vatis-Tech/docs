@@ -44,3 +44,8 @@ curl https://export-service.vatis.tech/api-docs | \
 curl https://usage-service.vatis.tech/api-docs | \
   jq '.components.schemas.ErrorResponse.properties.nestedErrors.items = {"type": "object"} | .servers = [{"url": "https://usage-service.vatis.tech", "description": "Default server"}]' \
   > api-reference/openapi/usage-service.json
+
+# Update OpenAPI for Schema Server
+curl https://schema.vatis.tech/api-docs | \
+  jq '.components.schemas.ErrorResponse.properties.nestedErrors.items = {"type": "object"} | .servers = [{"url": "https://schema.vatis.tech", "description": "Default server"}]' \
+  > api-reference/openapi/schema-server.json
