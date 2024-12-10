@@ -138,7 +138,7 @@
       "group": "Stream configuration",
       "pages": [
         "api-reference/stream-configuration/stream-configuration-template-resource-impl/find-all",
-        "api-reference/stream-configuration/stream-configuration-template-resource-impl/find-by-id"
+        "api-reference/stream-configuration/stream-configuration-template-resource-impl/patch-by-id"
       ]
     },
     {

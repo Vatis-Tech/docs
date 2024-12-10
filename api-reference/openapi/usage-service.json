@@ -43,16 +43,6 @@
           }
         ],
         "responses": {
-          "403": {
-            "description": "Full authentication required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "default": {
             "description": "Default error",
             "content": {
@@ -83,38 +73,8 @@
               }
             }
           },
-          "400": {
-            "description": "Validation failed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Resource not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "401": {
-            "description": "Exception on client authorization",
+            "description": "Authentication required",
             "content": {
               "application/json": {
                 "schema": {
@@ -135,6 +95,46 @@
           },
           "501": {
             "description": "Requested feature is not implemented",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Interval too short",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -218,16 +218,6 @@
           }
         ],
         "responses": {
-          "403": {
-            "description": "Full authentication required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "default": {
             "description": "Default error",
             "content": {
@@ -258,38 +248,8 @@
               }
             }
           },
-          "400": {
-            "description": "Validation failed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Resource not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "401": {
-            "description": "Exception on client authorization",
+            "description": "Authentication required",
             "content": {
               "application/json": {
                 "schema": {
@@ -310,6 +270,46 @@
           },
           "501": {
             "description": "Requested feature is not implemented",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Interval too short",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -419,7 +419,8 @@
               "TRANSLATION",
               "SUMMARIZATION",
               "SENTIMENT_ANALYSIS",
-              "NO_OPERATION"
+              "NO_OPERATION",
+              "LLM_PROCESSING"
             ]
           },
           "streamConfigurationTemplateId": {
@@ -461,6 +462,14 @@
           },
           "errorOccurred": {
             "type": "boolean"
+          },
+          "processedInputTokens": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "processedOutputTokens": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -538,7 +547,8 @@
               "TRANSLATION",
               "SUMMARIZATION",
               "SENTIMENT_ANALYSIS",
-              "NO_OPERATION"
+              "NO_OPERATION",
+              "LLM_PROCESSING"
             ]
           },
           "streamConfigurationTemplateId": {

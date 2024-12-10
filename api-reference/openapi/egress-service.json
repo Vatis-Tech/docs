@@ -15,6 +15,7 @@
     "/egress-service/api/v1/egress/live": {
       "get": {
         "summary": "Egresses a live stream of data",
+        "description": "Live egress",
         "operationId": "live-egress",
         "parameters": [
           {
@@ -125,6 +126,15 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "resume",
+            "in": "query",
+            "description": "Key-value pair where the key is the topic name and the value is the message id to resume from, exclusively. (e.g. topicName=messageId)",
+            "schema": {
+              "type": "array",
+              "example": "sinkTopicName=messageId"
+            }
           }
         ],
         "responses": {
@@ -182,6 +192,9 @@
             }
           },
           "sinkTopicName": {
+            "type": "string"
+          },
+          "messageId": {
             "type": "string"
           },
           "processorId": {

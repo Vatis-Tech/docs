@@ -43,28 +43,8 @@
           }
         ],
         "responses": {
-          "403": {
-            "description": "Full authentication required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "default": {
             "description": "Default error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -83,8 +63,8 @@
               }
             }
           },
-          "404": {
-            "description": "Resource not found",
+          "403": {
+            "description": "Full authentication required",
             "content": {
               "application/json": {
                 "schema": {
@@ -95,6 +75,26 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -138,28 +138,8 @@
           "required": true
         },
         "responses": {
-          "403": {
-            "description": "The current user does not have sufficient permission",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "default": {
             "description": "Default error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -178,8 +158,8 @@
               }
             }
           },
-          "404": {
-            "description": "Resource not found",
+          "403": {
+            "description": "The current user does not have sufficient permission",
             "content": {
               "application/json": {
                 "schema": {
@@ -190,6 +170,26 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -222,7 +222,7 @@
           "stream-configuration-template-resource-impl"
         ],
         "summary": "Find by id",
-        "description": "Retrieves the stream configuration template with patches applied. It accepts JSON paths and values as query parameters for hot patches over the template. Only values that exist can be patched. No addition/deletion supported",
+        "description": "Retrieves the stream configuration template with patches applied.",
         "operationId": "getById",
         "parameters": [
           {
@@ -236,7 +236,8 @@
           {
             "name": "X-Vat-Meta-Template-Patch",
             "in": "header",
-            "description": "Patch object or array of patch objects as described in RFC-6902",
+            "description": "Deprecated: Use PATCH endpoint instead. Patch object or array of patch objects as described in RFC-6902",
+            "deprecated": true,
             "schema": {
               "type": "string"
             },
@@ -250,28 +251,8 @@
           }
         ],
         "responses": {
-          "403": {
-            "description": "Full authentication required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "default": {
             "description": "Default error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -290,8 +271,8 @@
               }
             }
           },
-          "404": {
-            "description": "Resource not found",
+          "403": {
+            "description": "Full authentication required",
             "content": {
               "application/json": {
                 "schema": {
@@ -302,6 +283,145 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamConfigurationTemplateDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "stream-configuration-template-resource-impl"
+        ],
+        "summary": "Patch by id",
+        "description": "Retrieves the stream configuration template with patches applied.",
+        "operationId": "patchById",
+        "parameters": [
+          {
+            "name": "streamConfigurationTemplateId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StreamConfigurationPatchDto"
+              },
+              "examples": {
+                "Example": {
+                  "summary": "Example of a patch object",
+                  "description": "Example of a patch object",
+                  "value": {
+                    "jsonPatches": [
+                      {
+                        "op": "replace",
+                        "path": "/json/path",
+                        "value": "some_value"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Default error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad alias in stream configuration template",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Full authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Exception on Pulsar operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -359,28 +479,8 @@
           }
         ],
         "responses": {
-          "403": {
-            "description": "Full authentication required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "default": {
             "description": "Default error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -399,8 +499,8 @@
               }
             }
           },
-          "404": {
-            "description": "Resource not found",
+          "403": {
+            "description": "Full authentication required",
             "content": {
               "application/json": {
                 "schema": {
@@ -411,6 +511,26 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -663,7 +783,8 @@
               "TRANSLATION",
               "SUMMARIZATION",
               "SENTIMENT_ANALYSIS",
-              "NO_OPERATION"
+              "NO_OPERATION",
+              "LLM_PROCESSING"
             ]
           }
         }
@@ -726,6 +847,17 @@
           }
         }
       },
+      "StreamConfigurationPatchDto": {
+        "type": "object",
+        "properties": {
+          "jsonPatches": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "PageStreamConfigurationTemplateDto": {
         "type": "object",
         "properties": {
@@ -775,11 +907,11 @@
       "PageableObject": {
         "type": "object",
         "properties": {
-          "pageNumber": {
+          "pageSize": {
             "type": "integer",
             "format": "int32"
           },
-          "pageSize": {
+          "pageNumber": {
             "type": "integer",
             "format": "int32"
           },

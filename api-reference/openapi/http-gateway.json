@@ -288,6 +288,10 @@
           },
           "stateDescription": {
             "type": "string"
+          },
+          "finalizedTimestamp": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },

@@ -172,6 +172,20 @@
           }
         }
       },
+      "AskAnythingDto": {
+        "type": "object",
+        "properties": {
+          "promptId": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "responseFormatSpecification": {
+            "type": "string"
+          }
+        }
+      },
       "AudioIntelligenceResponseDto": {
         "type": "object",
         "properties": {
@@ -183,6 +197,124 @@
             "items": {
               "$ref": "#/components/schemas/UtteranceDto"
             }
+          },
+          "summary": {
+            "$ref": "#/components/schemas/SummaryDto"
+          },
+          "askAnything": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/AskAnythingDto"
+            }
+          },
+          "sentimentAnalysis": {
+            "$ref": "#/components/schemas/SentimentAnalysisDto"
+          }
+        }
+      },
+      "SentimentAnalysisChannelSummaryDto": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "negativeCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "positiveCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "neutralCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "averageScore": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "SentimentAnalysisContentDto": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "sentiment": {
+            "type": "string",
+            "enum": [
+              "negative",
+              "neutral",
+              "positive"
+            ]
+          },
+          "channel": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "endTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "score": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "SentimentAnalysisDto": {
+        "type": "object",
+        "properties": {
+          "segments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SentimentAnalysisContentDto"
+            }
+          },
+          "summary": {
+            "$ref": "#/components/schemas/SentimentAnalysisSummaryDto"
+          }
+        }
+      },
+      "SentimentAnalysisSummaryDto": {
+        "type": "object",
+        "properties": {
+          "channels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SentimentAnalysisChannelSummaryDto"
+            }
+          },
+          "negativeCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "positiveCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "neutralCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "averageScore": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "SummaryDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
           }
         }
       },
