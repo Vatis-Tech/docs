@@ -1,42 +1,9 @@
-<ParamField query="summary" type="bool" default="false">
-    Create a summary based on the upstream content.
-</ParamField>
+import LlmSummaryParameters from '/snippets/stream-configuration/llm/summary.mdx';
+import SentimentAnalysisParameters from '/snippets/stream-configuration/llm/sentiment-analysis.mdx';
+import AskAnythingParameters from '/snippets/stream-configuration/llm/ask-anything.mdx';
 
-<ParamField query="summaryLength" type="string" default="brief">
-    Summary length. Options are: `brief` or `detailed`.
-</ParamField>
+<LlmSummaryParameters />
 
-<ParamField query="summaryTone" type="string" default="conversational">
-    Summary tone. Options are: `conversational` or `formal`.
-</ParamField>
+<SentimentAnalysisParameters />
 
-<ParamField query="summaryStructure" type="string" default="paragraphs">
-    Summary structure. Options are: `paragraphs` or `bullet_points`.
-</ParamField>
-
-<ParamField query="sentimentAnalysis" type="bool" default="false">
-    Perform sentiment analysis on the upstream content.
-</ParamField>
-
-<ParamField query="ask[0-N]" type="string" default="none">
-    Specifies the custom prompt content for one of the `ask0`, `ask1`, ..., `askN` ask anything slots.
-    When the content is specified, the prompt is considered activated. Otherwise, it is deactivated.
-</ParamField>
-
-<ParamField query="ask[0-N]System" type="string" default="none">
-    Specifies the custom system prompt for one of the `ask0System`, `ask1System`, ..., `askNSystem` ask anything slots.
-</ParamField>
-
-<ParamField query="ask[0-N]Id" type="string" default="none">
-    Specifies the prompt id for one of the `ask0Id`, `ask1Id`, ..., `askNId` ask anything slots.
-    The role of the prompt id is to identify the prompt in the responses.
-    When unspecified, it will fallback on the index of the slot (e.g. `"0"`, `"1"`).
-</ParamField>
-
-<ParamField query="ask[0-N]Format" type="string" default="none">
-    Specifies the prompt response [JSON Schema](https://json-schema.org/overview/what-is-jsonschema) encoded as a string for one of the `ask0Format`, `ask1Format`, ..., `askNFormat` ask anything slots.
-
-    When unspecified, the response not be structured in any particular way.
-    When specified, the response will be a JSON object encoded as a string.
-</ParamField>
-
+<AskAnythingParameters />

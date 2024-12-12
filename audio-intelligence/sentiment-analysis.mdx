@@ -1,0 +1,110 @@
+---
+title: 'Sentiment Analysis'
+description: 'Perform sentiment analysis over your content'
+---
+
+import SentimentAnalysisParameters from '/snippets/stream-configuration/llm/sentiment-analysis.mdx';
+
+Enable sentiment analysis with the following configuration:
+
+<SentimentAnalysisParameters />
+
+## Usage
+
+```bash
+curl -X 'POST' \
+  'https://http-gateway.vatis.tech/http-gateway/api/v1/upload?streamConfigurationTemplateId=668115d123bca7e3509723d4&sentimentAnalysis=true&persist=true' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Basic <api_key>' \
+  -H 'Content-Type: application/octet-stream' \
+  --data-binary '@test.wav'
+```
+
+## Export Response
+
+### Mono audio
+
+```json
+{
+  ...
+  "sentimentAnalysis": {
+    "segments": [
+      {
+        "text": " Good afternoon. My name is Aisha. Thank you for calling *** today. How may I be of assistance?",
+        "sentiment": "positive",
+        "startTime": 820,
+        "endTime": 6120,
+        "score": 0.9
+      },
+      {
+        "text": " Hi, Aisha. Well, I want to sign up for the Wi-Fi service.",
+        "sentiment": "positive",
+        "startTime": 7660,
+        "endTime": 13460,
+        "score": 0.5
+      },
+      ...
+    ],
+    "summary": {
+      "negativeCount": 2,
+      "positiveCount": 21,
+      "neutralCount": 31,
+      "averageScore": 0.24444444444444446,
+      "sentiment": "neutral"
+    }
+  }
+}
+```
+
+### Stereo audio
+```json
+{
+  ...
+  "sentimentAnalysis": {
+    "segments": [
+      {
+        "text": " Good afternoon. My name is Aisha. Thank you for calling *** today. How may I be of assistance?",
+        "sentiment": "positive",
+        "channel": 0,
+        "startTime": 1010,
+        "endTime": 6130,
+        "score": 0.9
+      },
+      {
+        "text": " Hi, Aisha. Well, I want to sign up for the Wi-Fi service.",
+        "sentiment": "positive",
+        "channel": 1,
+        "startTime": 7660,
+        "endTime": 24180,
+        "score": 0.5
+      },
+      ...
+    ],
+    "summary": {
+      "channels": [
+        {
+          "channel": 0,
+          "negativeCount": 0,
+          "positiveCount": 17,
+          "neutralCount": 11,
+          "averageScore": 0.3642857142857143,
+          "sentiment": "positive"
+        },
+        {
+          "channel": 1,
+          "negativeCount": 1,
+          "positiveCount": 10,
+          "neutralCount": 17,
+          "averageScore": 0.22142857142857145,
+          "sentiment": "neutral"
+        }
+      ],
+      "negativeCount": 1,
+      "positiveCount": 27,
+      "neutralCount": 28,
+      "averageScore": 0.2928571428571428,
+      "sentiment": "neutral"
+    }
+  }
+}
+```

@@ -1,0 +1,32 @@
+---
+title: 'Summarization'
+description: 'Extract the essentials from your content'
+---
+
+import LlmSummaryParameters from '/snippets/stream-configuration/llm/summary.mdx';
+
+Configure the summary with the following options:
+
+<LlmSummaryParameters />
+
+## Usage
+
+```bash
+curl -X 'POST' \
+  'https://http-gateway.vatis.tech/http-gateway/api/v1/upload?streamConfigurationTemplateId=668115d123bca7e3509723d4&summary=true&summaryTone=formal&persist=true' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Basic <api_key>' \
+  -H 'Content-Type: application/octet-stream' \
+  --data-binary '@test.wav'
+```
+
+## Export Response
+
+```json
+{
+  ...
+  "summary": {
+    "content": "A customer named George Washington contacted *** to sign up for Wi-Fi service. During the call, he provided his phone number..."
+  }
+}
+```

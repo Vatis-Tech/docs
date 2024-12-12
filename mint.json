@@ -60,6 +60,14 @@
       ]
     },
     {
+      "group": "Audio Intelligence",
+      "pages": [
+          "audio-intelligence/summarization",
+          "audio-intelligence/sentiment-analysis",
+          "audio-intelligence/ask-anything"
+      ]
+    },
+    {
       "group": "Infrastructure",
       "pages": [
         {
