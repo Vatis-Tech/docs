@@ -1,14 +1,13 @@
 ---
-title: "Speaker Diarization"
-description: "Batch transcription with speaker diarization specifications using the Vatis Streams API"
+title: "Pre-recorded Transcription"
+description: "Pre-recorded transcription specifications using the Vatis Streams API"
 ---
 
 import TranscriptionParameters from '/snippets/stream-configuration/faster-whisper.mdx';
 import AudioIntelligenceParameters from '/snippets/stream-configuration/llm.mdx';
-import SpeakerDiarizationParameters from '/snippets/stream-configuration/pyannote.mdx';
 
 ### <Icon icon="sliders" iconType="light" size="24"/>  Stream configuration template ids
-* production: `669fee048452492b62cfad39`
+* production: `668115d123bca7e3509723d4`
 
 ### <Icon icon="upload" iconType="light" size="24"/>  Input data
 * multimedia content: `wav`, `mp3`, `mp4`, `webm`, `flv`, etc.
@@ -16,7 +15,6 @@ import SpeakerDiarizationParameters from '/snippets/stream-configuration/pyannot
 
 ### <Icon icon="download" iconType="light" size="24"/>  Egress responses
 - [TranscriptionResponseDto](/api-reference/schemas/egress/transcription-response)
-- [DiarizationResponseDto](/api-reference/schemas/egress/diarization-response)
 - [LlmResponseDto](/api-reference/schemas/egress/llm-response)
 
 ### <Icon icon="file-code" iconType="light" size="24"/>  Export response
@@ -27,12 +25,7 @@ import SpeakerDiarizationParameters from '/snippets/stream-configuration/pyannot
     <Accordion title="Transcription">
         <TranscriptionParameters/>
     </Accordion>
-    <Accordion title="Speaker diarization">
-        <SpeakerDiarizationParameters/>
-    </Accordion>
     <Accordion title="Audio Intelligence">
         <AudioIntelligenceParameters/>
     </Accordion>
 </AccordionGroup>
-
-<Warning>The audio intelligence layer operates only over the transcription responses, excluding the diarization information.</Warning>

@@ -23,7 +23,7 @@
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://vatis.tech/app"
+    "url": "https://vatis.tech/app/playground/transcribe"
   },
   "anchors": [
     {
@@ -39,29 +39,38 @@
   ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Vatis Docs",
       "pages": [
-        "introduction"
+        "index",
+        "get-started/get-api-access"
       ]
     },
     {
       "group": "Speech to Text",
       "pages": [
-        "speech-to-text/batch-transcription",
-        "speech-to-text/speaker-diarization"
-      ]
-    },
-    {
-      "group": "Diagrams",
-      "pages": [
-        "diagrams/system-overview",
-        "diagrams/export-results"
+        {
+          "group": "Pre-recorded",
+          "pages": [
+              "speech-to-text/pre-recorded/getting-started",
+              "speech-to-text/pre-recorded/features",
+              "speech-to-text/pre-recorded/pre-recorded-transcription",
+              "speech-to-text/pre-recorded/speaker-diarization"
+          ]
+        }
       ]
     },
     {
       "group": "Infrastructure",
       "pages": [
+        {
+          "group": "Diagrams",
+          "pages": [
+            "infrastructure/diagrams/system-overview",
+            "infrastructure/diagrams/export-results"
+          ]
+        },
         "infrastructure/data-retention",
+        "infrastructure/stream-templates",
         "infrastructure/configuration-patches"
       ]
     },
