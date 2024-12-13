@@ -37,21 +37,11 @@
       "url": "https://vatis.tech/blog"
     }
   ],
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/introduction"
-    },
-    {
-      "source": "",
-      "destination": "/introduction"
-    }
-  ],
   "navigation": [
     {
-      "group": "Introduction",
+      "group": "Vatis Docs",
       "pages": [
-        "introduction",
+        "get-started/introduction",
         "get-started/get-api-access"
       ]
     },
