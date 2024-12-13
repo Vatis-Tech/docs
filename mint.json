@@ -39,7 +39,7 @@
   ],
   "navigation": [
     {
-      "group": "Vatis Docs",
+      "group": "Introduction",
       "pages": [
         "introduction",
         "get-started/get-api-access"
