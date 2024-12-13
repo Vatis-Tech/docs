@@ -41,7 +41,7 @@
     {
       "group": "Vatis Docs",
       "pages": [
-        "get-started/introduction",
+        "introduction",
         "get-started/get-api-access"
       ]
     },
