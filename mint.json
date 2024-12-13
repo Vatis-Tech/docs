@@ -41,6 +41,10 @@
     {
       "source": "/",
       "destination": "/introduction"
+    },
+    {
+      "source": "",
+      "destination": "/introduction"
     }
   ],
   "navigation": [
