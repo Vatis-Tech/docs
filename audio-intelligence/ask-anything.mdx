@@ -8,3 +8,182 @@ import AskAnythingParameters from '/snippets/stream-configuration/llm/ask-anythi
 Configure your custom prompts using the following options:
 
 <AskAnythingParameters />
+
+## Usage
+
+Currently, there are up to 3 ask anything slots available.<br/>
+For using the ask anything slots, you can specify the prompts as query parameters in the request URL, or using a configuration message on the WebSocket connection.
+
+<Tabs>
+    <Tab title="HTTP Gateway">
+        Here we'll create to custom prompts about the processed phone call:
+        1. `What was the client intent?`
+        2. `Was the client issue solved?`
+
+        ```bash
+        curl -X 'POST' \
+          'https://http-gateway.vatis.tech/http-gateway/api/v1/upload?streamConfigurationTemplateId=668115d123bca7e3509723d4&ask0=What%20was%20the%20client%20intent%3F&ask1=Was%20the%20client%20issue%20solved%3F&persist=true' \
+          -H 'accept: application/json' \
+          -H 'Authorization: Basic <api_key>' \
+          -H 'Content-Type: application/octet-stream' \
+          --data-binary '@test-phone-call.wav'
+        ```
+    </Tab>
+    <Tab title="WS Gateway">
+        When the prompts exceed the URL length limit, the alternative is to transmit the prompts over a WebSocket connection using a configuration message.
+
+        ```
+        wss://ws-gateway.vatis.tech/ws-gateway/api/v1?streamConfigurationTemplateId=668115d123bca7e3509723d4&persist=true&egress=false&configurationMessage=true
+        ```
+
+        Send this message as the first message after the connection is established:
+
+        ```json
+        {
+            "type": "CONFIGURATION",
+            "patches": {
+                "ask0": "What was the client intent?",
+                "ask1": "Was the client issue solved?"
+            }
+        }
+        ```
+    </Tab>
+</Tabs>
+
+## Response
+
+```json
+{
+  ...
+  "askAnything": {
+    "0": {
+      "promptId": "0",
+      "content": "The client's intent was to sign up for a Wi-Fi service with ***, provide the necessary personal and address information, select a connection speed, and schedule an installation appointment."
+    },
+    "1": {
+      "promptId": "1",
+      "content": "Yes, the client's issue was solved. George Washington successfully signed up for the Wi-Fi service, provided the necessary information, and scheduled an installation appointment for a convenient date and time. The representative also explained the costs and payment process."
+    }
+  }
+}
+```
+
+## System Prompt
+
+Each ask-anything prompt can receive an optional system prompt alongside the custom prompt. The system prompt can be used to modify the LLM behavior or to provide additional context to the user prompt.
+
+The system prompt can be specified using the `ask0System`, `ask1System`, etc. query parameters.
+
+## Prompt Id
+
+By default, each ask-anything prompt will be assigned with an ID corresponding to the prompt index.
+To override this behavior, you can specify the prompt ID using the `ask0Id`, `ask1Id`, etc. query parameters.
+
+For example, given the following prompt id values: `ask0Id=client_intent&ask1Id=issue_solved`
+
+The response will be:
+```json
+{
+  ...
+  "askAnything": {
+    "client_intent": {
+      "promptId": "client_intent",
+      "content": "The client's intent was to sign up for a Wi-Fi service with ***, provide the necessary personal and address information, select a connection speed, and schedule an installation appointment."
+    },
+    "issue_solved": {
+      "promptId": "issue_solved",
+      "content": "Yes, the client's issue was solved. George Washington successfully signed up for the Wi-Fi service, provided the necessary information, and scheduled an installation appointment for a convenient date and time. The representative also explained the costs and payment process."
+    }
+  }
+}
+```
+
+## Response format
+
+The generated response for each ask-anything prompt will have no particular structure. For the scenarios where the response should be structured in a predefined way, we can use the response format feature to specify a [JSON Schema](https://json-schema.org/overview/what-is-jsonschema) to parse the response against.
+
+To activate the response format feature, we need to specify the `ask0Format`, `ask1Format`, etc. query parameters having the JSON Schema value encoded as string.
+
+For example, we'll take the following prompt: `Extract the client identification details, the requested service and any relevant information to the requested service`
+
+And the following JSON Schema:
+```json
+{
+  "$defs": {
+    "ClientIdentificationData": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "phone_number": {
+          "title": "Phone Number",
+          "type": "string"
+        },
+        "date_of_birth": {
+          "title": "Date Of Birth",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "phone_number",
+        "date_of_birth"
+      ],
+      "title": "ClientIdentificationData",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "client_identification": {
+      "$ref": "#/$defs/ClientIdentificationData"
+    },
+    "requested_service": {
+      "enum": [
+        "WiFi",
+        "GSM",
+        "Billing"
+      ],
+      "title": "Requested Service",
+      "type": "string"
+    }
+  },
+  "required": [
+    "client_identification",
+    "requested_service"
+  ],
+  "title": "ClientRequest",
+  "type": "object"
+}
+```
+
+The response will be:
+```json
+{
+  ...
+  "askAnything": {
+    "0": {
+      "promptId": "0",
+      "content": "{\"client_identification\":{\"name\":\"George Washington\",\"phone_number\":\"414-2**-****\",\"date_of_birth\":\"July *, 19**\"},\"requested_service\":\"WiFi\"}"
+    }
+  }
+}
+```
+
+By parsing the JSON encoded inside the string response we can get
+```json
+{
+  "client_identification": {
+    "name": "George Washington",
+    "phone_number": "414-***-****",
+    "date_of_birth": "July **, 19**"
+  },
+  "requested_service": "WiFi"
+}
+```
+
+<Note>The PII data will be explicitly displayed unless specified otherwise.</Note>
+
+### Limitations
+- No default values are supported.
+- No arbitrary objects are allowed. All the required values must be specified.
