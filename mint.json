@@ -37,6 +37,12 @@
       "url": "https://vatis.tech/blog"
     }
   ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/introduction"
+    }
+  ],
   "navigation": [
     {
       "group": "Introduction",
