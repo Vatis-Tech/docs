@@ -1,0 +1,27 @@
+---
+title: 'Utterance End'
+description: 'Use the utterance end flag to detect the end of speech'
+---
+
+The Utterance End feature can be used to detect the end of speech by waiting a configured amount of milliseconds of silence after the last detected speech.
+
+The end of speech is detected using a combination between the VAD (Voice Activity Detection) and the transcription model. The transcription model is also used to prevent false positives of speech detection by VAD.
+
+## Configuration
+
+The Utterance End feature can be configured by using the `utteranceEnd=1000` query parameter, where `1000` is the amount of milliseconds of silence to wait after the last detected speech.
+
+## Result
+
+When an utterance is ended, a [transcription response](/api-reference/schemas/egress/transcription-response) with the `"utterance": true` attribute is emitted. The content of the response can be a transcription response or an empty transcription, depending on the underlying engine implementation.
+
+```json
+{
+  "transcription": "",
+  "words": [],
+  "start": 6480,
+  "end": 6480,
+  "metadata": {},
+  "utterance": true
+}
+```

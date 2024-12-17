@@ -1,0 +1,58 @@
+---
+title: 'Multilingual Code Switch'
+description: 'Auto-detect and switch between spoken language in your audio content'
+---
+
+The Multilingual Code Switch enables the processing of audio content that contains multiple languages by continuously detecting the spoken language and switching between the corresponding language models.
+
+## Configuration
+
+This feature is implicitly enabled by not specifying the `language` parameter. To disable this feature, set the `language` parameter to a specific language (e.g. `language=en`).
+
+## Results
+
+Each word in the [transcription-response](/api-reference/schemas/egress/transcription-response) will have a `language` field that indicates the detected language of the word.
+
+```json
+{
+  "transcription": " Good afternoon. Bună seara.",
+  "words": [
+    {
+      "word": " Good",
+      "start": 1199,
+      "end": 1520,
+      "confidence": 1.0,
+      "language": "en",
+      "metadata": {}
+    },
+    {
+      "word": " afternoon.",
+      "start": 1520,
+      "end": 2020,
+      "confidence": 0.99853516,
+      "language": "en",
+      "metadata": {}
+    },
+    {
+      "word": " Bună",
+      "start": 2159,
+      "end": 2320,
+      "confidence": 1.0,
+      "language": "ro",
+      "metadata": {}
+    },
+    {
+      "word": " seara.",
+      "start": 2320,
+      "end": 2480,
+      "confidence": 1.0,
+      "language": "ro",
+      "metadata": {}
+    }
+  ],
+  "start": 0,
+  "end": 3071,
+  "metadata": {},
+  "utterance": false
+}
+```

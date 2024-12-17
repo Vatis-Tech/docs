@@ -48,6 +48,8 @@
     {
       "group": "Speech to Text",
       "pages": [
+        "speech-to-text/multilingual-code-switch",
+        "speech-to-text/utterance-end",
         {
           "group": "Pre-recorded",
           "pages": [
