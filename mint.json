@@ -106,17 +106,7 @@
       "group": "API Documentation",
       "pages": [
         "api-reference/introduction",
-        "api-reference/authentication",
-        "api-reference/stream-configuration-templates"
-      ]
-    },
-    {
-      "group": "Workflows",
-      "pages": [
-        "api-reference/workflows/transcribe-file-real-time",
-        "api-reference/workflows/transcribe-microphone-real-time",
-        "api-reference/workflows/transcribe-file-export",
-        "api-reference/workflows/transcribe-link-export"
+        "api-reference/authentication"
       ]
     },
     {
