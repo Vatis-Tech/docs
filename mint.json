@@ -56,6 +56,14 @@
               "speech-to-text/pre-recorded/pre-recorded-transcription",
               "speech-to-text/pre-recorded/speaker-diarization"
           ]
+        },
+        {
+          "group": "Real-time",
+          "pages": [
+              "speech-to-text/real-time/getting-started",
+              "speech-to-text/real-time/features",
+              "speech-to-text/real-time/real-time-transcription"
+          ]
         }
       ]
     },
@@ -121,13 +129,25 @@
           "pages": [
             "api-reference/schemas/egress/transcription-response",
             "api-reference/schemas/egress/diarization-response",
-            "api-reference/schemas/egress/llm-response"
+            "api-reference/schemas/egress/llm-response",
+            "api-reference/schemas/egress/stream-sink-message"
           ]
         },
         {
           "group": "Export",
           "pages": [
             "api-reference/schemas/export/audio-intelligence-response"
+          ]
+        },
+        {
+          "group": "Websocket",
+          "pages": [
+            "api-reference/schemas/websocket/stream-metadata",
+            "api-reference/schemas/websocket/configuration",
+            "api-reference/schemas/websocket/keep-alive",
+            "api-reference/schemas/websocket/response",
+            "api-reference/schemas/websocket/end-of-stream",
+            "api-reference/schemas/websocket/error"
           ]
         }
       ]
@@ -194,17 +214,18 @@
   "footerSocials": {
     "linkedin": "https://www.linkedin.com/company/vatis-tech",
     "facebook": "https://www.facebook.com/VatisTech",
-    "instagram": "https://www.instagram.com/vatis.tech"
+    "instagram": "https://www.instagram.com/vatis.tech",
+    "github": "https://github.com/Vatis-Tech/vatis-streams-samples"
   },
   "openapi": [
     "api-reference/openapi/authenticate.json",
     "api-reference/openapi/http-gateway.json",
     "api-reference/openapi/stream-configuration-service.json",
     "api-reference/openapi/stream-service.json",
-    "api-reference/openapi/egress-service.json",
     "api-reference/openapi/notification-service.json",
     "api-reference/openapi/export-service.json",
     "api-reference/openapi/usage-service.json",
+    "api-reference/openapi/egress-service.json",
     "api-reference/openapi/schema-server.json"
   ]
 }

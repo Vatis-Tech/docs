@@ -1,0 +1,144 @@
+---
+title: 'Getting Started'
+description: 'Start using the Vatis Streams API for real-time processing'
+---
+
+## Examples
+
+Visit our [GitHub samples repository](https://github.com/Vatis-Tech/vatis-streams-samples) for more examples on how to use the Vatis Streams API.
+
+## Prerequisites
+- [API key](/get-started/get-api-access)
+
+## Create the WebSocket connection
+
+Connect to the Vatis Streams API using the WebSocket protocol. We can configure the stream by using either query parameters of a configuration message.
+
+<Tabs>
+    <Tab title="Query parameters">
+        Specify all the configuration parameters in the query string of the WebSocket URL. (e.g. `language`)
+
+        ```
+        wss://ws-gateway.vatis.tech/ws-gateway/api/v1/?streamConfigurationTemplateId=670ba9e0efa59fe6aecd56f1&language=en
+        ```
+    </Tab>
+    <Tab title="Configuration message">
+        Connect to the WebSocket API specifying only the stream configuration template id in the URL.
+
+        ```
+        wss://ws-gateway.vatis.tech/ws-gateway/api/v1/?streamConfigurationTemplateId=670ba9e0efa59fe6aecd56f1
+        ```
+
+        Send a [**configuration message**](/api-reference/schemas/websocket/configuration) to the WebSocket server after the connection is established. The configuration message is a JSON object with the configuration parameters.
+
+        ```json
+        {
+            "type": "CONFIGURATION",
+            "patches": {
+                "language": "en"
+            }
+        }
+        ```
+    </Tab>
+</Tabs>
+
+## Send your data
+
+Send your data to the WebSocket server as binary chunks from your data source.
+
+```python
+with open('audio_file.wav', 'rb') as file:
+    chunk = file.read(1024)
+    while chunk:
+        ws.send(chunk)
+        chunk = file.read(1024)
+```
+
+## Receive the results
+
+The first result message you'll receive is the [**stream metadata**](/api-reference/schemas/websocket/stream-metadata) message that will contain all the metadata of the created stream.
+
+The rest of the response stream will consist of either [**response messages**](/api-reference/schemas/websocket/stream-metadata) or binary message, if configured so.
+
+If an error is encountered during the processing, an [**error message**](/api-reference/schemas/websocket/error) will be sent, then the connection will be closed.
+
+## Analyzing the result
+
+The response messages will contain a [**sink message**](/api-reference/schemas/egress/stream-sink-message) that wraps a processor message. The complete list of processor messages can be found in the [API reference](/api-reference/schemas/egress).
+
+Let's take for this example the [**transcription message**](/api-reference/schemas/egress/transcription-message) that contains the transcription of the audio data.
+
+```json
+{
+  "type": "RESPONSE",
+  "response": {
+    "streamId": "e9756f47-3222-4951-b372-15435b787c9f",
+    "groupId": "e9756f47-3222-4951-b372-15435b787c9f",
+    "tags": [
+      "main",
+      "transcriber"
+    ],
+    "sinkTopicName": "e7de18ba",
+    "messageId": "CKfpHhAnMAA",
+    "processorId": "transcriber",
+    "sequenceId": 39,
+    "publishTimestamp": 1734449767699000,
+    "frameType": "final",
+    "payloadSchema": "tech.vatis.schema.stream.processor.messages.transcription.TranscriptionResponseDto",
+    "payload": {
+      "transcription": " George Washington.",
+      "words": [
+        {
+          "word": " George",
+          "start": 30670,
+          "end": 31150,
+          "confidence": 0.99902344,
+          "language": "en",
+          "metadata": {}
+        },
+        {
+          "word": " Washington.",
+          "start": 31150,
+          "end": 31650,
+          "confidence": 0.98706055,
+          "language": "en",
+          "metadata": {}
+        }
+      ],
+      "start": 29150,
+      "end": 32229,
+      "metadata": {},
+      "utterance": false
+    },
+    "headers": {}
+  }
+}
+```
+
+<ParamField body="type" type="RESPONSE">
+    The `RESPONSE` type of the message.
+</ParamField>
+<ParamField body="response.streamId" type="e9756f47-3222-4951-b372-15435b787c9f">
+    The corresponding stream id that emitted this message.
+</ParamField>
+<ParamField body="response.frameType" type="final">
+    The type of the frame. Can be `final` or `partial`. A `final` frame represents the final processing result for a portion of the stream.
+</ParamField>
+<ParamField body="response.payloadSchema" type="tech.vatis.schema.stream.processor.messages.transcription.TranscriptionResponseDto">
+    The schema of the payload.
+</ParamField>
+<ParamField body="response.payload" type="object">
+    The actual payload of type [TranscriptionResponseDto](/api-reference/schemas/egress/transcription-response).
+</ParamField>
+<ParamField body="response.payload.transcription" type="object">
+    The transcription preview.
+</ParamField>
+
+## Close the connection
+
+To confirm the input data was sent completely, send an [**end-of-stream message**](/api-reference/schemas/websocket/end-of-stream) to the WebSocket server.
+The engine will finish processing, send the final results, followed by a similar **end-of-stream** message, and then close the connection.
+
+## Further reading
+
+Explore the complete [WS Gateway API reference](https://studio.asyncapi.com/?url=https://ws-gateway.vatis.tech/springwolf/docs&readOnly) and the [WebSocket integration](/integration/websocket).

@@ -1,0 +1,12 @@
+<ParamField query="language" type="string" default="none">
+    The language as country [ISO code](/api-reference/auxiliaries/transcription-languages) to transcribe the audio to. When not specified, it is automatically detected.
+</ParamField>
+
+<ParamField query="multichannel" type="bool" default="false">
+    Enable or disable multichannel audio processing. Possible values: `true` or `false`.
+    When enabled, each channel is processed separately.
+</ParamField>
+
+<ParamField query="utteranceEnd" type="int" default="1000">
+    The minimum waiting time in milliseconds after the last speech is detected before the emitting an `utterance` transcription message.
+</ParamField>
