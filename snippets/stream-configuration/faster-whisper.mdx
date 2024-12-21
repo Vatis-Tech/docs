@@ -1,5 +1,9 @@
-<ParamField query="language" type="string" default="none">
-    The language as country [ISO code](/speech-to-text/pre-recorded/transcription-languages) to transcribe the audio to. When not specified, it is automatically detected.
+<ParamField query="language" type="string | list" default="none">
+    The language as country [ISO code](/speech-to-text/pre-recorded/transcription-languages) to transcribe the audio to. When not specified, it is automatically detected. When multiple languages are specified, the model will auto-detect one of the specified languages.
+
+    If multiple languages are specified, the language will perform multilingual code switching between the specified languages. If none is specified, the model will switch between all supported languages.
+
+    To provide multiple languages in the URL, simply add multiple `language` parameters. For example: `language=en&language=es`.
 </ParamField>
 
 <ParamField query="noSpeechThreshold" type="float" default="0.5">

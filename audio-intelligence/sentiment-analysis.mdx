@@ -9,7 +9,9 @@ Enable sentiment analysis with the following configuration:
 
 <SentimentAnalysisParameters />
 
-## Usage
+## Pre-recorded
+
+### Usage
 
 ```bash
 curl -X 'POST' \
@@ -19,8 +21,6 @@ curl -X 'POST' \
   -H 'Content-Type: application/octet-stream' \
   --data-binary '@test.wav'
 ```
-
-## Export Response
 
 ### Mono audio
 
@@ -106,5 +106,68 @@ curl -X 'POST' \
       "sentiment": "neutral"
     }
   }
+}
+```
+
+## Real-time
+
+The sentiment analysis results can be consumed in real-time.
+
+Each sentiment analysis message will contain either an `utterance sentiment analysis` or a `summary sentiment analysis`.
+
+### Utterance sentiment analysis
+
+The sentiment analysis will be performed for each utterance in the conversation.
+
+```json
+{
+    "promptId": "sentimentAnalysis",
+    "sequenceId": 0,
+    "sentimentAnalysis": [
+        {
+            "text": " Good afternoon. My name is Aisha. Thank you for calling Verizon today. How may I be of assistance?",
+            "sentiment": "positive",
+            "channel": 0,
+            "startTime": 0,
+            "endTime": 7679,
+            "score": 0.8
+        }
+    ]
+}
+```
+
+### Summary sentiment analysis
+
+After all the utterances have been processed, a summary sentiment analysis will be provided.
+
+```json
+{
+    "promptId": "sentimentAnalysis",
+    "sequenceId": 9,
+    "sentimentAnalysisSummary": {
+        "channels": [
+            {
+                "channel": 1,
+                "negativeCount": 0,
+                "positiveCount": 1,
+                "neutralCount": 3,
+                "averageScore": 0.2,
+                "sentiment": "neutral"
+            },
+            {
+                "channel": 0,
+                "negativeCount": 0,
+                "positiveCount": 4,
+                "neutralCount": 1,
+                "averageScore": 0.52,
+                "sentiment": "positive"
+            }
+        ],
+        "negativeCount": 0,
+        "positiveCount": 5,
+        "neutralCount": 4,
+        "averageScore": 0.3777777777777778,
+        "sentiment": "positive"
+    }
 }
 ```
