@@ -10,3 +10,23 @@
 <ParamField query="utteranceEnd" type="int" default="1000">
     The minimum waiting time in milliseconds after the last speech is detected before the emitting an `utterance` transcription message.
 </ParamField>
+
+<Accordion title="Raw data format parameters">
+    <Warning>Use these parameters only when sending raw data.</Warning>
+
+    <ParamField query="encoding" type="string" default="none">
+        The encoding of the audio data. Accepted values:
+        - `linear16`: 16-bit signed little-endian samples (Linear PCM)
+        - `flac`: Free Lossless Audio Codec
+        - `mulaw`: 8-bit samples (G.711 mu-law)
+        - `opus`: OGG Opus
+    </ParamField>
+
+    <ParamField query="sampleRate" type="int" default="none">
+        The sample rate of the audio data in Hertz (Hz).
+    </ParamField>
+
+    <ParamField query="channels" type="int" default="none">
+        The number of audio channels in the audio data.
+    </ParamField>
+</Accordion>

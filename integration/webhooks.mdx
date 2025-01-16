@@ -62,23 +62,23 @@ The webhook event you'll receive will have the following structure:
 
 ## Event types
 
-| Event type                    | Description                                                                                                                                      |
-|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| `stream.ready`                | The stream has just been cerated and is ready to receive data                                                                                    |
-| `stream.completed`            | The stream completed successfully                                                                                                                |
-| `stream.failed`               | The stream failed                                                                                                                                |
-| `stream.expired`              | The stream storage time expired and it was deleted                                                                                               |
-| `group.created`               | A new group has been created                                                                                                                     |
-| `group.completed`             | All the streams in the group completed successfully. This event will be emitted again if a new stream joins the group and completes              |
-| `group.failed`                | All the streams in the group finished and at least one stream failed. This event will be emitted again if a new stream joins the group and fails |
-| `group.expired`               | The group storage time expired and it was deleted. A group will expire only after all the streams in the group had expired                       |
-| `group.stream-joined`         | A new stream has joined the group                                                                                                                |
-| `stream.gateway.connected`    | A client connected to the stream gateway                                                                                                         |
-| `stream.gateway.disconnected` | The client disconnected from the stream gateway                                                                                                  |
-| `stream.gateway.closed`       | The gateway of the stream is permanently closed                                                                                                  |
-| `stream.processor.running`    | The stream processor has been assigned to stream and it is running                                                                               |
-| `stream.processor.completed`  | The stream processor has been completed successfully                                                                                             |
-| `stream.processor.error`      | The stream processor has failed                                                                                                                  |
+| Event type             | Supports dynamic webhooks | Description                                                                                                                                      |
+|:-----------------------|:-------------------------:|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| `stream.ready`         |            yes            | The stream has just been created and is ready to receive data                                                                                    |
+| `stream.completed`     |            yes            | The stream completed successfully                                                                                                                |
+| `stream.failed`        |            yes            | The stream failed                                                                                                                                |
+| `stream.expired`       |            yes            | The stream storage time expired and it was deleted                                                                                               |
+| `group.created`        |            yes            | A new group has been created                                                                                                                     |
+| `group.completed`      |            yes            | All the streams in the group completed successfully. This event will be emitted again if a new stream joins the group and completes              |
+| `group.failed`         |            yes            | All the streams in the group finished and at least one stream failed. This event will be emitted again if a new stream joins the group and fails |
+| `group.expired`        |            yes            | The group storage time expired and it was deleted. A group will expire only after all the streams in the group had expired                       |
+| `group.stream-joined`  |            yes            | A new stream has joined the group                                                                                                                |
+| `gateway.connected`    |            no             | A client connected to the stream gateway                                                                                                         |
+| `gateway.disconnected` |            no             | The client disconnected from the stream gateway                                                                                                  |
+| `gateway.closed`       |            no             | The gateway of the stream is permanently closed                                                                                                  |
+| `processor.running`    |            no             | The stream processor has been assigned to stream and it is running                                                                               |
+| `processor.completed`  |            no             | The stream processor has been completed successfully                                                                                             |
+| `processor.error`      |            no             | The stream processor has failed                                                                                                                  |
 
 ## Source IPs
 
