@@ -1,0 +1,46 @@
+<ParamField query="disfluencies" type="bool" default="false">
+    A disfluency is a part of speech not being smooth and continuous.
+    When disfluencies are disabled (default), all this discontinuous parts from the transcript are removed.
+</ParamField>
+
+<ParamField query="punctuationCapitalization" type="bool" default="true">
+    Add punctuation and capitalization to the transcription.
+</ParamField>
+
+<ParamField query="numeralsConversion" type="bool" default="true">
+    Convert the numerals from their word form to their numeric form (e.g. twenty two -> 22).
+</ParamField>
+
+<ParamField query="splitStereo" type="bool" default="false">
+    Enable or disable splitting stereo audio into two mono audio streams. Possible values: `true` or `false`.
+</ParamField>
+
+<ParamField query="findReplace" type="bool" default="true">
+    Enable the find-replace functionality performed using the user-defined `findReplaceExpressions`.
+</ParamField>
+
+<ParamField query="findReplaceExpressions" type="list[object]" default="null">
+    Find-replace expressions.
+
+    <Note>Specifying find-replace expressions is not available using URL query parameters.</Note>
+
+    <Accordion title="Attributes">
+        <ParamField body="replacement" type="string" required>
+            The replace string.
+        </ParamField>
+        <ParamField body="regex" type="list[string]" required>
+            Regex expressions to find.
+        </ParamField>
+        <ParamField body="merge" type="string" default="STANDALONE">
+            Replacement merge strategy relative to the left and right neighbours.
+            - `STANDALONE`: keep the replacement as a standalone word
+            - `MERGE_LEFT`: concatenate the replacement with the left neighbour
+            - `MERGE_RIGHT`: concatenate the replacement with the right neighbour
+            - `MERGE_LEFT_RIGHT`: concatenate the replacement with both the left and the right neighbours
+            - `MERGE_LEFT_CAPITALIZE_NEXT`: concatenate the replacement with the left neighbour and capitalize the right neighbour
+        </ParamField>
+        <ParamField body="enabledOnPrerecordedFiles" type="bool" default="true">
+            Flag to enable this current expression in the find-replace operation.
+        </ParamField>
+    </Accordion>
+</ParamField>

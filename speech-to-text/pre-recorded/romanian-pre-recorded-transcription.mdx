@@ -1,15 +1,13 @@
 ---
-title: "Speaker Diarization"
-description: "Pre-recorded transcription with speaker diarization specifications using the Vatis Streams API"
+title: "Pre-recorded Transcription (Romanian)"
+description: "Pre-recorded transcription specifications of Romanian-only files using the Vatis Streams API"
 ---
 
-import TranscriptionParameters from '/snippets/stream-configuration/faster-whisper.mdx';
+import TranscriptionParameters from '/snippets/stream-configuration/ro-transcriber.mdx';
 import AudioIntelligenceParameters from '/snippets/stream-configuration/llm.mdx';
-import SpeakerDiarizationParameters from '/snippets/stream-configuration/pyannote.mdx';
 
 ### <Icon icon="sliders" iconType="light" size="24"/>  Stream configuration template ids
-* production all languages: `669fee048452492b62cfad39`
-* [production Romanian-only](/speech-to-text/pre-recorded/romanian-speaker-diarization)
+* production: `678e26e695f8f5742e8718f4`
 
 ### <Icon icon="upload" iconType="light" size="24"/>  Input data
 * multimedia content: `wav`, `mp3`, `mp4`, `webm`, `flv`, etc.
@@ -18,7 +16,6 @@ import SpeakerDiarizationParameters from '/snippets/stream-configuration/pyannot
 ### <Icon icon="download" iconType="light" size="24"/>  Egress responses
 - [Egress Response](/api-reference/schemas/egress/stream-sink-message)
     - [Transcription Response](/api-reference/schemas/egress/transcription-response)
-    - [Diarization Response](/api-reference/schemas/egress/diarization-response)
     - [LLM Response](/api-reference/schemas/egress/llm-response)
 
 ### <Icon icon="file-code" iconType="light" size="24"/>  Export response
@@ -28,13 +25,8 @@ import SpeakerDiarizationParameters from '/snippets/stream-configuration/pyannot
 <AccordionGroup>
     <Accordion title="Transcription">
         <TranscriptionParameters/>
-        <Warning>The `splitStereo` parameter should not be used in this configuration</Warning>
-    </Accordion>
-    <Accordion title="Speaker diarization">
-        <SpeakerDiarizationParameters/>
     </Accordion>
     <Accordion title="Audio Intelligence">
-        <Warning>The audio intelligence layer operates only over the transcription responses, excluding the diarization information.</Warning>
         <AudioIntelligenceParameters/>
     </Accordion>
 </AccordionGroup>
