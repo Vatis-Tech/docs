@@ -217,4 +217,49 @@ For experimenting the webhook integration on a local environment, you can create
 2. The same event may be sent multiple times to the same endpoint
 3. The order of the events is not guaranteed
 
-## Securing webhooks (coming soon)
+## Dynamic webhooks
+
+A dynamic webhook is a webhook defined on a resource basis. In contrast to a standard webhook that is defined once and can be triggered by any resource (group, stream, gateway, etc.) based on the event key,
+a dynamic webhook is associated with a specific resource and it can be triggered only by that resource.
+
+The main advantage of a dynamic webhook is the ability to modify the endpoint URL for each created stream. For example, we can include a unique identifier in the endpoint URL that changes for each created stream.
+
+### All gateways
+
+For each available gateway, a dynamic webhook can be defined as a query parameter that follows this general syntax: `webhook[.RESOURCE[.STATE]]=<url>`
+
+For example:
+- `webhook.stream.completed=https://mydomain.com/success` will create a dynamic webhook the receives the `stream.completed` event at the `https://mydomain.com/success` URL
+- `webhook.stream.completed=https://mydomain.com/success&webhook.stream.failed=https://mydomain.com/fail` will create two dynamic webhooks, one that will be triggered by the `stream.completed` event at the `https://mydomain.com/success` URL,
+    and the other that will receive the `stream.failed` event at the `https://mydomain.com/fail` URL
+- `webhook.stream.completed=https://mydomain.com/status&webhook.stream.failed=https://mydomain.com/status` will create a single dynamic webhook that will be triggered by both `stream.completed` and `stream.failed` events
+    at the `https://mydomain.com/status` URL
+- `webhook.stream=https://mydomain.com/stream-event` is a wildcard dynamic webhook that be triggered by any stream-related event at the `https://mydomain.com/stream-event` URL
+- `webhook=https://mydomain.com/any-event` is a wildcard dynamic webhook that will be triggered by any event at the `https://mydomain.com/any-event` URL
+
+### Websocket Gateway
+
+Additionally to the dynamic webhooks defined using query parameter, the `WebSocket Gateway` can receive the dynamic webhooks configuration using the [Configuration Message](/integration/websocket#configuration).
+
+The general form of the webhook configuration is as follows:
+
+```json
+{
+  "type": "CONFIGURATION",
+  "webhook": {
+    "https://mydomain.com/success": ["stream.completed"],
+    "https://mydomain.com/fail": ["stream.failed"],
+    "https://mydomain.com/status": ["stream.completed", "stream.failed"],
+    "https://mydomain.com/stream-event": ["stream.*"],
+    "https://mydomain.com/any-event": ["*"]
+  }
+}
+```
+
+<Warning>Please use either the query parameters or the configuration message for defining the dynamic webhooks. If both are specified, the behaviour is undefined.</Warning>
+
+### Limitations
+
+- Only `stream` and `group` resources can be used in dynamic webhooks
+- No more than 3 dynamic wehooks can be defined
+- The supported endpoint protocols are `http` and `https`
