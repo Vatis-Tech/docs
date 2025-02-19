@@ -64,8 +64,8 @@ Visit our [GitHub samples repository](https://github.com/Vatis-Tech/vatis-stream
             <Tab title="HTTP Gateway with webhooks">
                 We can use [dynamic webhooks](integration/webhooks#dynamic-webhooks) to specify callback URLs at the request level that will be triggered when the state changes for the stream resource we're creating. Generally, we'd want to know when the stream enters its `COMPLETED` or `FAILED` state.
                 To declare a webhook for this two events we should set the following query parameters:
-                - `webhook.stream.completed=http://my_domain/success`
-                - `webhook.stream.failed=http://my_domain/fail`
+                - `webhook.stream.completed=http://my_domain/webhook-callback`
+                - `webhook.stream.failed=http://my_domain/webhook-callback`
 
                 <Tip>The URL value of the `completed` and `failed` webhooks can be the same, and the actual state can be parsed from the received body</Tip>
                 <Warning>The webhook URLs may need to be URL encoded depending on the requests library used</Warning>
@@ -74,7 +74,7 @@ Visit our [GitHub samples repository](https://github.com/Vatis-Tech/vatis-stream
 
                 ```bash
                 curl --request POST \
-                  --url "https://http-gateway.vatis.tech/http-gateway/api/v1/upload?id=$STREAM_ID&streamConfigurationTemplateId=$CONFIG_ID&persist=true&language=en&webhook.stream.completed=http://my_domain/success&webhook.stream.failed=http://my_domain/fail" \
+                  --url "https://http-gateway.vatis.tech/http-gateway/api/v1/upload?id=$STREAM_ID&streamConfigurationTemplateId=$CONFIG_ID&persist=true&language=en&webhook.stream.completed=http://my_domain/webhook-callback&webhook.stream.failed=http://my_domain/webhook-callback" \
                   --header "Authorization: Basic $API_KEY" \
                   --header 'Content-Type: application/octet-stream' \
                   --data-binary @"$FILE_PATH" | jq
@@ -97,7 +97,7 @@ Visit our [GitHub samples repository](https://github.com/Vatis-Tech/vatis-stream
                   },
                   "webhook": {
                     "http://my_domain/path": [ ②
-                      "stream.completed" ③
+                      "stream.completed", "stream.failed" ③
                     ]
                   }
                 }
