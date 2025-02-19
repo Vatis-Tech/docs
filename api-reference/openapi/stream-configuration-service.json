@@ -53,6 +53,26 @@
               }
             }
           },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad alias in stream configuration template",
             "content": {
@@ -75,26 +95,6 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Exception on client authorization",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -148,6 +148,26 @@
               }
             }
           },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Error in stream configuration template",
             "content": {
@@ -170,26 +190,6 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Exception on client authorization",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -261,6 +261,26 @@
               }
             }
           },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad alias in stream configuration template",
             "content": {
@@ -283,26 +303,6 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Exception on client authorization",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -380,6 +380,26 @@
               }
             }
           },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad alias in stream configuration template",
             "content": {
@@ -402,26 +422,6 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Exception on client authorization",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -489,6 +489,26 @@
               }
             }
           },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad alias in stream configuration template",
             "content": {
@@ -511,26 +531,6 @@
           },
           "500": {
             "description": "Exception on Pulsar operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Exception on client authorization",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -907,11 +907,11 @@
       "PageableObject": {
         "type": "object",
         "properties": {
-          "pageSize": {
+          "pageNumber": {
             "type": "integer",
             "format": "int32"
           },
-          "pageNumber": {
+          "pageSize": {
             "type": "integer",
             "format": "int32"
           },

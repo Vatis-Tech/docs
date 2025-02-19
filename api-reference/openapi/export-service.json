@@ -234,6 +234,14 @@
           "averageScore": {
             "type": "number",
             "format": "double"
+          },
+          "sentiment": {
+            "type": "string",
+            "enum": [
+              "negative",
+              "neutral",
+              "positive"
+            ]
           }
         }
       },
@@ -307,6 +315,14 @@
           "averageScore": {
             "type": "number",
             "format": "double"
+          },
+          "sentiment": {
+            "type": "string",
+            "enum": [
+              "negative",
+              "neutral",
+              "positive"
+            ]
           }
         }
       },

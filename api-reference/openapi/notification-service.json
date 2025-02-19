@@ -21,18 +21,8 @@
         "description": "Finds all webhook endpoints of the current user.",
         "operationId": "findAll",
         "responses": {
-          "401": {
-            "description": "Exception on client authorization",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Validation exception",
+          "default": {
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -43,6 +33,16 @@
           },
           "404": {
             "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Exception on webhook configuration",
             "content": {
               "application/json": {
                 "schema": {
@@ -71,8 +71,8 @@
               }
             }
           },
-          "default": {
-            "description": "Error",
+          "401": {
+            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -119,18 +119,8 @@
           "required": true
         },
         "responses": {
-          "401": {
-            "description": "Exception on client authorization",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Validation exception",
+          "default": {
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -141,6 +131,16 @@
           },
           "404": {
             "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Exception on webhook configuration",
             "content": {
               "application/json": {
                 "schema": {
@@ -169,8 +169,8 @@
               }
             }
           },
-          "default": {
-            "description": "Error",
+          "401": {
+            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -229,18 +229,8 @@
           }
         ],
         "responses": {
-          "401": {
-            "description": "Exception on client authorization",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Validation exception",
+          "default": {
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -251,6 +241,16 @@
           },
           "404": {
             "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Exception on webhook configuration",
             "content": {
               "application/json": {
                 "schema": {
@@ -279,8 +279,8 @@
               }
             }
           },
-          "default": {
-            "description": "Error",
+          "401": {
+            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -327,18 +327,8 @@
           }
         ],
         "responses": {
-          "401": {
-            "description": "Exception on client authorization",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Validation exception",
+          "default": {
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -349,6 +339,16 @@
           },
           "404": {
             "description": "The webhook endpoint could not be found by the current user subject and endpoint id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Exception on webhook configuration",
             "content": {
               "application/json": {
                 "schema": {
@@ -377,8 +377,8 @@
               }
             }
           },
-          "default": {
-            "description": "Error",
+          "401": {
+            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -423,18 +423,8 @@
           }
         ],
         "responses": {
-          "401": {
-            "description": "Exception on client authorization",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Validation exception",
+          "default": {
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -445,6 +435,16 @@
           },
           "404": {
             "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Exception on webhook configuration",
             "content": {
               "application/json": {
                 "schema": {
@@ -473,8 +473,8 @@
               }
             }
           },
-          "default": {
-            "description": "Error",
+          "401": {
+            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -503,18 +503,8 @@
         "description": "Finds all supported events for webhook endpoints.",
         "operationId": "getSupportedEvents",
         "responses": {
-          "401": {
-            "description": "Exception on client authorization",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Validation exception",
+          "default": {
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -525,6 +515,16 @@
           },
           "404": {
             "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Exception on webhook configuration",
             "content": {
               "application/json": {
                 "schema": {
@@ -553,8 +553,8 @@
               }
             }
           },
-          "default": {
-            "description": "Error",
+          "401": {
+            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {

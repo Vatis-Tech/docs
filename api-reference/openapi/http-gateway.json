@@ -112,14 +112,33 @@
                 "ANY"
               ]
             }
+          },
+          {
+            "name": "webhook",
+            "in": "query",
+            "description": "Define dynamic webhooks for this stream as query parameters.\n\nThe general structure is \"webhook[.RESOURCE[.STATE]]=http://my_domain/path\".\n\nFor example:\n\n- define a webhook for stream completion: \"webhook.stream.completed=http://my_domain/success\"\n\n- define a webhook for all stream events: \"webhook.stream=http://my_domain/stream_event\"\n\n- define the same webhook for stream completion and failure: \"webhook.stream.completed=http://my_domain/path&webhook.stream.failed=http://my_domain/path\"\n\n- define a webhook for all events: \"webhook=http://my_domain/path\"\n",
+            "explode": true,
+            "schema": {
+              "type": "object"
+            },
+            "example": {
+              "webhook.stream.completed": "http://my_domain/success",
+              "webhook.stream.failed": "http://my_domain/fail"
+            }
           }
         ],
         "requestBody": {
-          "description": "The stream of bytes to upload",
+          "description": "The stream of bytes or the multipart form-data to upload",
           "content": {
             "application/octet-stream": {
               "schema": {
-                "type": "string"
+                "type": "string",
+                "format": "binary"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/MultipartUploadRequest"
               }
             }
           },
@@ -180,6 +199,55 @@
             }
           }
         }
+      },
+      "HttpStreamConfigurationDto": {
+        "type": "object",
+        "properties": {
+          "patches": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "webhook": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "description": "Define dynamic webhooks for this stream as query parameters.\n\nThe general structure is \"webhook[.RESOURCE[.STATE]]=http://my_domain/path\".\n\nFor example:\n\n- define a webhook for stream completion: \"webhook.stream.completed=http://my_domain/success\"\n\n- define a webhook for all stream events: \"webhook.stream=http://my_domain/stream_event\"\n\n- define the same webhook for stream completion and failure: \"webhook.stream.completed=http://my_domain/path&webhook.stream.failed=http://my_domain/path\"\n\n- define a webhook for all events: \"webhook=http://my_domain/path\"\n",
+        "example": {
+          "patches": {
+            "languages": "ro"
+          },
+          "webhook": {
+            "http://my_domain/path": [
+              "stream.completed"
+            ]
+          }
+        }
+      },
+      "MultipartUploadRequest": {
+        "required": [
+          "configuration",
+          "file"
+        ],
+        "type": "object",
+        "properties": {
+          "configuration": {
+            "$ref": "#/components/schemas/HttpStreamConfigurationDto"
+          },
+          "file": {
+            "type": "string",
+            "description": "Stream data",
+            "format": "binary"
+          }
+        },
+        "description": "Multipart form-data request"
       },
       "ProcessorConfigurationDto": {
         "type": "object",
@@ -246,6 +314,12 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ProcessorConfigurationDto"
+            }
+          },
+          "dynamicWebhookEndpoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebhookEndpointDto"
             }
           }
         }
@@ -353,6 +427,29 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/SubscriptionDto"
             }
+          }
+        }
+      },
+      "WebhookEndpointDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
           }
         }
       }

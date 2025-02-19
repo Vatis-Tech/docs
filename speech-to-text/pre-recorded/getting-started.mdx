@@ -1,6 +1,7 @@
 ---
 title: 'Getting Started'
 description: 'Get started with the Vatis Streams API for pre-recorded content'
+mode: 'wide'
 ---
 
 ## Examples
@@ -8,7 +9,7 @@ description: 'Get started with the Vatis Streams API for pre-recorded content'
 Visit our [GitHub samples repository](https://github.com/Vatis-Tech/vatis-streams-samples) for the complete list of examples on how to use the Vatis Streams API.
 
 ## Prerequisites
-- [API key](/get-started/get-api-access)
+- [Vatis API key](/get-started/get-api-access)
 - Linux shell
 - [cURL](https://curl.se/) or [Postman](https://www.postman.com/) for making HTTP or WebSocket requests
 - [jq](https://jqlang.github.io/jq/) for parsing JSON responses
@@ -34,48 +35,95 @@ Visit our [GitHub samples repository](https://github.com/Vatis-Tech/vatis-stream
         ```bash
         export CONFIG_ID=<config_id>
         ```
+
+        <Note>Keep the stream configuration page opened in a separate tab for further references during this process</Note>
     </Step>
     <Step title="Upload the data" stepNumber="3">
         Use one of the available gateways for uploading the data.
 
         <Tabs>
             <Tab title="HTTP Gateway">
-                Set the `streamConfigurationTemplateId`, `persist=true`, and any other patches as query parameters and upload the binary data as the body of the request.
+                Set the `streamConfigurationTemplateId=$CONFIG_ID`, `persist=true`, and any other patches as query parameters and upload the binary data as the body of the request.
 
-                Checkout the complete endpoint documentation [here](/api-reference/gateway/upload).
+                The configuration-specific patches (parameters) can be found under the `Parameters` section of the configuration page.
+                <Tip>When dealing with long parameter values (e.g. prompts) consider using the `HTTP Gateway with form-data` approach</Tip>
+
+                The body will be sent as binary data on the request body. The actual body can be one of the options mentioned under the `Input data` section of the configuration page.
 
                 ```bash
                 curl --request POST \
                   --url "https://http-gateway.vatis.tech/http-gateway/api/v1/upload?id=$STREAM_ID&streamConfigurationTemplateId=$CONFIG_ID&persist=true&language=en" \
                   --header "Authorization: Basic $API_KEY" \
                   --header 'Content-Type: application/octet-stream' \
-                  --data-binary @"$FILE_PATH"
+                  --data-binary @"$FILE_PATH" | jq
                 ```
+
+                <Info>To prevent any unexpected error, always include the `Content-Type: application/octet-stream` header</Info>
+                <Info>[Endpoint reference](/api-reference/gateway/upload)</Info>
             </Tab>
-            <Tab title="WS Gateway">
-                Set the `streamConfigurationTemplateId`, `egress=false`, `persist=true`, and any other patches as query parameters, then chunk the data and send it to the gateway as binary messages.
+            <Tab title="HTTP Gateway with webhooks">
+                We can use [dynamic webhooks](integration/webhooks#dynamic-webhooks) to specify callback URLs at the request level that will be triggered when the state changes for the stream resource we're creating. Generally, we'd want to know when the stream enters its `COMPLETED` or `FAILED` state.
+                To declare a webhook for this two events we should set the following query parameters:
+                - `webhook.stream.completed=http://my_domain/success`
+                - `webhook.stream.failed=http://my_domain/fail`
+
+                <Tip>The URL value of the `completed` and `failed` webhooks can be the same, and the actual state can be parsed from the received body</Tip>
+                <Warning>The webhook URLs may need to be URL encoded depending on the requests library used</Warning>
+
+                We should also set the common `streamConfigurationTemplateId=$CONFIG_ID`, `persist=true`, and any other patches as query parameters and upload the binary data as the body of the request.
 
                 ```bash
-                wss://ws-gateway.vatis.tech/ws-gateway/api/v1?id=$STREAM_ID&streamConfigurationTemplateId=$CONFIG_ID&persist=true&language=en&egress=false
+                curl --request POST \
+                  --url "https://http-gateway.vatis.tech/http-gateway/api/v1/upload?id=$STREAM_ID&streamConfigurationTemplateId=$CONFIG_ID&persist=true&language=en&webhook.stream.completed=http://my_domain/success&webhook.stream.failed=http://my_domain/fail" \
+                  --header "Authorization: Basic $API_KEY" \
+                  --header 'Content-Type: application/octet-stream' \
+                  --data-binary @"$FILE_PATH" | jq
                 ```
 
-                Additionally, you can send the patches as the first message, by adding `configurationMessage=true` to the query parameters.
+                <Info>[Endpoint reference](/api-reference/gateway/upload)</Info>
+            </Tab>
+            <Tab title="HTTP Gateway with form-data">
+                In some scenarios, the patches (parameters) values are too long to be included in the URL. In this case, we can use the `multipart/form-data` content type to send the patches as form data.
 
-                ```bash
-                wss://ws-gateway.vatis.tech/ws-gateway/api/v1?id=$STREAM_ID&streamConfigurationTemplateId=$CONFIG_ID&persist=true&language=en&egress=false&configurationMessage=true
-                ```
-                then send the patches as the first message:
+                The request body will contain exactly two parts in this specific order:
+                1. The patches as JSON encoded [HTTPStreamConfigurationDto](/api-reference/schemas/http-gateway/stream-configuration)
+                2. The binary data to be uploaded on the stream
+
+                Here's an example of a stream configuration
                 ```json
                 {
-                    "type": "CONFIGURATION",
-                    "patches": {
-                        "language": "en"
-                    }
+                  "patches": {
+                    "languages": "ro" ①
+                  },
+                  "webhook": {
+                    "http://my_domain/path": [ ②
+                      "stream.completed" ③
+                    ]
+                  }
                 }
                 ```
-                <Tip>Use the WS Gateway upload when you need to specify query parameter values that would not fit in the URL (e.g. ask anything prompts)</Tip>
+                ① The configuration-specific patches (parameters) can be found under the `Parameters` section of the configuration page
 
-                For the complete description, check the [WebSocket integration](/integration/websocket) and the [WS Gateway API reference](https://studio.asyncapi.com/?url=https://ws-gateway.vatis.tech/springwolf/docs&readOnly).
+                ② The webhook URL
+
+                ③ The events that will trigger the webhook. The complete list can be found [here](/integration/webhooks#event-types)
+
+                The complete request will look like this:
+                ```bash
+                curl --request POST \
+                  --url "https://http-gateway.vatis.tech/http-gateway/api/v1/upload?id=$STREAM_ID&streamConfigurationTemplateId=$CONFIG_ID&persist=true" \
+                  --header "Authorization: Basic $API_KEY" \
+                  --header 'Content-Type: multipart/form-data' \
+                  --form 'config={ "patches": {"language": "en"} };type=application/json' \
+                  --form "file=@$FILE_PATH;type=application/octet-stream" | jq
+                ```
+
+                Considerations:
+                - The first part has a limit of `1 MB`
+                - If possible, include the part content type (`application/json`, and `application/octet-stream` respectively)
+                - The parts name is not relevant
+
+                <Info>[Endpoint reference](/api-reference/gateway/upload)</Info>
             </Tab>
         </Tabs>
     </Step>
@@ -92,7 +140,24 @@ Visit our [GitHub samples repository](https://github.com/Vatis-Tech/vatis-stream
                 <Info>[Endpoint reference](/api-reference/streams/stream-resource-impl/find-by-id)</Info>
             </Tab>
             <Tab title="Webhook">
-                Refer to the [Webhook integration](/integration/webhooks) for setting up a webhook that will notify you when the stream is completed.
+                The configured webhook will be triggered with a `POST` request having the [Webhook event](/api-reference/schemas/webhook/webhook-event) payload containing the [Stream state changed event](/api-reference/schemas/webhook/event-payload/stream-state-event).
+
+                From the received payload we should extract the `streamId` and the [state](/api-reference/schemas/stream/stream-state) as shown below:
+
+                ```json
+                {
+                    //...
+                    "payload": {
+                        "streamId": "stream_id",
+                        "state": "COMPLETED"
+                        //...
+                    }
+                }
+                ```
+
+                If the stream state is `FAILED`, we should inspect the [stream errors](/infrastructure/streams/inspect-errors) and retry the upload.
+
+                Refer to the [Webhook integration](/integration/webhooks) for the complete webhooks documentation.
             </Tab>
         </Tabs>
     </Step>
@@ -102,8 +167,10 @@ Visit our [GitHub samples repository](https://github.com/Vatis-Tech/vatis-stream
         ```bash
         curl --request GET \
           --url "https://export-service.vatis.tech/export-service/api/v1/export/JSON?streams=$STREAM_ID" \
-          --header "Authorization: Basic $API_KEY"
+          --header "Authorization: Basic $API_KEY" | jq
         ```
+
+        Based on the stream configuration, the result will be the one mentioned under the `Export response` section of the configuration.
 
         <Info>[Endpoint reference](/api-reference/export/exports-a-stream-of-data-in-various-formats)</Info>
     </Step>

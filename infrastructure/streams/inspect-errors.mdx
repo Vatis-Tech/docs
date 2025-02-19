@@ -1,0 +1,82 @@
+---
+title: 'Inspect errors'
+description: 'Debug a failed stream by inspecting its errors'
+---
+
+## Overview
+
+A stream error is a signal that something went wrong in the stream. It can occur in one of the following stream stages:
+- during stream creation
+- during stream processing
+
+In this guide, you will learn how to inspect errors in a stream based on the stage it occurred.
+
+## Stream creation errors
+
+A stream creation error is an error that can be determined ahead of time, before the stream starts processing. It can occur due to various reasons, such as:
+- invalid stream configuration
+- maximum number of concurrent streams reached
+- insufficient compute capacity
+- authn or authz errors
+
+The stream creation error may occur only in the upload phase, and it will result in a non-2xx HTTP status code.
+
+The response body will be a standard [Error Response](/api-reference/schemas/error/error-response) JSON object, which can look like this:
+```json
+{
+  "statusCode": 400,
+  "title": "Invalid stream configuration",
+  "message": "Forbidden patch: /langs",
+  "internalErrorName": "STREAM_CONFIGURATION_BAD_PATCH",
+  "nestedErrors": []
+}
+```
+
+## Stream processing errors
+
+A stream processing error is an asynchronous error that occurs during the stream processing phase due to request data processing problems. It can occur due to various reasons, such as:
+- invalid or missing request data
+- unsupported payload type
+- payload too large
+
+An asynchronous error will cause the stream to enter in the `FAILED` state, and it can be identified either by regularly polling the [stream state](/api-reference/streams/stream-resource-impl/find-by-id) or receiving a `stream.failed` webhook notification.
+
+The error details can be extracted from the [stream components state](/api-reference/streams/stream-resource-impl/get-components). The response can look like this:
+```json
+{
+    "streamId": "46df931a-3622-4c39-80fe-70d636e99ba5",
+    "groupId": "46df931a-3622-4c39-80fe-70d636e99ba5",
+    "state": "FAILED",
+    "stateDescription": null,
+    "stateChangedTimestamp": "2025-02-19T04:42:32.344Z",
+    "gateway": {
+        "state": "CLOSED",
+        "stateChangedTimestamp": "2025-02-19T04:42:28.037Z"
+    },
+    "processors": [
+        {
+            "processorId": "transcriber",
+            "state": "ERROR",
+            "stateChangedTimestamp": "2025-02-19T04:42:32.328Z",
+            "stateDescription": "External close signal received"
+        },
+        {
+            "processorId": "diarization",
+            "state": "ERROR",
+            "stateChangedTimestamp": "2025-02-19T04:42:32.298Z",
+            "stateDescription": "[InternalErrorName.GENERAL_INTERNAL_ERROR] JobFailedException: Job 5fb5614f-8959-409f-931f-3f9a4f233130-e1 failed with status FAILED: [Errno 1094995529] Invalid data found when processing input: ..."
+        },
+        {
+            "processorId": "llm",
+            "state": "COMPLETED",
+            "stateChangedTimestamp": "2025-02-19T04:42:28.027Z",
+            "stateDescription": "Stream has no prompt enabled"
+        }
+    ]
+}
+```
+
+Here we can see that the `transcriber` and `diarization` processors are in the `ERROR` state. The `stateDescription` field provides additional information about the error.
+
+The `External close signal received` message indicates that the processor was closed by either a cancel action from the user or from an automatic cancel due to other processor failure in the same pipeline.
+

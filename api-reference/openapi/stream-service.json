@@ -42,28 +42,8 @@
               }
             }
           },
-          "503": {
-            "description": "One or more processors are not available",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Mis-declaration of the stream configuration template",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Stream usage limit reached",
+          "500": {
+            "description": "Failed to create the stream",
             "content": {
               "application/json": {
                 "schema": {
@@ -82,8 +62,8 @@
               }
             }
           },
-          "500": {
-            "description": "Failed to create the stream",
+          "501": {
+            "description": "Requested feature is not implemented",
             "content": {
               "application/json": {
                 "schema": {
@@ -92,8 +72,28 @@
               }
             }
           },
-          "501": {
-            "description": "Requested feature is not implemented",
+          "400": {
+            "description": "Mis-declaration of the stream configuration template",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "One or more processors are not available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Stream usage limit reached",
             "content": {
               "application/json": {
                 "schema": {
@@ -206,28 +206,8 @@
               }
             }
           },
-          "503": {
-            "description": "One or more processors are not available",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Mis-declaration of the stream configuration template",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Stream usage limit reached",
+          "500": {
+            "description": "Failed to create the stream",
             "content": {
               "application/json": {
                 "schema": {
@@ -246,8 +226,8 @@
               }
             }
           },
-          "500": {
-            "description": "Failed to create the stream",
+          "501": {
+            "description": "Requested feature is not implemented",
             "content": {
               "application/json": {
                 "schema": {
@@ -256,8 +236,28 @@
               }
             }
           },
-          "501": {
-            "description": "Requested feature is not implemented",
+          "400": {
+            "description": "Mis-declaration of the stream configuration template",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "One or more processors are not available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Stream usage limit reached",
             "content": {
               "application/json": {
                 "schema": {
@@ -344,28 +344,8 @@
               }
             }
           },
-          "503": {
-            "description": "One or more processors are not available",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Mis-declaration of the stream configuration template",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Stream usage limit reached",
+          "500": {
+            "description": "Failed to create the stream",
             "content": {
               "application/json": {
                 "schema": {
@@ -384,8 +364,8 @@
               }
             }
           },
-          "500": {
-            "description": "Failed to create the stream",
+          "501": {
+            "description": "Requested feature is not implemented",
             "content": {
               "application/json": {
                 "schema": {
@@ -394,8 +374,28 @@
               }
             }
           },
-          "501": {
-            "description": "Requested feature is not implemented",
+          "400": {
+            "description": "Mis-declaration of the stream configuration template",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "One or more processors are not available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Stream usage limit reached",
             "content": {
               "application/json": {
                 "schema": {
@@ -483,28 +483,8 @@
               }
             }
           },
-          "503": {
-            "description": "One or more processors are not available",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Mis-declaration of the stream configuration template",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Stream usage limit reached",
+          "500": {
+            "description": "Failed to create the stream",
             "content": {
               "application/json": {
                 "schema": {
@@ -523,8 +503,8 @@
               }
             }
           },
-          "500": {
-            "description": "Failed to create the stream",
+          "501": {
+            "description": "Requested feature is not implemented",
             "content": {
               "application/json": {
                 "schema": {
@@ -533,8 +513,28 @@
               }
             }
           },
-          "501": {
-            "description": "Requested feature is not implemented",
+          "400": {
+            "description": "Mis-declaration of the stream configuration template",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "One or more processors are not available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Stream usage limit reached",
             "content": {
               "application/json": {
                 "schema": {
@@ -684,6 +684,12 @@
             "items": {
               "$ref": "#/components/schemas/ProcessorConfigurationDto"
             }
+          },
+          "dynamicWebhookEndpoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebhookEndpointDto"
+            }
           }
         }
       },
@@ -793,6 +799,29 @@
           }
         }
       },
+      "WebhookEndpointDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
       "Page": {
         "type": "object",
         "properties": {
@@ -842,12 +871,6 @@
       "PageableObject": {
         "type": "object",
         "properties": {
-          "paged": {
-            "type": "boolean"
-          },
-          "unpaged": {
-            "type": "boolean"
-          },
           "pageNumber": {
             "type": "integer",
             "format": "int32"
@@ -855,6 +878,12 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "paged": {
+            "type": "boolean"
+          },
+          "unpaged": {
+            "type": "boolean"
           },
           "offset": {
             "type": "integer",
@@ -868,10 +897,10 @@
       "SortObject": {
         "type": "object",
         "properties": {
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
           "empty": {

@@ -3,7 +3,7 @@
   "info": {
     "title": "Vatis Schemas Server",
     "description": "Vatis Schemas Server API",
-    "version": "0.2.18"
+    "version": "0.2.24"
   },
   "servers": [
     {
@@ -245,6 +245,13 @@
           "streamSubject": {
             "type": "string",
             "description": "The subject of the stream"
+          },
+          "dynamicWebhookEndpoints": {
+            "type": "array",
+            "description": "List of dynamic webhooks configured for this event",
+            "items": {
+              "$ref": "#/components/schemas/WebhookEndpointDto"
+            }
           }
         },
         "description": "Event emitted when a stream is joined to a group"
@@ -325,6 +332,22 @@
           }
         },
         "description": "Command-line argument for FFmpeg or FFprobe"
+      },
+      "DynamicWebhookSupportedEventKeysDto": {
+        "type": "object",
+        "properties": {
+          "eventKeys": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Dynamic webhook supported event keys for each resource."
+          }
+        },
+        "description": "List of supported webhook event keys for dynamic webhook subscriptions, grouped by resource."
       },
       "FFprobePropertiesDto": {
         "type": "object",
@@ -423,6 +446,39 @@
         },
         "description": "Information regarding a subscription to a topic"
       },
+      "FindReplaceExpressionDto": {
+        "type": "object",
+        "properties": {
+          "replacement": {
+            "type": "string",
+            "description": "Replacement expression"
+          },
+          "regex": {
+            "type": "array",
+            "description": "Regular expressions to be matched",
+            "items": {
+              "type": "string"
+            }
+          },
+          "merge": {
+            "type": "string",
+            "description": "Merge type with next and previous tokens. One of: 'STANDALONE', 'MERGE_LEFT', 'MERGE_RIGHT', 'MERGE_LEFT_RIGHT', 'MERGE_LEFT_CAPITALIZE_NEXT'"
+          },
+          "entity": {
+            "type": "string",
+            "description": "Deprecated. Entity for replaced token"
+          },
+          "enabledOnPrerecordedFiles": {
+            "type": "boolean",
+            "description": "Enable on prerecorded files"
+          },
+          "enabledOnLiveTranscription": {
+            "type": "boolean",
+            "description": "Deprecated. Enable on live transcription"
+          }
+        },
+        "description": "Find and replace expression"
+      },
       "LlmPropertiesDto": {
         "type": "object",
         "properties": {
@@ -491,6 +547,13 @@
             "items": {
               "$ref": "#/components/schemas/ProcessorConfigurationDto"
             }
+          },
+          "dynamicWebhookEndpoints": {
+            "type": "array",
+            "description": "List of configured dynamic webhooks.",
+            "items": {
+              "$ref": "#/components/schemas/WebhookEndpointDto"
+            }
           }
         },
         "description": "Configuration object of a stream"
@@ -516,6 +579,16 @@
               "type": "object"
             },
             "description": "Map of configuration patches. The key is the configuration path or alias, the value is the new value. The default operation is 'replace'. To add, prefix de value with '+'. To remove, prefix the value with '-'. To escape the prefix, use '\\+' or '\\-'"
+          },
+          "webhook": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Dynamic webhooks represented as map having the URL as the key and a list of events as the associated value."
           }
         },
         "description": "Configuration message sent by the client."
@@ -593,6 +666,15 @@
             "type": "number",
             "description": "The average sentiment score",
             "format": "double"
+          },
+          "sentiment": {
+            "type": "string",
+            "description": "The sentiment of the text",
+            "enum": [
+              "negative",
+              "neutral",
+              "positive"
+            ]
           }
         },
         "description": "Sentiment Analysis Summary DTO"
@@ -653,6 +735,20 @@
             "type": "integer",
             "description": "Silence duration in milliseconds to consider as end of utterance. Used only when finalFrameStrategy is 'utterance'",
             "format": "int64"
+          },
+          "encoding": {
+            "type": "string",
+            "description": "Audio encoding. Required only when sending not containerized audio data. Possible values are: linear16, flac, mulaw, opus"
+          },
+          "sampleRate": {
+            "type": "integer",
+            "description": "Audio sample rate. Required only when sending not containerized audio data",
+            "format": "int32"
+          },
+          "channels": {
+            "type": "integer",
+            "description": "Number of audio channels. Required only when sending not containerized audio data",
+            "format": "int32"
           }
         },
         "description": "Properties for Live ASR processor"
@@ -684,6 +780,15 @@
             "type": "number",
             "description": "The average sentiment score",
             "format": "double"
+          },
+          "sentiment": {
+            "type": "string",
+            "description": "The sentiment of the text",
+            "enum": [
+              "negative",
+              "neutral",
+              "positive"
+            ]
           }
         },
         "description": "Sentiment Analysis Summary for a channel"
@@ -948,6 +1053,13 @@
           },
           "stream": {
             "$ref": "#/components/schemas/StreamDto"
+          },
+          "dynamicWebhookEndpoints": {
+            "type": "array",
+            "description": "List of dynamic webhooks configured for this event",
+            "items": {
+              "$ref": "#/components/schemas/WebhookEndpointDto"
+            }
           }
         },
         "description": "Event regarding stream state changed"
@@ -1097,6 +1209,13 @@
           "splitStereo": {
             "type": "boolean",
             "description": "Split stereo audio into two mono audio to be transcribed separately"
+          },
+          "allowedLanguages": {
+            "type": "array",
+            "description": "Specify a list of allowed languages to limit the language auto-detection possibilities. If null, all languages are allowed. Both 'language' and 'allowedLanguages' are specified, the 'language' will be appended to the 'allowedLanguages'",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "description": "Properties for FasterWhisperProcessor"
@@ -1594,6 +1713,13 @@
               "ALL",
               "ANY"
             ]
+          },
+          "dynamicWebhookEndpoints": {
+            "type": "array",
+            "description": "List of configured dynamic webhooks.",
+            "items": {
+              "$ref": "#/components/schemas/WebhookEndpointDto"
+            }
           }
         },
         "description": "Object for customizing the stream creation"
@@ -1972,6 +2098,13 @@
           "subject": {
             "type": "string",
             "description": "The subject of the underlying resource"
+          },
+          "dynamicWebhookEndpoints": {
+            "type": "array",
+            "description": "List of dynamic webhooks configured for this event",
+            "items": {
+              "$ref": "#/components/schemas/WebhookEndpointDto"
+            }
           }
         },
         "description": "Event that is triggered when the state of a group changes."
@@ -2182,6 +2315,39 @@
           }
         },
         "description": "Message for indicating the end of stream. This can be used by the client to mark the end of input stream, so it can wait for the server to finish sending the responses, followed by the EOS. The server will always send the EOS regardless of the client sending it or not."
+      },
+      "RoTranscriberPropertiesDto": {
+        "type": "object",
+        "properties": {
+          "disfluencies": {
+            "type": "boolean",
+            "description": "Whether to include disfluencies in the transcription"
+          },
+          "punctuationCapitalization": {
+            "type": "boolean",
+            "description": "Whether to include punctuation and capitalization in the transcription"
+          },
+          "numeralsConversion": {
+            "type": "boolean",
+            "description": "Whether to include entities recognition in the transcription"
+          },
+          "splitStereo": {
+            "type": "boolean",
+            "description": "Split stereo audio into two mono audio to be transcribed separately"
+          },
+          "findReplace": {
+            "type": "boolean",
+            "description": "Whether to include find and replace in the transcription"
+          },
+          "findReplaceExpressions": {
+            "type": "array",
+            "description": "Find-replace expressions",
+            "items": {
+              "$ref": "#/components/schemas/FindReplaceExpressionDto"
+            }
+          }
+        },
+        "description": "Properties for the RoTranscriber processor"
       },
       "StreamSinkMessageDto": {
         "type": "object",

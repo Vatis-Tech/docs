@@ -43,28 +43,18 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": "Default error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "One or more processors are not available",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "429": {
             "description": "Stream usage limit reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Default error",
             "content": {
               "application/json": {
                 "schema": {
@@ -83,18 +73,8 @@
               }
             }
           },
-          "500": {
-            "description": "Failed to create the stream",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "501": {
-            "description": "Requested feature is not implemented",
+          "503": {
+            "description": "One or more processors are not available",
             "content": {
               "application/json": {
                 "schema": {
@@ -135,6 +115,26 @@
           },
           "409": {
             "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create the stream",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Requested feature is not implemented",
             "content": {
               "application/json": {
                 "schema": {
@@ -218,28 +218,18 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": "Default error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "One or more processors are not available",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "429": {
             "description": "Stream usage limit reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Default error",
             "content": {
               "application/json": {
                 "schema": {
@@ -258,18 +248,8 @@
               }
             }
           },
-          "500": {
-            "description": "Failed to create the stream",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "501": {
-            "description": "Requested feature is not implemented",
+          "503": {
+            "description": "One or more processors are not available",
             "content": {
               "application/json": {
                 "schema": {
@@ -310,6 +290,26 @@
           },
           "409": {
             "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create the stream",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Requested feature is not implemented",
             "content": {
               "application/json": {
                 "schema": {
@@ -578,6 +578,12 @@
             "type": "string"
           },
           "processedTokens": {
+            "type": "string"
+          },
+          "processedInputTokens": {
+            "type": "string"
+          },
+          "processedOutputTokens": {
             "type": "string"
           }
         }

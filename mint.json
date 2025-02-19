@@ -83,6 +83,12 @@
       "group": "Infrastructure",
       "pages": [
         {
+          "group": "Streams",
+          "pages": [
+            "infrastructure/streams/inspect-errors"
+          ]
+        },
+        {
           "group": "Diagrams",
           "pages": [
             "infrastructure/diagrams/system-overview",
@@ -136,6 +142,35 @@
             "api-reference/schemas/websocket/response",
             "api-reference/schemas/websocket/end-of-stream",
             "api-reference/schemas/websocket/error"
+          ]
+        },
+        {
+          "group": "Webhook",
+          "pages": [
+            "api-reference/schemas/webhook/webhook-event",
+            {
+              "group": "Event payload",
+              "pages": [
+                "api-reference/schemas/webhook/event-payload/stream-state-event",
+                "api-reference/schemas/webhook/event-payload/group-state-changed-event",
+                "api-reference/schemas/webhook/event-payload/group-stream-joined-event",
+                "api-reference/schemas/webhook/event-payload/stream-gateway-state-event",
+                "api-reference/schemas/webhook/event-payload/stream-processor-state-event"
+              ]
+            }
+          ]
+        },
+        {
+          "group": "HTTP Gateway",
+          "pages": [
+            "api-reference/schemas/http-gateway/stream-configuration"
+          ]
+        },
+        {
+          "group": "Errors",
+          "pages": [
+              "api-reference/schemas/error/error-response",
+              "api-reference/schemas/error/internal-error-name"
           ]
         }
       ]
