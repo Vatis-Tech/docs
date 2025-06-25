@@ -76,6 +76,7 @@ The webhook event you'll receive will have the following structure:
 | `gateway.connected`    |            no             | A client connected to the stream gateway                                                                                                         |
 | `gateway.disconnected` |            no             | The client disconnected from the stream gateway                                                                                                  |
 | `gateway.closed`       |            no             | The gateway of the stream is permanently closed                                                                                                  |
+| `gateway.error `       |            no             | The gateway of the stream is permanently closed due to an error                                                                                  |
 | `processor.running`    |            no             | The stream processor has been assigned to stream and it is running                                                                               |
 | `processor.completed`  |            no             | The stream processor has been completed successfully                                                                                             |
 | `processor.error`      |            no             | The stream processor has failed                                                                                                                  |
@@ -83,9 +84,7 @@ The webhook event you'll receive will have the following structure:
 ## Source IPs
 
 To make sure your server is able to receive the events, you can **whitelist** the following IP addresses:
-- `18.194.212.83`
-- `3.120.9.38`
-- `3.68.55.77`
+- `Europe`: `52.59.67.134`
 
 ## Redelivery
 
