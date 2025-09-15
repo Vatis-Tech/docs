@@ -1,0 +1,15 @@
+<ParamField query="enhancedTranscription" type="bool" default="false">
+    Enable transcription enhancement.
+</ParamField>
+
+<ParamField query="etModel" type="[standard|enhanced]" default="standard">
+    Balance the speed-accuracy ration of the transcription enhancing model.
+</ParamField>
+
+<ParamField query="etVocabulary" type="string[]" default="null">
+    Provide a list of words to enhance the transcription. Those can be domain-specific terms that the model should pay special attention to.
+</ParamField>
+
+<ParamField query="etSystemPrompt" type="string" default="null">
+    Provide a system prompt to guide the transcription enhancement model. This can help the model understand the context or specific requirements for the transcription.
+</ParamField>

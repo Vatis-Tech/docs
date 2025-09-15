@@ -43,28 +43,8 @@
           }
         ],
         "responses": {
-          "429": {
-            "description": "Stream usage limit reached",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "default": {
             "description": "Default error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required",
             "content": {
               "application/json": {
                 "schema": {
@@ -83,8 +63,8 @@
               }
             }
           },
-          "400": {
-            "description": "Interval too short",
+          "404": {
+            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -93,8 +73,8 @@
               }
             }
           },
-          "404": {
-            "description": "Resource not found",
+          "400": {
+            "description": "Validation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -115,6 +95,26 @@
           },
           "409": {
             "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Stream usage limit reached",
             "content": {
               "application/json": {
                 "schema": {
@@ -218,28 +218,8 @@
           }
         ],
         "responses": {
-          "429": {
-            "description": "Stream usage limit reached",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "default": {
             "description": "Default error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication required",
             "content": {
               "application/json": {
                 "schema": {
@@ -258,8 +238,8 @@
               }
             }
           },
-          "400": {
-            "description": "Interval too short",
+          "404": {
+            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -268,8 +248,8 @@
               }
             }
           },
-          "404": {
-            "description": "Resource not found",
+          "400": {
+            "description": "Validation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -290,6 +270,26 @@
           },
           "409": {
             "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Exception on client authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Stream usage limit reached",
             "content": {
               "application/json": {
                 "schema": {

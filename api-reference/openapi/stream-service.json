@@ -32,18 +32,8 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": "Default error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Failed to create the stream",
+          "404": {
+            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -53,17 +43,7 @@
             }
           },
           "401": {
-            "description": "Authentication required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "501": {
-            "description": "Requested feature is not implemented",
+            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -73,7 +53,27 @@
             }
           },
           "400": {
-            "description": "Mis-declaration of the stream configuration template",
+            "description": "Exception on webhook configuration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -102,8 +102,8 @@
               }
             }
           },
-          "404": {
-            "description": "Resource not found",
+          "500": {
+            "description": "Failed to create the stream",
             "content": {
               "application/json": {
                 "schema": {
@@ -112,8 +112,8 @@
               }
             }
           },
-          "403": {
-            "description": "Access denied",
+          "501": {
+            "description": "Requested feature is not implemented",
             "content": {
               "application/json": {
                 "schema": {
@@ -122,8 +122,8 @@
               }
             }
           },
-          "409": {
-            "description": "Conflict",
+          "default": {
+            "description": "Default error",
             "content": {
               "application/json": {
                 "schema": {
@@ -196,18 +196,8 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": "Default error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Failed to create the stream",
+          "404": {
+            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -217,17 +207,7 @@
             }
           },
           "401": {
-            "description": "Authentication required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "501": {
-            "description": "Requested feature is not implemented",
+            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -237,7 +217,27 @@
             }
           },
           "400": {
-            "description": "Mis-declaration of the stream configuration template",
+            "description": "Exception on webhook configuration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -266,8 +266,8 @@
               }
             }
           },
-          "404": {
-            "description": "Resource not found",
+          "500": {
+            "description": "Failed to create the stream",
             "content": {
               "application/json": {
                 "schema": {
@@ -276,8 +276,8 @@
               }
             }
           },
-          "403": {
-            "description": "Access denied",
+          "501": {
+            "description": "Requested feature is not implemented",
             "content": {
               "application/json": {
                 "schema": {
@@ -286,8 +286,8 @@
               }
             }
           },
-          "409": {
-            "description": "Conflict",
+          "default": {
+            "description": "Default error",
             "content": {
               "application/json": {
                 "schema": {
@@ -334,18 +334,8 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": "Default error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Failed to create the stream",
+          "404": {
+            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -355,17 +345,7 @@
             }
           },
           "401": {
-            "description": "Authentication required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "501": {
-            "description": "Requested feature is not implemented",
+            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -375,7 +355,27 @@
             }
           },
           "400": {
-            "description": "Mis-declaration of the stream configuration template",
+            "description": "Exception on webhook configuration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -404,8 +404,8 @@
               }
             }
           },
-          "404": {
-            "description": "Resource not found",
+          "500": {
+            "description": "Failed to create the stream",
             "content": {
               "application/json": {
                 "schema": {
@@ -414,8 +414,8 @@
               }
             }
           },
-          "403": {
-            "description": "Access denied",
+          "501": {
+            "description": "Requested feature is not implemented",
             "content": {
               "application/json": {
                 "schema": {
@@ -424,8 +424,8 @@
               }
             }
           },
-          "409": {
-            "description": "Conflict",
+          "default": {
+            "description": "Default error",
             "content": {
               "application/json": {
                 "schema": {
@@ -473,18 +473,8 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": "Default error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Failed to create the stream",
+          "404": {
+            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -494,17 +484,7 @@
             }
           },
           "401": {
-            "description": "Authentication required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "501": {
-            "description": "Requested feature is not implemented",
+            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -514,7 +494,27 @@
             }
           },
           "400": {
-            "description": "Mis-declaration of the stream configuration template",
+            "description": "Exception on webhook configuration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
             "content": {
               "application/json": {
                 "schema": {
@@ -543,8 +543,8 @@
               }
             }
           },
-          "404": {
-            "description": "Resource not found",
+          "500": {
+            "description": "Failed to create the stream",
             "content": {
               "application/json": {
                 "schema": {
@@ -553,8 +553,8 @@
               }
             }
           },
-          "403": {
-            "description": "Access denied",
+          "501": {
+            "description": "Requested feature is not implemented",
             "content": {
               "application/json": {
                 "schema": {
@@ -563,8 +563,8 @@
               }
             }
           },
-          "409": {
-            "description": "Conflict",
+          "default": {
+            "description": "Default error",
             "content": {
               "application/json": {
                 "schema": {
@@ -871,6 +871,12 @@
       "PageableObject": {
         "type": "object",
         "properties": {
+          "paged": {
+            "type": "boolean"
+          },
+          "unpaged": {
+            "type": "boolean"
+          },
           "pageNumber": {
             "type": "integer",
             "format": "int32"
@@ -878,12 +884,6 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
-          },
-          "paged": {
-            "type": "boolean"
-          },
-          "unpaged": {
-            "type": "boolean"
           },
           "offset": {
             "type": "integer",
@@ -897,10 +897,10 @@
       "SortObject": {
         "type": "object",
         "properties": {
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
           "empty": {
@@ -916,12 +916,16 @@
             "enum": [
               "CONNECTED",
               "DISCONNECTED",
-              "CLOSED"
+              "CLOSED",
+              "ERROR"
             ]
           },
           "stateChangedTimestamp": {
             "type": "string",
             "format": "date-time"
+          },
+          "stateDescription": {
+            "type": "string"
           }
         }
       },

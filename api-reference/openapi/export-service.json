@@ -209,6 +209,23 @@
           },
           "sentimentAnalysis": {
             "$ref": "#/components/schemas/SentimentAnalysisDto"
+          },
+          "enhancedTranscription": {
+            "$ref": "#/components/schemas/EnhancedTranscriptionDto"
+          }
+        }
+      },
+      "EnhancedTranscriptionDto": {
+        "type": "object",
+        "properties": {
+          "transcription": {
+            "$ref": "#/components/schemas/TranscriptionDto"
+          },
+          "utterances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UtteranceDto"
+            }
           }
         }
       },

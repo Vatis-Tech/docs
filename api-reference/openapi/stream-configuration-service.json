@@ -53,16 +53,6 @@
               }
             }
           },
-          "404": {
-            "description": "Resource not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "401": {
             "description": "Exception on client authorization",
             "content": {
@@ -74,7 +64,17 @@
             }
           },
           "400": {
-            "description": "Bad alias in stream configuration template",
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -148,16 +148,6 @@
               }
             }
           },
-          "404": {
-            "description": "Resource not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "401": {
             "description": "Exception on client authorization",
             "content": {
@@ -170,6 +160,16 @@
           },
           "400": {
             "description": "Error in stream configuration template",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -261,16 +261,6 @@
               }
             }
           },
-          "404": {
-            "description": "Resource not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "401": {
             "description": "Exception on client authorization",
             "content": {
@@ -282,7 +272,17 @@
             }
           },
           "400": {
-            "description": "Bad alias in stream configuration template",
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -380,16 +380,6 @@
               }
             }
           },
-          "404": {
-            "description": "Resource not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "401": {
             "description": "Exception on client authorization",
             "content": {
@@ -401,7 +391,17 @@
             }
           },
           "400": {
-            "description": "Bad alias in stream configuration template",
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -489,16 +489,6 @@
               }
             }
           },
-          "404": {
-            "description": "Resource not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "401": {
             "description": "Exception on client authorization",
             "content": {
@@ -510,7 +500,17 @@
             }
           },
           "400": {
-            "description": "Bad alias in stream configuration template",
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -907,6 +907,12 @@
       "PageableObject": {
         "type": "object",
         "properties": {
+          "paged": {
+            "type": "boolean"
+          },
+          "unpaged": {
+            "type": "boolean"
+          },
           "pageNumber": {
             "type": "integer",
             "format": "int32"
@@ -914,12 +920,6 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
-          },
-          "paged": {
-            "type": "boolean"
-          },
-          "unpaged": {
-            "type": "boolean"
           },
           "offset": {
             "type": "integer",
@@ -933,10 +933,10 @@
       "SortObject": {
         "type": "object",
         "properties": {
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
           "empty": {

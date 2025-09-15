@@ -41,8 +41,18 @@
               }
             }
           },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
-            "description": "Exception on webhook configuration",
+            "description": "Webhook endpoints limit reached",
             "content": {
               "application/json": {
                 "schema": {
@@ -63,16 +73,6 @@
           },
           "409": {
             "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -139,8 +139,18 @@
               }
             }
           },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
-            "description": "Exception on webhook configuration",
+            "description": "Webhook endpoints limit reached",
             "content": {
               "application/json": {
                 "schema": {
@@ -161,16 +171,6 @@
           },
           "409": {
             "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -249,8 +249,18 @@
               }
             }
           },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
-            "description": "Exception on webhook configuration",
+            "description": "Webhook endpoints limit reached",
             "content": {
               "application/json": {
                 "schema": {
@@ -271,16 +281,6 @@
           },
           "409": {
             "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -347,8 +347,18 @@
               }
             }
           },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
-            "description": "Exception on webhook configuration",
+            "description": "Webhook endpoints limit reached",
             "content": {
               "application/json": {
                 "schema": {
@@ -369,16 +379,6 @@
           },
           "409": {
             "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -443,8 +443,18 @@
               }
             }
           },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
-            "description": "Exception on webhook configuration",
+            "description": "Webhook endpoints limit reached",
             "content": {
               "application/json": {
                 "schema": {
@@ -465,16 +475,6 @@
           },
           "409": {
             "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
@@ -523,8 +523,18 @@
               }
             }
           },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "400": {
-            "description": "Exception on webhook configuration",
+            "description": "Webhook endpoints limit reached",
             "content": {
               "application/json": {
                 "schema": {
@@ -545,16 +555,6 @@
           },
           "409": {
             "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Exception on client authorization",
             "content": {
               "application/json": {
                 "schema": {
