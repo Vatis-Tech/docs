@@ -5,6 +5,8 @@ description: "Pre-recorded transcription specifications of Romanian-only files u
 
 import TranscriptionParameters from '/snippets/stream-configuration/ro-transcriber.mdx';
 import AudioIntelligenceParameters from '/snippets/stream-configuration/llm.mdx';
+import AdDetectionParameters from '/snippets/stream-configuration/llm/ad-detection.mdx';
+import MusicDetectionParameters from '/snippets/stream-configuration/llm/music-detection.mdx';
 
 ### <Icon icon="sliders" iconType="light" size="24"/>  Stream configuration template ids
 * production: `678e26e695f8f5742e8718f4`
@@ -28,5 +30,9 @@ import AudioIntelligenceParameters from '/snippets/stream-configuration/llm.mdx'
     </Accordion>
     <Accordion title="Audio Intelligence">
         <AudioIntelligenceParameters/>
+
+        <AdDetectionParameters/>
+
+        <MusicDetectionParameters/>
     </Accordion>
 </AccordionGroup>

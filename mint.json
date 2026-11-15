@@ -76,7 +76,9 @@
       "pages": [
           "audio-intelligence/summarization",
           "audio-intelligence/sentiment-analysis",
-          "audio-intelligence/ask-anything"
+          "audio-intelligence/ask-anything",
+          "audio-intelligence/ad-detection",
+          "audio-intelligence/music-detection"
       ]
     },
     {
