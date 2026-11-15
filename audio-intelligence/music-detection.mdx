@@ -1,0 +1,102 @@
+---
+title: 'Music Detection'
+description: 'Find the music passages in your content'
+---
+
+import MusicDetectionParameters from '/snippets/stream-configuration/llm/music-detection.mdx';
+
+Find every music passage in your content (songs, jingles, instrumental music) with its start and end time, and get a simple yes/no answer for the whole file.
+
+Enable music detection with the following configuration:
+
+<MusicDetectionParameters />
+
+<Note>
+  Music detection is available for pre-recorded audio, with all the file-optimized stream configuration templates. It is not available for real-time streams.
+</Note>
+
+## How it works
+
+Music is identified from the transcript, from two kinds of evidence:
+
+1. **Sung or rapped lyrics.** Lines that are performed rather than spoken. These passages include the transcribed lyrics in `text`.
+2. **Stretches without speech.** In broadcast and produced media (radio, TV, podcasts, online video), a stretch of 30 seconds or more without speech is most likely music. Shorter stretches count as music only when the context makes it likely, for example right after a song is announced or as the instrumental intro or outro of a song. These passages have no `text`.
+
+Continuous music, such as two songs back to back or a song with its instrumental intro, is reported as one passage.
+
+<Warning>
+  Because music detection works on the transcript, music playing under speech (for example background music under a voice-over) is not reported. Passages without lyrics are inferred from the absence of speech and are less certain than passages with lyrics.
+</Warning>
+
+## Usage
+
+```bash
+curl -X 'POST' \
+  'https://http-gateway.vatis.tech/http-gateway/api/v1/upload?streamConfigurationTemplateId=668115d123bca7e3509723d4&musicDetection=true&persist=true' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Basic <api_key>' \
+  -H 'Content-Type: application/octet-stream' \
+  --data-binary '@test.mp3'
+```
+
+Music detection can be combined with ad detection and the other audio intelligence options in the same request, for example `adDetection=true&musicDetection=true`.
+
+## Export Response
+
+The result is returned in the `musicDetection` field of the [Audio Intelligence Response](/api-reference/schemas/export/audio-intelligence-response).
+
+### Mono audio
+
+```json
+{
+  ...
+  "musicDetection": {
+    "segments": [
+      {
+        "text": " ... (transcribed lyrics) ...",
+        "startTime": 95120,
+        "endTime": 182340
+      },
+      {
+        "startTime": 246640,
+        "endTime": 499900
+      }
+    ],
+    "summary": {
+      "containsMusic": true
+    }
+  }
+}
+```
+
+| Field | Description |
+|---|---|
+| `segments` | The music passages, in chronological order. |
+| `segments[].text` | The transcribed lyrics of the passage. Omitted when the passage contains no transcribed speech (music without lyrics). |
+| `segments[].startTime` | Start time of the music passage, in milliseconds. |
+| `segments[].endTime` | End time of the music passage, in milliseconds. |
+| `summary.containsMusic` | `true` if the content contains at least one music passage. |
+
+When no music is found, `segments` is empty and `summary.containsMusic` is `false`.
+
+### Multi-channel audio
+
+With `splitStereo=true`, each channel is analysed separately and every segment also has a `channel` field (the field is omitted for mono audio).
+
+```json
+{
+  ...
+  "musicDetection": {
+    "segments": [
+      {
+        "startTime": 246640,
+        "endTime": 499900,
+        "channel": 1
+      }
+    ],
+    "summary": {
+      "containsMusic": true
+    }
+  }
+}
+```

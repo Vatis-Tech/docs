@@ -5,6 +5,8 @@ description: "Pre-recorded transcription specifications using the Vatis Streams 
 
 import TranscriptionParameters from '/snippets/stream-configuration/faster-whisper.mdx';
 import AudioIntelligenceParameters from '/snippets/stream-configuration/llm.mdx';
+import AdDetectionParameters from '/snippets/stream-configuration/llm/ad-detection.mdx';
+import MusicDetectionParameters from '/snippets/stream-configuration/llm/music-detection.mdx';
 
 ### <Icon icon="sliders" iconType="light" size="24"/>  Stream configuration template ids
 * production all languages: `668115d123bca7e3509723d4`
@@ -29,5 +31,9 @@ import AudioIntelligenceParameters from '/snippets/stream-configuration/llm.mdx'
     </Accordion>
     <Accordion title="Audio Intelligence">
         <AudioIntelligenceParameters/>
+
+        <AdDetectionParameters/>
+
+        <MusicDetectionParameters/>
     </Accordion>
 </AccordionGroup>

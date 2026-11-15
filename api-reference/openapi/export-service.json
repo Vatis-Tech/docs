@@ -212,6 +212,12 @@
           },
           "enhancedTranscription": {
             "$ref": "#/components/schemas/EnhancedTranscriptionDto"
+          },
+          "adDetection": {
+            "$ref": "#/components/schemas/AdDetectionDto"
+          },
+          "musicDetection": {
+            "$ref": "#/components/schemas/MusicDetectionDto"
           }
         }
       },
@@ -431,6 +437,136 @@
             "items": {
               "$ref": "#/components/schemas/TranscriptionWordDto"
             }
+          }
+        }
+      },
+      "AdDetectionSegmentDto": {
+        "type": "object",
+        "description": "A single advertisement detected in the content",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The transcribed text of the advertisement"
+          },
+          "startTime": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The start time in milliseconds of the advertisement"
+          },
+          "endTime": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The end time in milliseconds of the advertisement"
+          },
+          "channel": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The channel number, present only for multi-channel audio (`splitStereo=true`)"
+          }
+        }
+      },
+      "AdBreakDto": {
+        "type": "object",
+        "description": "An advertising break: consecutive advertisements on the same channel grouped together",
+        "properties": {
+          "startTime": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The start time in milliseconds of the advertising break"
+          },
+          "endTime": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The end time in milliseconds of the advertising break"
+          },
+          "channel": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The channel number, present only for multi-channel audio (`splitStereo=true`)"
+          }
+        }
+      },
+      "AdDetectionSummaryDto": {
+        "type": "object",
+        "description": "Advertisement detection summary",
+        "properties": {
+          "containsAds": {
+            "type": "boolean",
+            "description": "Whether the content contains at least one advertisement"
+          }
+        }
+      },
+      "AdDetectionDto": {
+        "type": "object",
+        "description": "Advertisement detection response",
+        "properties": {
+          "segments": {
+            "type": "array",
+            "description": "Detected individual advertisements, in chronological order",
+            "items": {
+              "$ref": "#/components/schemas/AdDetectionSegmentDto"
+            }
+          },
+          "breaks": {
+            "type": "array",
+            "description": "Advertising breaks (consecutive advertisements grouped together), in chronological order",
+            "items": {
+              "$ref": "#/components/schemas/AdBreakDto"
+            }
+          },
+          "summary": {
+            "$ref": "#/components/schemas/AdDetectionSummaryDto"
+          }
+        }
+      },
+      "MusicDetectionSegmentDto": {
+        "type": "object",
+        "description": "A music passage detected in the content",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The transcribed lyrics of the music passage. Omitted when the passage contains no transcribed speech (music inferred from a stretch without speech, which is less certain)"
+          },
+          "startTime": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The start time in milliseconds of the music passage"
+          },
+          "endTime": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The end time in milliseconds of the music passage"
+          },
+          "channel": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The channel number, present only for multi-channel audio (`splitStereo=true`)"
+          }
+        }
+      },
+      "MusicDetectionSummaryDto": {
+        "type": "object",
+        "description": "Music detection summary",
+        "properties": {
+          "containsMusic": {
+            "type": "boolean",
+            "description": "Whether the content contains at least one music passage"
+          }
+        }
+      },
+      "MusicDetectionDto": {
+        "type": "object",
+        "description": "Music detection response",
+        "properties": {
+          "segments": {
+            "type": "array",
+            "description": "Detected music passages, in chronological order",
+            "items": {
+              "$ref": "#/components/schemas/MusicDetectionSegmentDto"
+            }
+          },
+          "summary": {
+            "$ref": "#/components/schemas/MusicDetectionSummaryDto"
           }
         }
       }

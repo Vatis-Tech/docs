@@ -5,6 +5,8 @@ description: "Pre-recorded transcription with speaker diarization specifications
 
 import TranscriptionParameters from '/snippets/stream-configuration/faster-whisper.mdx';
 import AudioIntelligenceParameters from '/snippets/stream-configuration/llm.mdx';
+import AdDetectionParameters from '/snippets/stream-configuration/llm/ad-detection.mdx';
+import MusicDetectionParameters from '/snippets/stream-configuration/llm/music-detection.mdx';
 import SpeakerDiarizationParameters from '/snippets/stream-configuration/pyannote.mdx';
 
 ### <Icon icon="sliders" iconType="light" size="24"/>  Stream configuration template ids
@@ -36,5 +38,9 @@ import SpeakerDiarizationParameters from '/snippets/stream-configuration/pyannot
     <Accordion title="Audio Intelligence">
         <Warning>The audio intelligence layer operates only over the transcription responses, excluding the diarization information.</Warning>
         <AudioIntelligenceParameters/>
+
+        <AdDetectionParameters/>
+
+        <MusicDetectionParameters/>
     </Accordion>
 </AccordionGroup>

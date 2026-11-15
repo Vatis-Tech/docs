@@ -1,0 +1,128 @@
+---
+title: 'Ad Detection'
+description: 'Find the advertisements and advertising breaks in your content'
+---
+
+import AdDetectionParameters from '/snippets/stream-configuration/llm/ad-detection.mdx';
+
+Find every advertisement in your content with its start and end time, see how the advertisements group into advertising breaks, and get a simple yes/no answer for the whole file.
+
+Enable ad detection with the following configuration:
+
+<AdDetectionParameters />
+
+<Note>
+  Ad detection is available for pre-recorded audio, with all the file-optimized stream configuration templates. It is not available for real-time streams.
+</Note>
+
+## How it works
+
+Advertisements are identified from the transcript. An advertisement is a commercial message that promotes a product, service, brand, company, shop, event or offer on behalf of an advertiser, including sponsor messages ("brought to you by …") and paid product mentions read by a host.
+
+The following are **not** counted as advertisements:
+- editorial content that only mentions a brand (news, interviews, reviews);
+- the station's or show's own programme announcements, trailers and station identification;
+- the host's lead-in and lead-out around the ads ("we'll be right back", "welcome back");
+- calls to subscribe to, like or follow a channel or show.
+
+Advertisements on the same channel that are less than 20 seconds apart are grouped into one **advertising break**.
+
+## Usage
+
+```bash
+curl -X 'POST' \
+  'https://http-gateway.vatis.tech/http-gateway/api/v1/upload?streamConfigurationTemplateId=668115d123bca7e3509723d4&adDetection=true&persist=true' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Basic <api_key>' \
+  -H 'Content-Type: application/octet-stream' \
+  --data-binary '@test.mp3'
+```
+
+Ad detection can be combined with music detection and the other audio intelligence options in the same request, for example `adDetection=true&musicDetection=true`.
+
+## Export Response
+
+The result is returned in the `adDetection` field of the [Audio Intelligence Response](/api-reference/schemas/export/audio-intelligence-response).
+
+### Mono audio
+
+```json
+{
+  ...
+  "adDetection": {
+    "segments": [
+      {
+        "text": " Hungry? Our new menu is here, with burgers starting from five euros. ...",
+        "startTime": 1240,
+        "endTime": 31560
+      },
+      {
+        "text": " Looking for a new car? Visit your nearest dealer this weekend. ...",
+        "startTime": 32480,
+        "endTime": 77280
+      },
+      {
+        "text": " This programme is brought to you by ...",
+        "startTime": 205830,
+        "endTime": 246640
+      }
+    ],
+    "breaks": [
+      {
+        "startTime": 1240,
+        "endTime": 77280
+      },
+      {
+        "startTime": 205830,
+        "endTime": 246640
+      }
+    ],
+    "summary": {
+      "containsAds": true
+    }
+  }
+}
+```
+
+| Field | Description |
+|---|---|
+| `segments` | The individual advertisements, in chronological order. |
+| `segments[].text` | The transcribed text of the advertisement. |
+| `segments[].startTime` | Start time of the advertisement, in milliseconds. |
+| `segments[].endTime` | End time of the advertisement, in milliseconds. |
+| `breaks` | The advertising breaks (consecutive advertisements grouped together), in chronological order. |
+| `breaks[].startTime` | Start time of the advertising break, in milliseconds. |
+| `breaks[].endTime` | End time of the advertising break, in milliseconds. |
+| `summary.containsAds` | `true` if the content contains at least one advertisement. |
+
+When no advertisement is found, `segments` and `breaks` are empty and `summary.containsAds` is `false`.
+
+### Multi-channel audio
+
+With `splitStereo=true`, each channel is analysed separately. Every segment and break then also has a `channel` field (the field is omitted for mono audio), and breaks never span two channels.
+
+```json
+{
+  ...
+  "adDetection": {
+    "segments": [
+      {
+        "text": " Looking for a new car? Visit your nearest dealer this weekend. ...",
+        "startTime": 32480,
+        "endTime": 77280,
+        "channel": 0
+      }
+    ],
+    "breaks": [
+      {
+        "startTime": 32480,
+        "endTime": 77280,
+        "channel": 0
+      }
+    ],
+    "summary": {
+      "containsAds": true
+    }
+  }
+}
+```
